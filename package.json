@@ -2,6 +2,7 @@
   "name": "scopedb-docs",
   "type": "module",
   "version": "0.0.1",
+  "private": true,
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build",
@@ -10,6 +11,7 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
+    "@astrojs/mdx": "^4.2.2",
     "astro": "^5.5.4",
     "typescript": "^5.8.2"
   }
