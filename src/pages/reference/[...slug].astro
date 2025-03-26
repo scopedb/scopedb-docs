@@ -1,5 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import { resolvePageTitle } from "@/lib/pagetitle";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
@@ -11,9 +12,10 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content, headings } = await entry.render();
+const title = resolvePageTitle(entry.data.title, headings);
 ---
 
-<Layout title="Reference">
+<Layout title={title}>
     <Content />
 </Layout>
