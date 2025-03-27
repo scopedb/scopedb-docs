@@ -29,13 +29,13 @@ This function returns a value of string data type or NULL. If either argument is
 Remove leading `0` and `#` characters from a string:
 
 ```scopeql
-SELECT ltrim('#000000123', '0#');
+SELECT ltrim('#000000123', '0#')
 ```
 
 ```
 +---------------------------+
 | ltrim('#000000123', '0#') |
-|---------------------------|
++---------------------------+
 | 123                       |
 +---------------------------+
 ```
