@@ -99,7 +99,7 @@ Creates a new view in the current schema. A view is a virtual table based on the
 ### Syntax
 
 ```scopeql
-CREATE [ OR REPLACE ] VIEW <name> 
+CREATE [ OR REPLACE ] VIEW <name>
 AS <query>
 [ COMMENT = '<string_literal>' ]
 ```
@@ -130,7 +130,7 @@ CREATE TABLE user_events (
 );
 
 -- Insert sample data
-VALUES 
+VALUES
     (1, '2024-01-01T10:00:00Z', 'active', 85),
     (1, '2024-01-02T15:30:00Z', 'inactive', 75),
     (2, '2024-01-01T09:00:00Z', 'active', 90),
@@ -139,12 +139,12 @@ INSERT INTO user_events;
 
 -- Create a view that keeps only the latest record for each user
 CREATE VIEW latest_user_status AS
-FROM user_events 
-DISTINCT ON user_id 
+FROM user_events
+DISTINCT ON user_id
 BY event_time DESC;
 
 -- Create or replace a view with a comment
-CREATE OR REPLACE VIEW highest_user_scores 
+CREATE OR REPLACE VIEW highest_user_scores
 AS
 FROM user_events
 DISTINCT ON user_id
@@ -229,7 +229,7 @@ CREATE <index_type> INDEX <name> ON <table_name> (<index_expression>)
 
 - `<table_name>`: The name of the table to create the index on
 
-- `<index_expression>`: 
+- `<index_expression>`:
   * For SMART indexes: Any valid expression that returns a deterministic value
   * For SEARCH indexes: Must be a string column that will be used with the `search` function
 
