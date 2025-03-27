@@ -2,7 +2,7 @@
 
 Numeric functions operate on numeric values and perform operations such as rounding and truncation.
 
-* [ceil](functions/ceil.mdx)
-* [floor](functions/floor.mdx)
-* [round](functions/round.mdx)
-* [trunc](functions/trunc.mdx)
+* [ceil](functions/ceil.md)
+* [floor](functions/floor.md)
+* [round](functions/round.md)
+* [trunc](functions/trunc.md)

@@ -2,5 +2,5 @@
 
 This family of functions can be used to construct, convert, or modify timestamp data.
 
-* [now](functions/now.mdx)
-* [trunc](functions/temporal-trunc.mdx)
+* [now](functions/now.md)
+* [trunc](functions/temporal-trunc.md)

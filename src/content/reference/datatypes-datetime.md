@@ -113,4 +113,4 @@ Interval is always accurate in nanoseconds. Thus, you cannot specify a string co
 
 ## Related content
 
-See also [date and time functions](functions-datetime.mdx).
+See also [date and time functions](functions-datetime.md).
