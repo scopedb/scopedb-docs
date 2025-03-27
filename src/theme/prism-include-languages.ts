@@ -40,7 +40,7 @@ export default function prismIncludeLanguages(
 }
 
 function renderScopeQLStyle() {
-  Prism.languages.scopeql = {
+  globalThis.Prism.languages.scopeql = {
     'comment': {
       pattern: /(^|[^\\])(?:\/\*[\s\S]*?\*\/|(?:--|\/\/|#).*)/,
       lookbehind: true

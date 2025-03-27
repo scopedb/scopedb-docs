@@ -31,6 +31,7 @@
         "@docusaurus/types": "3.7.0",
         "prismjs": "^1.30.0",
         "typescript": "~5.8.2",
+        "utility-types": "^3.11.0",
         "wrangler": "^4.5.0"
     },
     "browserslist": {
