@@ -1,6 +1,8 @@
-# get
+# get, []
 
-Extracts a value from a variant that contains an ARRAY or OBJECT.
+Extracts a value from a variant that contains an array or object. The return value is of variant type.
+
+The `[]` operator provides alternative syntax for variant index or field get.
 
 The function returns NULL if either of the arguments is NULL.
 
@@ -9,6 +11,8 @@ The function returns NULL if either of the arguments is NULL.
 ```scopeql
 get( <variant> , <index> )
 get( <variant> , <field_name> )
+<variant>[ <index> ]
+<variant>[ <field_name> ]
 ```
 
 ## Arguments
@@ -62,29 +66,29 @@ FROM vartab;
 Extract the first element of an ARRAY:
 
 ```scopedb
-FROM vartab SELECT get(a, 0);
+FROM vartab SELECT get(a, 0), a[0];
 ```
 
 ```
-+-----------+
-| get(a, 0) |
-+-----------+
-| 2.71      |
-+-----------+
++-----------+------+
+| get(a, 0) | a[0] |
++-----------+------+
+| 2.71      | 2.71 |
++-----------+------+
 ```
 
 Given the name of a country, extract the name of the capital city of that country from an OBJECT containing country names and capital cities:
 
 ```scopedb
-FROM vartab SELECT get(o, 'Germany');
+FROM vartab SELECT get(o, 'Germany'), o['Germany'];
 ```
 
 ```
-+-------------------+
-| get(o, 'Germany') |
-+-------------------+
-| 'Berlin'          |
-+-------------------+
++-------------------+--------------+
+| get(o, 'Germany') | o['Germany'] |
++-------------------+--------------+
+| "Berlin"          | "Berlin"     |
++-------------------+--------------+
 ```
 
 Extract the temperature from a variant that contains an OBJECT:
@@ -94,9 +98,9 @@ FROM vartab SELECT get(v, 'temperature');
 ```
 
 ```
-+-----------------------+
-| get(v, 'temperature') |
-+-----------------------+
-| 31.5                  |
-+-----------------------+
++-----------------------+------------------+
+| get(v, 'temperature') | v['temperature'] |
++-----------------------+------------------+
+| 31.5                  | 31.5             |
++-----------------------+------------------+
 ```
