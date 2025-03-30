@@ -9,9 +9,15 @@ interface Props {
 
 const { headings } = Astro.props;
 const toc = headings.filter((heading) => heading.depth  >1&&heading.depth<= 3);
+
+const gridClasses = {
+    'grid': true,
+    'grid-cols-10': true,
+    'gap-x-[32px]': true,
+}
 ---
 
-<div class="grid grid-cols-10 gap-x-[32px]">
+<div class:list={gridClasses}>
     <div class="col-span-2">
         <div class="sticky top-48">Sidebar</div>
     </div>
