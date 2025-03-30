@@ -1,17 +1,17 @@
 ---
 import "@/styles/global.css";
 import Logo from "@/assets/logo.svg";
+import NavItems from "./NavItems.astro";
+import {navItems} from "../../constants"
+import NavBarSearch from "../NavBarSearch.astro";
+
 ---
 
 <nav class="flex flex-col gap-6">
     <div class="flex flex-row">
         <a href="/"><Logo height={30} width={120} /></a>
         <div class="grow pl-8 font-semibold">DOCUMENTATION</div>
-        <div>SearchBar</div>
+        <div><NavBarSearch/></div>
     </div>
-    <div class="flex flex-row">
-        <div class="grow pl-2 font-medium">
-            <a href="/reference/overview">Reference</a>
-        </div>
-    </div>
+    <NavItems navItems={navItems}/>
 </nav>
