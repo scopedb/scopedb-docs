@@ -1,0 +1,48 @@
+---
+import Logo from '../../assets/logo.svg';
+import { footerSections } from '../../constants';
+
+const footerClasses = {
+  'w-full bg-zinc-200 py-8 px-4': true,
+}
+
+const containerClasses = {
+  'container mx-auto flex flex-col sm:flex-row items-start gap-8 sm:gap-48': true,
+}
+
+const gridClasses = {
+  'grid grid-cols-2 lg:grid-cols-4 gap-8 flex-1': true,
+}
+
+const logoClasses = {
+  'flex flex-col gap-4 sm:w-[240px]': true,
+}
+---
+
+<footer class:list={footerClasses}>
+  <div class:list={containerClasses}>
+    <div class:list={logoClasses}>
+      <Logo height={30} width={120} />
+      <p class="text-zinc-600 text-sm whitespace-nowrap">
+        © {new Date().getFullYear()} ScopeDB. All rights reserved.
+      </p>
+    </div>
+
+    <div class:list={gridClasses}>
+      {footerSections.map(section => (
+        <div class="flex flex-col gap-4">
+          <h3 class="font-semibold text-zinc-900">{section.title}</h3>
+          <ul class="flex flex-col gap-2">
+            {section.links.map(link => (
+              <li>
+                <a href={link.href} class="text-zinc-600 hover:text-zinc-900 text-sm">
+                  {link.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</footer>

@@ -1,34 +1,28 @@
 ---
 import "@/styles/global.css";
 import type { MarkdownHeading } from "astro";
+import Toc from "./Toc.astro";
 
 interface Props {
     headings: MarkdownHeading[];
 }
 
 const { headings } = Astro.props;
-const visibleHeadings = headings.filter((heading) => heading.depth === 2);
+const toc = headings.filter((heading) => heading.depth  >1&&heading.depth<= 3);
+
+const gridClasses = {
+    'grid': true,
+    'grid-cols-10': true,
+    'gap-x-[32px]': true,
+}
 ---
 
-<div class="grid grid-cols-10 gap-x-[32px]">
+<div class:list={gridClasses}>
     <div class="col-span-2">
         <div class="sticky top-48">Sidebar</div>
     </div>
     <div class="markdown-body col-span-6"><slot /></div>
     <div class="col-span-2">
-        <div class="sticky top-48">
-            {visibleHeadings.length > 0 && <div>On this page</div>}
-            <div>
-                <ul class="pl-4">
-                    {
-                        visibleHeadings.map((heading) => (
-                            <li>
-                                <a href={`#${heading.slug}`}>{heading.text}</a>
-                            </li>
-                        ))
-                    }
-                </ul>
-            </div>
-        </div>
+        {toc.length>0?<Toc toc={toc} />:null}
     </div>
 </div>

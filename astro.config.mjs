@@ -10,11 +10,9 @@ import {
 
 export default defineConfig({
     outDir: './build',
-
     experimental: {
         svg: true,
     },
-
     vite: {
         plugins: [tailwindcss()],
     },
@@ -22,4 +20,15 @@ export default defineConfig({
         remarkPlugins: [remarkDefinitionList],
         remarkRehype: { handlers: defListHastHandlers },
     })],
+    markdown: {
+        shikiConfig: {
+            themes: {
+                dark: 'nord',
+                light: 'min-light',
+            },
+            langs: ['javascript','typescript','html','css','json','python','bash','yaml','sql'],
+            wrap: true,
+            transformers: [],
+        },
+    },
 });

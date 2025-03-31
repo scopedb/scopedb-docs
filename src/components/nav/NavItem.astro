@@ -1,0 +1,22 @@
+---
+import type {
+    NavItemProps,
+} from '../../interface';
+interface Props extends NavItemProps {
+    isActive?: boolean;
+}
+
+const { link, text, isActive = false } = Astro.props;
+---
+
+<a 
+    href={link} 
+    class:list={[
+        'px-4 py-2 rounded-md transition-colors',
+        isActive 
+            ? 'bg-primary-600 text-gray-800 blod' 
+            : 'hover:bg-gray-100 text-gray-400'
+    ]}
+>
+    {text}
+</a>
