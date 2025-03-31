@@ -2,6 +2,7 @@
 import "@/styles/global.css";
 
 import Navbar from "@/components/nav/Navbar.astro";
+import Footer from '@/components/footer/Footer.astro';
 
 interface Props {
     title: string;
@@ -21,13 +22,17 @@ const { title } = Astro.props;
     </head>
     <body>
         <div class="navbarContainer sticky top-0"><Navbar /></div>
-        <div class="mainContainer"><slot /></div>
+        <div class="mainContainer flex-1"><slot /></div>
+        <Footer />
     </body>
 </html>
 
 <style>
     body {
         font-family: sans-serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
     }
 
     .navbarContainer {
@@ -48,5 +53,6 @@ const { title } = Astro.props;
             var(--container-default-padding),
             var(--container-max-padding)
         );
+        flex: 1;
     }
 </style>
