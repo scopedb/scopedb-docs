@@ -1,6 +1,7 @@
 // @ts-check
 import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
+import starlightLinksValidator from 'starlight-links-validator';
 import { sidebar } from './astro.sidebar.ts';
 import { devServerFileWatcher } from './config/integrations/dev-server-file-watcher.ts';
 
@@ -14,6 +15,7 @@ export default defineConfig({
 		starlight({
 			title: 'ScopeDB',
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/scopedb/scopedb-docs' }],
+			plugins: [starlightLinksValidator()],
 			sidebar
 		}),
 	],

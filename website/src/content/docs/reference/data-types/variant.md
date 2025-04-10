@@ -1,9 +1,6 @@
 ---
-sidebar_label: Variant
 title: Variant data type
 ---
-
-# Variant data type
 
 The variant data type can contain a value of any other data type.
 

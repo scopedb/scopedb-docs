@@ -1,5 +1,4 @@
 ---
-sidebar_label: Date and time
 title: Date and time data types
 ---
 

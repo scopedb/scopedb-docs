@@ -1,5 +1,4 @@
 ---
-sidebar_label: Conversion
 title: Data type conversion
 ---
 
