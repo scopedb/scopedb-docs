@@ -14,7 +14,7 @@ In some situations, ScopeDB converts a value to another data type automatically.
 
 Users can explicitly cast a value by using any of the following options:
 
-* The [`CAST`](functions-conversion.md) function.
+* The [`CAST`](/reference/functions/conversion) function.
 * The `::` operator (called the cast operator).
 * The typed literal syntax `typename expression`.
 

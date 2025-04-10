@@ -6,20 +6,20 @@ These functions are used with semi-structured data (variant).
 
 ## List of functions
 
-* [array_append](functions/array_append.md)
-* [array_concat, ||](functions/array_concat.md)
-* [array_construct](functions/array_construct.md)
-* [array_contains](functions/array_contains.md)
-* [array_except](functions/array_except.md)
-* [array_length](functions/array_length.md)
-* [array_slice](functions/array_slice.md)
-* [get](functions/get.md)
-* [object_construct](functions/object_construct.md)
-* [object_keys](functions/object_keys.md)
-* [parse_json](functions/parse_json.md)
-* [to_json](functions/to_json.md)
-* [typeof](functions/typeof.md)
+* [array_append](/reference/functions/variant-data/array_append)
+* [array_concat, ||](/reference/functions/variant-data/array_concat)
+* [array_construct](/reference/functions/variant-data/array_construct)
+* [array_contains](/reference/functions/variant-data/array_contains)
+* [array_except](/reference/functions/variant-data/array_except)
+* [array_length](/reference/functions/variant-data/array_length)
+* [array_slice](/reference/functions/variant-data/array_slice)
+* [get](/reference/functions/variant-data/get)
+* [object_construct](/reference/functions/variant-data/object_construct)
+* [object_keys](/reference/functions/variant-data/object_keys)
+* [parse_json](/reference/functions/variant-data/parse_json)
+* [to_json](/reference/functions/variant-data/to_json)
+* [typeof](/reference/functions/variant-data/typeof)
 
 ## Related content
 
-See also [variant data type](datatypes-variant.md).
+See also [variant data type](/reference/data-types/variant).

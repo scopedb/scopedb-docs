@@ -17,6 +17,6 @@ ScopeDB currently supports the following data types.
 
 For more information about ScopeQL data types, see the following topics:
 
-* [Date and time data types](datatypes-datetime.md)
-* [Variant data type](datatypes-variant.md)
-* [Data type conversion](datatypes-conversion.md)
+* [Date and time data types](/reference/data-types/datetime)
+* [Variant data type](/reference/data-types/variant)
+* [Data type conversion](/reference/data-types/conversion)

@@ -48,7 +48,7 @@ The syntax or variant literal extends [the JSON format](https://datatracker.ietf
 
 ## Using variant values
 
-To convert a value to or from the variant data type, you can explicitly cast using the CAST function or the `::` operator (e.g. `<expr>::variant`). For details, see [data type conversion](datatypes-conversion.md).
+To convert a value to or from the variant data type, you can explicitly cast using the CAST function or the `::` operator (e.g. `<expr>::variant`). For details, see [data type conversion](/reference/data-types/conversion).
 
 To understand the variant data, consider the following example:
 
@@ -139,4 +139,4 @@ Object > Array > Timestamp > Interval > Boolean > Number > String > Null
 
 ## Related content
 
-See also [variant data functions](functions-variant.md).
+See also [variant data functions](/reference/functions/variant-data).

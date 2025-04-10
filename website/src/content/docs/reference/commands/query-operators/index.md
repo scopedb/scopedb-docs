@@ -6,7 +6,7 @@ ScopeDB supports many frequent operators, including arithmetic operators (such a
 
 | Category                                        | Operators                       |
 |-------------------------------------------------|---------------------------------|
-| [Arithmetic operators](operators-arithmetic.md) | `+`, `-`, `*`, `/`, `%`         |
-| [Comparison operators](operators-comparison.md) | `=`, `!=`, `>`, `<`, `>=`, `<=` |
-| [Logical operators](operators-logical.md)       | `AND`, `OR`, `NOT`              |
-| [Set operators](operators-set.md)               | `UNION`                         |
+| [Arithmetic operators](/reference/commands/query-operators/arithmetic) | `+`, `-`, `*`, `/`, `%`         |
+| [Comparison operators](/reference/commands/query-operators/comparison) | `=`, `!=`, `>`, `<`, `>=`, `<=` |
+| [Logical operators](/reference/commands/query-operators/logical)       | `AND`, `OR`, `NOT`              |
+| [Set operators](/reference/commands/query-operators/set)               | `UNION`                         |

@@ -4,7 +4,7 @@ title: Numeric functions
 
 Numeric functions operate on numeric values and perform operations such as rounding and truncation.
 
-* [ceil](functions/ceil.md)
-* [floor](functions/floor.md)
-* [round](functions/round.md)
-* [trunc](functions/trunc.md)
+* [ceil](/reference/functions/numeric/ceil)
+* [floor](/reference/functions/numeric/floor)
+* [round](/reference/functions/numeric/round)
+* [trunc](/reference/functions/numeric/trunc)

@@ -57,11 +57,13 @@ export const sidebar = [
         }]
     }, {
         label: 'Functions',
+        collapsed: true,
         items: [{
             label: 'Overview',
             link: '/reference/functions',
         }, {
             label: 'Aggregate',
+            collapsed: true,
             items: [
                 {
                     label: 'Overview',
@@ -122,6 +124,7 @@ export const sidebar = [
             ]
         }, {
             label: 'Conditional expression',
+            collapsed: true,
             items: [
                 {
                     label: 'Overview',
@@ -138,9 +141,10 @@ export const sidebar = [
             ]
         }, {
             label: 'Conversion',
-            link: '/reference/functions/functions-conversion',
+            link: '/reference/functions/conversion',
         }, {
             label: 'Date and time',
+            collapsed: true,
             items: [
                 {
                     label: 'Overview',
@@ -157,6 +161,7 @@ export const sidebar = [
             ]
         }, {
             label: 'Numeric',
+            collapsed: true,
             items: [
                 {
                     label: 'Overview',
@@ -181,6 +186,7 @@ export const sidebar = [
             ]
         }, {
             label: 'String',
+            collapsed: true,
             items: [
                 {
                     label: 'Overview',
@@ -253,6 +259,7 @@ export const sidebar = [
             ]
         }, {
             label: 'Variant data',
+            collapsed: true,
             items: [
                 {
                     label: 'Overview',

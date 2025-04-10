@@ -4,7 +4,7 @@ title: stddev_samp
 
 Returns the sample standard deviation (square root of sample variance) of non-NULL values.
 
-See also [STDDEV_POP](stddev_pop.md), which returns the population standard deviation (square root of variance).
+See also [STDDEV_POP](/reference/functions/aggregate/stddev_pop), which returns the population standard deviation (square root of variance).
 
 ## Syntax
 

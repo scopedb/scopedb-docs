@@ -235,7 +235,7 @@ WHERE <predicate>
 
 #### `<predicate>`
 
-A boolean expression. The expression can include [logical operators](operators-logical.md), such as `AND`, `OR`, and `NOT`.
+A boolean expression. The expression can include [logical operators](/reference/commands/query-operators/logical), such as `AND`, `OR`, and `NOT`.
 
 ## ORDER BY
 

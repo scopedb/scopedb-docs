@@ -101,4 +101,4 @@ SELECT
 
 ## Related content
 
-See also [data type conversion](datatypes-conversion.md).
+See also [data type conversion](/reference/data-types/conversion).
