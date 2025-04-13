@@ -1,5 +1,8 @@
 {
     "name": "starlight-scopedb",
     "version": "0.0.1",
-    "private": true
+    "private": true,
+    "type": "module",
+    "exports": {
+    }
 }
