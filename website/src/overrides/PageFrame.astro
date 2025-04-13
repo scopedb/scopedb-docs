@@ -1,5 +1,6 @@
 ---
-import MobileMenuToggle from '@astrojs/starlight/components/MobileMenuToggle.astro';
+import MobileMenuToggle from "@astrojs/starlight/components/MobileMenuToggle.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 
 const { hasSidebar } = Astro.locals.starlightRoute;
 ---
@@ -21,8 +22,11 @@ const { hasSidebar } = Astro.locals.starlightRoute;
       </nav>
     )
   }
-  <div class="main-frame">
+  <div class="main-frame min-h-screen">
     <slot />
+  </div>
+  <div class="z-[10]">
+    <SiteFooter />
   </div>
 </div>
 
