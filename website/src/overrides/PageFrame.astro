@@ -7,23 +7,25 @@ const { hasSidebar } = Astro.locals.starlightRoute;
 
 <div class="page sl-flex">
   <header class="header"><slot name="header" /></header>
-  {
-    hasSidebar && (
-      <nav
-        class="sidebar print:hidden"
-        aria-label={Astro.locals.t("sidebarNav.accessibleLabel")}
-      >
-        <MobileMenuToggle />
-        <div id="starlight__sidebar" class="sidebar-pane">
-          <div class="sidebar-content sl-flex">
-            <slot name="sidebar" />
+  <div class="relative flex">
+    {
+      hasSidebar && (
+        <nav
+          class="sidebar print:hidden"
+          aria-label={Astro.locals.t("sidebarNav.accessibleLabel")}
+        >
+          <MobileMenuToggle />
+          <div id="starlight__sidebar" class="h-screen sidebar-pane">
+            <div class="sidebar-content sl-flex">
+              <slot name="sidebar" />
+            </div>
           </div>
-        </div>
-      </nav>
-    )
-  }
-  <div class="main-frame min-h-screen">
-    <slot />
+        </nav>
+      )
+    }
+    <div class="main-frame min-h-screen flex-1">
+      <slot />
+    </div>
   </div>
   <div class="z-[10]">
     <SiteFooter />
@@ -57,7 +59,7 @@ const { hasSidebar } = Astro.locals.starlightRoute;
 
   .sidebar-pane {
     visibility: var(--sl-sidebar-visibility, hidden);
-    position: fixed;
+    position: sticky;
     z-index: var(--sl-z-index-menu);
     inset-block: var(--sl-nav-height) 0;
     inset-inline-start: 0;
@@ -87,7 +89,6 @@ const { hasSidebar } = Astro.locals.starlightRoute;
 
   .main-frame {
     padding-top: calc(var(--sl-nav-height) + var(--sl-mobile-toc-height));
-    padding-inline-start: var(--sl-content-inline-start);
   }
 
   @media (min-width: 50rem) {
