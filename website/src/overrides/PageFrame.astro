@@ -15,7 +15,10 @@ const { hasSidebar } = Astro.locals.starlightRoute;
           aria-label={Astro.locals.t("sidebarNav.accessibleLabel")}
         >
           <MobileMenuToggle />
-          <div id="starlight__sidebar" class="h-screen sidebar-pane">
+          <div
+            id="starlight__sidebar"
+            class="h-screen sidebar-pane pt-[var(--sl-nav-height)]"
+          >
             <div class="sidebar-content sl-flex">
               <slot name="sidebar" />
             </div>
@@ -59,9 +62,9 @@ const { hasSidebar } = Astro.locals.starlightRoute;
 
   .sidebar-pane {
     visibility: var(--sl-sidebar-visibility, hidden);
+    top: 0;
     position: sticky;
     z-index: var(--sl-z-index-menu);
-    inset-block: var(--sl-nav-height) 0;
     inset-inline-start: 0;
     width: 100%;
     background-color: var(--sl-color-black);

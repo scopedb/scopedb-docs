@@ -3,6 +3,7 @@ import config from "virtual:starlight/user-config";
 
 import Search from "@astrojs/starlight/components/Search.astro";
 import SiteTitle from "@astrojs/starlight/components/SiteTitle.astro";
+import Topics from "../components/Topics.astro";
 
 /**
  * Render the `Search` component if Pagefind is enabled or the default search component has been overridden.
@@ -38,13 +39,7 @@ const shouldRenderSearch =
       }
     </div>
   </div>
-  <div class="pt-[12px] flex gap-[32px] text-[14px] font-[500] leading-[30px]">
-    <a>Developer</a>
-    <a class="font-[600]">Reference</a>
-    <a>Releases</a>
-    <a>Tutorials</a>
-    <a>Open Catalog</a>
-  </div>
+  <Topics/>
 </div>
 <style>
   .header {
