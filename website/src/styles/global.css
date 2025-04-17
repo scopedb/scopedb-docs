@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+
+:root {
+  --sl-nav-height: 108px;
+
+  --text-primary: hsla(0, 0%, 0%, 1);
+  --text-secondary: hsla(0, 0%, 0%, 0.6);
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
