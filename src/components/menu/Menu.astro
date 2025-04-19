@@ -65,8 +65,8 @@ const SIDEBAR_CLASSES = {
   group: 'mb-4',
   groupTitle:
     'sidebar-group-title flex items-center justify-between font-medium text-gray-900 mb-2 p-2 cursor-pointer hover:text-blue-500 rounded-md hover:bg-gray-50',
-  groupContent: 'ml-2 space-y-1 transition-all duration-200 ease-in-out',
-  icon: 'w-4 h-4 transition-transform duration-200',
+  groupContent: 'ml-2 space-y-1',
+  icon: 'w-4 h-4',
 } as const;
 
 const {items = menuItems, variant = 'navbar'} = Astro.props;
@@ -74,7 +74,7 @@ const {items = menuItems, variant = 'navbar'} = Astro.props;
 
 {
   variant === 'sidebar' ? (
-    <nav class="space-y-1">
+    <nav class="space-y-1 overflow-y-auto h-full">
       {
         items.map((item, index) => (
           <div class={SIDEBAR_CLASSES.group}>
@@ -98,7 +98,7 @@ const {items = menuItems, variant = 'navbar'} = Astro.props;
                         stroke-linecap="round"
                         stroke-linejoin="round"
                         stroke-width="2"
-                        d="M19 9l-7 7-7-7"
+                        d="M9 5l7 7-7 7"
                       />
                     </svg>
                   </div>
@@ -290,14 +290,15 @@ function initializeSidebar() {
 
     title.addEventListener('click', () => {
       content.classList.toggle('hidden');
-      icon.classList.toggle('rotate-180');
+      icon.classList.toggle('rotate-90');
     });
 
     // 检查是否需要展开当前项
     const hasActiveChild = content.querySelector(`.${SIDEBAR_CLASSES.activeLink}`);
     if (hasActiveChild) {
       content.classList.remove('hidden');
-      icon.classList.add('rotate-180');
+      icon.classList.add('rotate-90');
+      icon.classList.add('translate-z-0');
     }
   });
 
@@ -327,14 +328,14 @@ document.querySelectorAll('.mobile-dropdown button').forEach(button => {
     const icon = button.querySelector('svg');
 
     content?.classList.toggle('hidden');
-    icon?.classList.toggle('rotate-180');
+    icon?.classList.toggle('rotate-90');
   });
 });
 </script>
 
 <style>
 .mobile-dropdown button:focus svg {
-  transform: rotate(180deg);
+  transform: rotate(90deg);
 }
 
 [data-content] {
