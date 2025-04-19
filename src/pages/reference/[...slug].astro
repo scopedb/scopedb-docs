@@ -2,9 +2,9 @@
 import '@/styles/markdown.css';
 
 import Layout from '@/layouts/Layout.astro';
-import {resolvePageTitle} from '@/lib/pagetitle';
+import {resolvePageTitle} from '@/utils/pagetitle';
 import {getCollection} from 'astro:content';
-import Document from '@/components/Document.astro';
+import Document from '../doc/Document.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('reference');

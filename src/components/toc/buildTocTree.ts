@@ -1,5 +1,5 @@
 import type {MarkdownHeading} from 'astro';
-import type {TreeTocNode} from '../interface';
+import type {TreeTocNode} from '../../interface';
 
 export function buildTocTree(flatToc: MarkdownHeading[]) {
   const root = {
