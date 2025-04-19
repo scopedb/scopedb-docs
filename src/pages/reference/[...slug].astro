@@ -1,24 +1,24 @@
 ---
-import "@/styles/markdown.css";
+import '@/styles/markdown.css';
 
-import Layout from "@/layouts/Layout.astro";
-import { resolvePageTitle } from "@/lib/pagetitle";
-import { getCollection } from "astro:content";
-import Document from "@/components/Document.astro";
+import Layout from '@/layouts/Layout.astro';
+import {resolvePageTitle} from '@/utils/pagetitle';
+import {getCollection} from 'astro:content';
+import Document from '../doc/Document.astro';
 
 export async function getStaticPaths() {
-    const posts = await getCollection("reference");
-    return posts.map((entry) => ({
-        params: { slug: entry.slug },
-        props: { entry },
-    }));
+  const posts = await getCollection('reference');
+  return posts.map(entry => ({
+    params: {slug: entry.slug},
+    props: {entry},
+  }));
 }
 
-const { entry } = Astro.props;
-const { Content, headings } = await entry.render();
+const {entry} = Astro.props;
+const {Content, headings} = await entry.render();
 const title = resolvePageTitle(entry.data.title, headings);
 ---
 
 <Layout title={title}>
-    <Document headings={headings}><Content /></Document>
+  <Document headings={headings}><Content /></Document>
 </Layout>

@@ -1,0 +1,38 @@
+---
+import type {
+  NavItemProps,
+} from '../../interface';
+
+interface Props extends NavItemProps {}
+
+const {link, text} = Astro.props;
+const currentPath = Astro.url.pathname;
+
+// 检查路径前缀是否匹配
+function isPathActive(currentPath: string, link: string) {
+  if (currentPath === link) {
+    return true;
+  }
+
+  const currentParts = currentPath.split('/').filter(Boolean);
+  const linkParts = link.split('/').filter(Boolean);
+
+  return currentParts.length > 0
+    && linkParts.length > 0
+    && currentParts[0] === linkParts[0];
+}
+
+const isActive = isPathActive(currentPath, link);
+---
+
+<a
+  href={link}
+  class:list={[
+    'px-4 py-2 rounded-md transition-colors',
+    isActive
+      ? 'bg-primary-600 text-gray-800 blod'
+      : 'hover:bg-gray-100 text-gray-400',
+  ]}
+>
+  {text}
+</a>

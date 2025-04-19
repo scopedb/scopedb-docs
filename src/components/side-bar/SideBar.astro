@@ -1,0 +1,19 @@
+---
+import Menu from '../menu/Menu.astro';
+import {sidebarItems} from '../../config';
+
+const sidebarClasses = {
+  'w-full': true,
+  'max-w-[240px]': true,
+  'p-4': true,
+  'border-r': true,
+  'border-gray-200': true,
+  'min-h-screen': true,
+};
+---
+
+<aside class:list={sidebarClasses}>
+  <div class="sticky top-20">
+    <Menu items={sidebarItems} variant="sidebar" />
+  </div>
+</aside>
