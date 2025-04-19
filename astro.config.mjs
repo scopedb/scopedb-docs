@@ -1,34 +1,34 @@
-import { defineConfig } from 'astro/config';
+import {defineConfig} from 'astro/config';
 
 import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
 
 import {
-    remarkDefinitionList,
-    defListHastHandlers,
-} from "remark-definition-list";
+  remarkDefinitionList,
+  defListHastHandlers,
+} from 'remark-definition-list';
 
 export default defineConfig({
-    outDir: './build',
-    experimental: {
-        svg: true,
+  outDir: './build',
+  experimental: {
+    svg: true,
+  },
+  vite: {
+    plugins: [tailwindcss()],
+  },
+  integrations: [mdx({
+    remarkPlugins: [remarkDefinitionList],
+    remarkRehype: {handlers: defListHastHandlers},
+  })],
+  markdown: {
+    shikiConfig: {
+      themes: {
+        dark: 'nord',
+        light: 'min-light',
+      },
+      langs: ['javascript', 'typescript', 'html', 'css', 'json', 'python', 'bash', 'yaml', 'sql'],
+      wrap: true,
+      transformers: [],
     },
-    vite: {
-        plugins: [tailwindcss()],
-    },
-    integrations: [mdx({
-        remarkPlugins: [remarkDefinitionList],
-        remarkRehype: { handlers: defListHastHandlers },
-    })],
-    markdown: {
-        shikiConfig: {
-            themes: {
-                dark: 'nord',
-                light: 'min-light',
-            },
-            langs: ['javascript','typescript','html','css','json','python','bash','yaml','sql'],
-            wrap: true,
-            transformers: [],
-        },
-    },
+  },
 });

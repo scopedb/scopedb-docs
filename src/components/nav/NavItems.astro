@@ -1,21 +1,29 @@
 ---
 import type {
-    NavItemsProps,
-    NavItemProps,
+  NavItemsProps,
+  NavItemProps,
 } from '../../interface';
 import NavItem from './NavItem.astro';
 interface Props {
-    navItems: NavItemsProps;
+  navItems: NavItemsProps;
 }
 const {navItems} = Astro.props;
 const currentPath = Astro.url.pathname;
+
+const isActive = (link: string) => {
+  if (link === '/') {
+    return currentPath === link;
+  }
+
+  // 获取当前路径和链接的第一段
+  const currentSegment = currentPath.split('/')[1];
+  const linkSegment = link.split('/')[1];
+
+  // 比较第一段是否相同
+  return currentSegment === linkSegment;
+};
 ---
 
 <nav class="flex flex-row gap-2">
-    {
-        navItems.map((item: NavItemProps) => (
-            <NavItem {...item} isActive={currentPath === item.link}/>
-        ))
-    }
+  {navItems.map((item: NavItemProps) => <NavItem {...item} isActive={isActive(item.link)} />)}
 </nav>
-

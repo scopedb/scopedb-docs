@@ -1,28 +1,29 @@
 ---
-import "@/styles/global.css";
-import type { MarkdownHeading } from "astro";
-import Toc from "./Toc.astro";
+import '@/styles/global.css';
+import type {MarkdownHeading} from 'astro';
+import Toc from './Toc.astro';
+import SideBar from './SideBar.astro';
 
 interface Props {
-    headings: MarkdownHeading[];
+  headings: MarkdownHeading[];
 }
 
-const { headings } = Astro.props;
-const toc = headings.filter((heading) => heading.depth  >1&&heading.depth<= 3);
+const {headings} = Astro.props;
+const toc = headings.filter(heading => heading.depth > 1 && heading.depth <= 3);
 
 const gridClasses = {
-    'grid': true,
-    'grid-cols-10': true,
-    'gap-x-[32px]': true,
-}
+  grid: true,
+  'grid-cols-10': true,
+  'gap-x-[32px]': true,
+};
 ---
 
 <div class:list={gridClasses}>
-    <div class="col-span-2">
-        <div class="sticky top-48">Sidebar</div>
-    </div>
-    <div class="markdown-body col-span-6"><slot /></div>
-    <div class="col-span-2">
-        {toc.length>0?<Toc toc={toc} />:null}
-    </div>
+  <div class="col-span-2">
+    <div class="sticky top-48"><SideBar /></div>
+  </div>
+  <div class="markdown-body col-span-6"><slot /></div>
+  <div class="col-span-2">
+    {toc.length > 0 ? <Toc toc={toc} /> : null}
+  </div>
 </div>

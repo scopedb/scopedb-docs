@@ -1,12 +1,12 @@
-import type {MarkdownHeading} from "astro";
+import type {MarkdownHeading} from 'astro';
 
 export interface TreeTocNode extends MarkdownHeading {
-    children: TreeTocNode[];
+  children: TreeTocNode[];
 }
 
-export interface NavItemProps{
-    text: string;
-    link: string;
+export interface NavItemProps {
+  text: string;
+  link: string;
 }
 
 export type NavItemsProps = NavItemProps[];

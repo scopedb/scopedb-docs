@@ -1,36 +1,35 @@
 ---
-import Layout from "@/layouts/Layout.astro";
+import Layout from '@/layouts/Layout.astro';
 ---
 
 <html lang="zh-CN">
-    <head>
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width" />
-        <title>Astro</title>
-      </head>
-    <body>
-        <Layout title="Welcome to Astro">
-            <h1 class="text-4xl text-center my-8">ScopeDB Documents</h1>
-            <p class="text-center">
-                Streamline your data management with ScopeDB's comprehensive
-                documentation.
-            </p>
-        </Layout>
-    </body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Astro</title>
+  </head>
+  <body>
+    <Layout title="Welcome to Astro">
+      <h1 class="text-4xl text-center my-8">ScopeDB Documents</h1>
+      <p class="text-center">
+        Streamline your data management with ScopeDB's comprehensive documentation.
+      </p>
+    </Layout>
+  </body>
 </html>
 
 <script>
-    const lis = document.querySelectorAll('.toc-li');
-	lis.forEach((li) => {
-		li.addEventListener(
-			'click',
-			(e) => {
-				const liDom = e.currentTarget as HTMLElement;
-				const id = liDom.id;
-				const dom = document.querySelector(`#${id}`);
-				dom?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-			},
-			true
-		);
-	});
+const lis = document.querySelectorAll('.toc-li');
+  lis.forEach(li => {
+    li.addEventListener(
+      'click',
+      e => {
+        const liDom = e.currentTarget as HTMLElement;
+        const id = liDom.id;
+        const dom = document.querySelector(`#${id}`);
+        dom?.scrollIntoView({behavior: 'smooth', block: 'center'});
+      },
+      true
+    );
+  });
 </script>
