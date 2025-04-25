@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@theme {
+  --breakpoint-md: 50rem;
+}
 
 :root {
   --sl-nav-height: 108px;

@@ -1,6 +1,5 @@
 ---
 import MobileMenuToggle from "@astrojs/starlight/components/MobileMenuToggle.astro";
-import MobileSiteFooter from "../components/MobileSiteFooter.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 const { hasSidebar } = Astro.locals.starlightRoute;
 ---
@@ -83,7 +82,7 @@ const { hasSidebar } = Astro.locals.starlightRoute;
     gap: 1rem;
   }
 
-  @media (min-width: 48rem) {
+  @media (min-width: 50rem) {
     .sidebar-content::after {
       content: "";
       padding-bottom: 1px;
@@ -94,7 +93,7 @@ const { hasSidebar } = Astro.locals.starlightRoute;
     padding-top: calc(var(--sl-nav-height));
   }
 
-  @media (min-width: 48rem) {
+  @media (min-width: 50rem) {
     :global([data-has-sidebar]) .header {
       padding-inline-end: var(--sl-nav-pad-x);
     }
