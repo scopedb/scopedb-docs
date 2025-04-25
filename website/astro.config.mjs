@@ -51,7 +51,8 @@ export default defineConfig({
       components: {
         'Header': './src/overrides/Header.astro',
         'PageFrame': './src/overrides/PageFrame.astro',
-        'Sidebar': './src/overrides/Sidebar.astro'
+        'Sidebar': './src/overrides/Sidebar.astro',
+        'PageSidebar': './src/overrides/PageSidebar.astro'
       }
     }),
   ],
