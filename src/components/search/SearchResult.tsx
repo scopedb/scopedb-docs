@@ -52,11 +52,14 @@ export const SearchResults = memo((props: Props) => {
     <div>
       {results.length > 0
         ? (
-          <ul className="search-results">
+          <ul className="search-results" role='list-box'>
             {results.map((result, index) => (
-              <li key={index} className="search-result-item">
+              <li key={index} role='option' className="search-result-item">
                 <a href={result.url} className="search-result-link">
-                  {result.title}
+                  <div className='search-result-item-title'>{result.title}</div>
+                  <div className='search-result-item-content'>
+                    {highlightContent(result.content, query)}
+                  </div>
                 </a>
               </li>
             ))}
@@ -68,3 +71,21 @@ export const SearchResults = memo((props: Props) => {
 });
 
 SearchResults.displayName = 'SearchResults';
+
+function highlightContent(content?: string, query?: string) {
+  if (!content || !query) return null;
+  const idx = content.toLowerCase().indexOf(query.toLowerCase());
+  if (idx === -1) return content;
+  const start = Math.max(0, idx - 30);
+  const end = Math.min(content.length, idx + query.length + 30);
+  const before = content.slice(start, idx);
+  const match = content.slice(idx, idx + query.length);
+  const after = content.slice(idx + query.length, end);
+  return <>
+    {start > 0 && '...'}
+    {before}
+    <span className='highlight'>{match}</span>
+    {after}
+    {end < content.length && '...'}
+  </>;
+}
