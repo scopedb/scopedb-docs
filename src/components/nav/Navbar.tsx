@@ -16,8 +16,7 @@ export function Navbar() {
     <nav className="flex flex-col gap-6">
       <div className="flex flex-row">
         <a href="/">
-          {/* TODO: Add logo here */}
-          {/* <img src="" alt="Logo" className="w-8 h-8" /> */}
+          Scope DB
         </a>
         <div className="grow pl-8 font-semibold">DOCUMENTATION</div>
         <div className="size-1/6">
