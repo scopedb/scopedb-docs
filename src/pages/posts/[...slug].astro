@@ -1,0 +1,24 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import {resolvePageTitle} from '@/utils/pagetitle';
+import {getCollection} from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blogs');
+  return posts.map(entry => ({
+    params: {slug: entry.slug},
+    props: {entry},
+  }));
+}
+
+const {entry} = Astro.props;
+const {Content, headings} = await entry.render();
+const title = resolvePageTitle(entry.data.title, headings);
+---
+
+<Layout title={title}>
+  <div class="markdown-body">
+    <h1>{entry.data.title}</h1>
+    <Content />
+  </div>
+</Layout>

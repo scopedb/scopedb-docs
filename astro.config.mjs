@@ -2,6 +2,7 @@ import {defineConfig} from 'astro/config';
 
 import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
+import react from '@astrojs/react';
 
 import {
   remarkDefinitionList,
@@ -16,10 +17,17 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  integrations: [mdx({
-    remarkPlugins: [remarkDefinitionList],
-    remarkRehype: {handlers: defListHastHandlers},
-  })],
+  integrations: [
+    react({
+      include: ['**/react/*'],
+      experimentalDisableStreaming: true,
+      experimentalReactChildren: true,
+    }),
+    mdx({
+      remarkPlugins: [remarkDefinitionList],
+      remarkRehype: {handlers: defListHastHandlers},
+    }),
+  ],
   markdown: {
     shikiConfig: {
       themes: {

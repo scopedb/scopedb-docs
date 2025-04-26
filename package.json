@@ -12,12 +12,18 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.2",
+    "@astrojs/react": "^4.2.5",
     "@tailwindcss/vite": "^4.0.17",
+    "@types/react-dom": "^19.1.2",
     "astro": "^5.5.5",
+    "minisearch": "^7.1.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "tailwindcss": "^4.0.17"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
+    "@types/node": "^22.15.2",
     "@types/react": "^19.0.12",
     "dprint": "^0.49.1",
     "remark-definition-list": "^2.0.0",

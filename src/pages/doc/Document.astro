@@ -9,7 +9,7 @@ interface Props {
 }
 
 const {headings} = Astro.props;
-const toc = headings.filter(heading => heading.depth > 1 && heading.depth <= 3);
+const toc = (headings ?? []).filter(heading => heading.depth > 1 && heading.depth <= 3);
 
 const gridClasses = {
   grid: true,
@@ -22,7 +22,11 @@ const gridClasses = {
   <div class="col-span-2">
     <SideBar />
   </div>
-  <div class="markdown-body col-span-6"><slot /></div>
+  <div class="col-span-6">
+    <div class="markdown-body">
+      <slot />
+    </div>
+  </div>
   <div class="col-span-2">
     {toc.length > 0 ? <Toc toc={toc} /> : null}
   </div>
