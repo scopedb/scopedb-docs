@@ -4,13 +4,18 @@ import MiniSearch from 'minisearch';
 
 interface Props {
   query: string;
+  onClose: () => void;
+  selectedIndex: number;
+  disableMouseOver: boolean;
+  setSelectedIndex: React.Dispatch<React.SetStateAction<number>>;
+  onResultsCountChange?: React.Dispatch<React.SetStateAction<number>>;
+  onMouseMove?: (e: React.MouseEvent<HTMLUListElement>) => void;
 }
 
 export const SearchResults = memo((props: Props) => {
-  const {query} = props;
+  const {query, selectedIndex, setSelectedIndex, disableMouseOver, onMouseMove} = props;
   const [results, setResults] = useState<SearchResult[]>([]);
   const [miniSearch, setMiniSearch] = useState<MiniSearch<SearchResult> | null>(null);
-
   useEffect(() => {
     fetch('/api/search-index.json')
       .then(res => res.json())
@@ -32,6 +37,7 @@ export const SearchResults = memo((props: Props) => {
   useEffect(() => {
     if (!miniSearch || !query) {
       setResults([]);
+      props.onResultsCountChange?.(0);
       return;
     }
     const res = miniSearch.search(query).map(r => ({
@@ -42,20 +48,31 @@ export const SearchResults = memo((props: Props) => {
       collection: r.collection,
     }));
     setResults(res);
+    props.onResultsCountChange?.(res.length);
   }, [miniSearch, query]);
 
   if (query === '') {
     return null;
   }
-
   return (
     <div>
       {results.length > 0
         ? (
-          <ul className="search-results" role="list-box">
+          <ul className="search-results" role="list-box" onMouseMove={onMouseMove}>
             {results.map((result, index) => (
-              <li key={index} role="option" className="search-result search-result-item">
-                <a href={result.url} className="search-result-link">
+              <li
+                aria-selected={selectedIndex === index ? 'true' : 'false'}
+                key={index}
+                role="option"
+                className={`search-result search-result-item ${selectedIndex === index ? 'selected' : ''}`}
+              >
+                <a
+                  href={result.url}
+                  className="search-result-link"
+                  onMouseEnter={() => !disableMouseOver && setSelectedIndex(index)}
+                  onFocusCapture={() => setSelectedIndex(index)}
+                  data-index={index}
+                >
                   <div className="search-result-item-title">{result.title}</div>
                   <div className="search-result-item-content">
                     {highlightContent(result.content, query)}

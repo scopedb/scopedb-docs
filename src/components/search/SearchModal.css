@@ -11,8 +11,8 @@
   align-items: center;
 }
 
-.search-mask{
-  position:absolute;
+.search-mask {
+  position: absolute;
   width: 100%;
   height: 100%;
   inset: 0;
@@ -21,7 +21,7 @@
   backdrop-filter: blur(5px);
 }
 
-.search-form{
+.search-form {
   position: relative;
   padding-top: 20vh;
 }
@@ -71,7 +71,7 @@
   border-radius: 12px;
 }
 
-.search-result-item:hover {
+.selected {
   background: #f0f0f0;
 }
 
