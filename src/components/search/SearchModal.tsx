@@ -11,12 +11,15 @@ function SearchBox(props: Props) {
   const [query, setQuery] = useState<string>('');
   const deferredQuery = useDeferredValue(query);
   const isStale = query !== deferredQuery;
+  function handleClose(){
+    props.onClose();
+  }
   function handleSearch(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
   }
   function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Escape') {
-      props.onClose();
+      handleClose();
     }
   }
   function handleQueryChange(e: ChangeEvent<HTMLInputElement>) {
@@ -24,7 +27,8 @@ function SearchBox(props: Props) {
   }
   return (
     <div className="search-container">
-      <form onSubmit={handleSearch}>
+      <div className='search-mask' onClick={handleClose}/>
+      <form onSubmit={handleSearch} className="search-form">
         <input
           autoFocus
           id="search-input"
