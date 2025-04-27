@@ -35,6 +35,7 @@ function SearchBox(props: Props) {
           autoComplete="off"
           autoCorrect="off"
           spellCheck="false"
+          maxLength={64}
           onKeyDown={handleKeyDown}
           value={query}
           onChange={handleQueryChange}
