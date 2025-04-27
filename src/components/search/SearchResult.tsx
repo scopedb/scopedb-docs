@@ -1,4 +1,4 @@
-import type {SearchResult} from '../../../types/search';
+import type {SearchResult} from '@/types/search';
 import {useEffect, useState, memo} from 'react';
 import MiniSearch from 'minisearch';
 

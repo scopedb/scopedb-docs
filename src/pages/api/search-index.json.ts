@@ -1,5 +1,5 @@
 import {getCollection} from 'astro:content';
-import type {SearchResult} from '../../../types/search';
+import type {SearchResult} from '@/types/search';
 
 export async function GET() {
   const referenceEntries = await getCollection('reference');
