@@ -3,6 +3,10 @@ import MobileMenuToggle from "@astrojs/starlight/components/MobileMenuToggle.ast
 import SiteFooter from "../components/SiteFooter.astro";
 const { hasSidebar } = Astro.locals.starlightRoute;
 ---
+<!-- stick in the light theme -->
+<script is:inline>
+  document.documentElement.dataset.theme = "light";
+</script>
 
 <div class="page sl-flex">
   <header class="header"><slot name="header" /></header>
