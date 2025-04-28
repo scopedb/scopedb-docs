@@ -84,7 +84,7 @@ const basics = [
         <div class="card-list">
           {
             basics.map(item => (
-              <a class="card" href={item.link}>
+              <a class="card basics-card" href={item.link}>
                 <div class="basics-title-inner">{item.title}</div>
                 <div class="basics-desc">{item.description}</div>
               </a>
@@ -216,17 +216,8 @@ lis.forEach(li => {
 }
 .basics-card {
   background: #f5f5f5;
-  border-radius: 16px;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  text-decoration: none;
-  transition: box-shadow 0.2s;
 }
-.basics-card:hover {
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.06);
-}
+
 .basics-title-inner {
   font-weight: bold;
   font-size: 1.125rem;
