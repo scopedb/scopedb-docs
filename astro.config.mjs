@@ -1,5 +1,5 @@
 import {defineConfig} from 'astro/config';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from "@tailwindcss/vite";
 import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
 
@@ -13,8 +13,10 @@ export default defineConfig({
   experimental: {
     svg: true,
   },
+  vite: {
+    plugins: [tailwindcss()],
+  },
   integrations: [
-    tailwind(),
     react({
       include: ['**/react/*'],
       experimentalDisableStreaming: true,
