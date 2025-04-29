@@ -10,6 +10,9 @@ import {
 
 export default defineConfig({
   outDir: './build',
+  alias:{
+    '@': './src',
+  },
   experimental: {
     svg: true,
   },

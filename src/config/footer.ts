@@ -22,7 +22,7 @@ export const footerSections: FooterSection[] = [
     title: 'Company',
     links: [
       {text: 'About', href: '/about'},
-      {text: 'Blog', href: '/careers'},
+      {text: 'Blog', href: '/blog'},
       {text: 'Terms of Service', href: '/service'},
       {text: 'Privacy Policy', href: '/privacy'},
     ],
