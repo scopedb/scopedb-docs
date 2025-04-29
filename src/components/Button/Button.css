@@ -1,0 +1,68 @@
+.scopedb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  outline: none;
+  user-select: none;
+  font-family: inherit;
+}
+.scopedb-btn .btn-icon {
+  display: flex;
+  margin-right: 8px;
+}
+.scopedb-btn .btn-content {
+  display: flex;
+  align-items: center;
+}
+.scopedb-btn.btn-default {
+  background: #fff;
+  color: #222;
+  border: 1px solid #e0e0e0;
+}
+.scopedb-btn.btn-tertiary {
+  background: #f5f6fa;
+  color: #222;
+  border: 1px solid #ececec;
+}
+.scopedb-btn.btn-primary {
+  background: #0879e0;
+  color: #fff;
+  border: 1px solid #0879e0;
+}
+.scopedb-btn.btn-info {
+  background: var(--font-brand, #0879e0);
+  color: #fff;
+  border: none;
+}
+.scopedb-btn.btn-info:hover {
+  background: #2396ff;
+}
+.scopedb-btn.btn-success {
+  background: #34c759;
+  color: #fff;
+  border: 1px solid #34c759;
+}
+.scopedb-btn.btn-warning {
+  background: #ffd600;
+  color: #222;
+  border: 1px solid #ffd600;
+}
+.scopedb-btn.btn-error {
+  background: #ff4d4f;
+  color: #fff;
+  border: 1px solid #ff4d4f;
+}
+.scopedb-btn.btn-disabled,
+.scopedb-btn:disabled {
+  background: #f1f1f1;
+  color: #bdbdbd;
+  border: 1px solid #e0e0e0;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
