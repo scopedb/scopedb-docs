@@ -18,7 +18,9 @@ function SearchBox(props: Props) {
   const isStale = query !== deferredQuery;
 
   function handleEnterKeyDown() {
-    if (selectedIndex < 0) return;
+    if (selectedIndex < 0) {
+      return;
+    }
 
     const resultsList = document.querySelector('ul.search-results');
     if (!resultsList) {
@@ -39,7 +41,8 @@ function SearchBox(props: Props) {
     if (url) {
       window.location.href = url;
       handleClose();
-    } else {
+    }
+    else {
       console.error('SearchModal: Could not find href on selected item link.');
     }
   }

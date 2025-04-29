@@ -30,7 +30,7 @@ export const footerSections: FooterSection[] = [
   {
     title: 'Connect',
     links: [
-      {text: 'Contact us', href: '/privacy'},
+      {text: 'Contact us', href: '/contact'},
       {text: 'Github', href: '/github'},
       {text: 'Discord', href: '/discord'},
     ],

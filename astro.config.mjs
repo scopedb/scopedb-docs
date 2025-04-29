@@ -10,7 +10,7 @@ import {
 
 export default defineConfig({
   outDir: './build',
-  alias:{
+  alias: {
     '@': './src',
   },
   experimental: {
