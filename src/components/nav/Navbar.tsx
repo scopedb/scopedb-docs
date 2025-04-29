@@ -1,8 +1,8 @@
 import '@/styles/global.css';
-import { NavItems } from './NavItems';
-import { SearchButton } from '../search/SearchButton';
-import { SearchModal } from '../search/SearchModal';
-import { useState } from 'react';
+import {NavItems} from './NavItems';
+import {SearchButton} from '../search/SearchButton';
+import {SearchModal} from '../search/SearchModal';
+import {useState} from 'react';
 import './nav.css';
 
 interface NavItem {
@@ -15,23 +15,23 @@ interface NavbarProps {
 }
 
 const docOrHomeNavItems: NavItem[] = [
-  { text: 'Developer', link: '/developer' },
-  { text: 'Reference', link: '/reference' },
-  { text: 'Releases', link: '/releases' },
-  { text: 'Tutorials', link: '/tutorials' },
-  { text: 'Developer', link: '/developer-duplicate?' },
-  { text: 'Open Catalog', link: '/open-catalog' },
+  {text: 'Developer', link: '/developer'},
+  {text: 'Reference', link: '/reference'},
+  {text: 'Releases', link: '/releases'},
+  {text: 'Tutorials', link: '/tutorials'},
+  {text: 'Developer', link: '/developer-duplicate?'},
+  {text: 'Open Catalog', link: '/open-catalog'},
 ];
 
 const otherNavItems: NavItem[] = [
-  { text: 'Products', link: '/products' },
-  { text: 'Reference', link: '/reference' },
-  { text: 'Blog', link: '/blog' },
-  { text: 'Contact', link: '/contact' },
-  { text: 'Changelog', link: '/changelog' },
+  {text: 'Products', link: '/products'},
+  {text: 'Reference', link: '/reference'},
+  {text: 'Blog', link: '/blog'},
+  {text: 'Contact', link: '/contact'},
+  {text: 'Changelog', link: '/changelog'},
 ];
-
-export function Navbar({ pathname }: NavbarProps) {
+// TODO: 需要给移动端实现一套布局 然后响应式显示
+export function Navbar({pathname}: NavbarProps) {
   const [showSearchBox, setShowSearchBox] = useState(false);
 
   function toggleSearchBox() {

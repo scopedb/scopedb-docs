@@ -1,19 +1,20 @@
-import type { NavItemProps } from '../../interface';
+import type {NavItemProps} from '../../interface';
 import './nav.css';
 
 interface Props extends NavItemProps {}
 
 export function NavItem(props: Props) {
-  const { link, text } = props;
+  const {link, text} = props;
 
   let currentPath = '';
   if (typeof window !== 'undefined') {
-      currentPath = window.location.pathname;
+    currentPath = window.location.pathname;
   }
 
-  // Function to check if the path is active
   function isPathActive(current: string, target: string): boolean {
-    if (!current || !target) return false;
+    if (!current || !target) {
+      return false;
+    }
     if (target === '/') {
       return current === '/';
     }
@@ -22,7 +23,6 @@ export function NavItem(props: Props) {
 
   const isActive = isPathActive(currentPath, link);
 
-  
   const itemClasses = `nav-item${isActive ? ' nav-item--active' : ''}`;
 
   return (
