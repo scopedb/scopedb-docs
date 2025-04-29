@@ -17,7 +17,7 @@ export async function GET() {
       id: `blogs-${entry.id}`,
       title: entry.data.title,
       content: entry.body,
-      url: `/posts/${entry.slug}`,
+      url: `/blog/${entry.slug}`,
       collection: 'blogs',
     })),
   ];

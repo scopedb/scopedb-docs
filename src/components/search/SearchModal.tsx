@@ -16,6 +16,34 @@ function SearchBox(props: Props) {
   const [query, setQuery] = useState<string>('');
   const deferredQuery = useDeferredValue(query);
   const isStale = query !== deferredQuery;
+
+  function handleEnterKeyDown() {
+    if (selectedIndex < 0) return;
+
+    const resultsList = document.querySelector('ul.search-results');
+    if (!resultsList) {
+      console.error('SearchModal: Could not find results list (ul.search-results)');
+      return;
+    }
+
+    const listItems = resultsList.querySelectorAll('li.search-result-item');
+    if (selectedIndex >= listItems.length) {
+      console.error(`SearchModal: selectedIndex ${selectedIndex} out of bounds (${listItems.length} items)`);
+      return;
+    }
+
+    const selectedItemElement = listItems[selectedIndex];
+    const linkElement = selectedItemElement?.querySelector('a.search-result-link');
+    const url = linkElement?.getAttribute('href');
+
+    if (url) {
+      window.location.href = url;
+      handleClose();
+    } else {
+      console.error('SearchModal: Could not find href on selected item link.');
+    }
+  }
+
   function handleClose() {
     props.onClose();
     setDisableMouseOver(false);
@@ -55,15 +83,7 @@ function SearchBox(props: Props) {
     }
     if (e.key === 'Enter') {
       e.preventDefault();
-      console.log('Enter key pressed');
-      console.log(document.querySelector('.search-result-link'));
-      const el = document.querySelector('.search-result-link');
-      if (el) {
-        const url = el.getAttribute('href');
-        if (url) {
-          window.location.href = url;
-        }
-      }
+      handleEnterKeyDown();
     }
   }
   function handleMouseOver(e: MouseEvent<HTMLUListElement>) {
