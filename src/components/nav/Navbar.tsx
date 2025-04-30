@@ -4,6 +4,8 @@ import {SearchButton} from '../search/SearchButton';
 import {SearchModal} from '../search/SearchModal';
 import {useState} from 'react';
 import './nav.css';
+import {useMedia} from '@/hooks/media';
+import {CloseIcon, MenuIcon} from '@/icons';
 
 interface NavItem {
   text: string;
@@ -30,9 +32,16 @@ const otherNavItems: NavItem[] = [
   {text: 'Contact', link: '/contact'},
   {text: 'Changelog', link: '/changelog'},
 ];
-// TODO: 需要给移动端实现一套布局 然后响应式显示
+
 export function Navbar({pathname}: NavbarProps) {
   const [showSearchBox, setShowSearchBox] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const isMobile = useMedia('(max-width: 768px)');
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(prev => !prev);
+  };
 
   function toggleSearchBox() {
     setShowSearchBox(prev => !prev);
@@ -44,38 +53,43 @@ export function Navbar({pathname}: NavbarProps) {
 
   return (
     <nav className={`nav-container ${layoutClass}`}>
-      {isDocsOrHome && (
-        <>
-          <div className="nav-row">
-            <a href="/" className="nav-logo">
-              ScopeDB
-            </a>
-            <div className="nav-title">
-              DOCUMENTATION
-            </div>
-            <a href="/book-demo" className="nav-book-demo">
-              Book a demo
-            </a>
-            <div className="nav-search-container">
-              <SearchButton onClick={toggleSearchBox} />
-            </div>
-            {showSearchBox && <SearchModal onClose={toggleSearchBox} />}
-          </div>
-          <div className="w-full">
-            <NavItems navItems={currentNavItems} />
-          </div>
-        </>
-      )}
-      {!isDocsOrHome && (
-        <>
-          <a href="/" className="nav-logo">
-            ScopeDB
-          </a>
-          <div className="nav-items-wrapper--inline">
-            <NavItems navItems={currentNavItems} />
-          </div>
-        </>
-      )}
+      <div
+        className="nav-row"
+        style={{
+          width: isDocsOrHome ? '100%' : 'auto',
+        }}
+      >
+        <a href="/" className="nav-logo">
+          ScopeDB
+        </a>
+        <div
+          className="nav-actions"
+          style={{
+            justifyContent: isDocsOrHome && isMobile ? 'space-between' : 'flex-end',
+          }}
+        >
+          {!isMobile && isDocsOrHome ? <a href="/book-demo">book a demo</a> : null}
+          {isDocsOrHome ? <SearchButton onClick={toggleSearchBox} isMobile={isMobile} /> : null}
+          <button
+            className="nav-menu-toggle"
+            onClick={toggleMobileMenu}
+            aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Toggle navigation menu'}
+          >
+            {isMobileMenuOpen
+              ? <MenuIcon width={20} height={20} />
+              : <CloseIcon width={20} height={20} />}
+          </button>
+        </div>
+      </div>
+      <div
+        className={`nav-items-wrapper${isMobileMenuOpen ? ' is-mobile-open' : ''}`}
+        style={{
+          justifyContent: isDocsOrHome ? 'flex-start' : 'center',
+        }}
+      >
+        <NavItems navItems={currentNavItems} onItemClick={() => setIsMobileMenuOpen(false)} />
+      </div>
+      {showSearchBox && <SearchModal onClose={toggleSearchBox} />}
     </nav>
   );
 }

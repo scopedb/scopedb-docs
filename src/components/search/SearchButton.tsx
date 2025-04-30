@@ -1,17 +1,24 @@
 import {SearchIcon} from '@/icons';
+import './SearchButton.css';
+import {Button} from '../Button';
 
 interface Props {
   onClick: () => void;
+  isMobile?: boolean;
 }
 
-export function SearchButton({onClick}: Props) {
+export function SearchButton({onClick, isMobile}: Props) {
   return (
-    <button
-      className="flex items-center gap-x-1 w-full h-8 px-4 text-sm border-1 border-solid border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-      onClick={onClick}
-    >
-      <SearchIcon className="h-5 w-5 text-gray-500" />
-      <span className="text-gray-400 text-nowrap">Search Docs</span>
-    </button>
+    isMobile
+      ? <SearchIcon width={17.5} height={17.5} />
+      : (
+        <Button
+          className="search-btn"
+          onClick={onClick}
+          icon={<SearchIcon width={17.5} height={17.5} />}
+        >
+          Search Docs
+        </Button>
+      )
   );
 }

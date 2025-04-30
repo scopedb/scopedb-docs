@@ -1,11 +1,11 @@
 .nav-container {
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .nav-layout--stacked {
   flex-direction: column;
-  gap: 1.5rem;
 }
 
 .nav-layout--inline {
@@ -16,16 +16,27 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 100%;
+  justify-content: space-between;
+  flex: 1;
 }
 
 .nav-logo {
-  font-weight: 700;
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-  margin-right: 1rem;
-  text-decoration: none;
-  color: inherit;
+  flex: 0 0 auto;
+  text-align: left;
+}
+
+.nav-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.nav-menu-toggle {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
 }
 
 .nav-title {
@@ -55,10 +66,26 @@
   width: 12rem;
 }
 
-.nav-items-wrapper--inline {
+.nav-menu-toggle,
+.nav-menu-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: none;
+}
+
+.nav-menu-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1001;
+}
+
+.nav-items-wrapper {
   display: flex;
   justify-content: center;
   flex-grow: 1;
+  width: 100%;
 }
 
 .nav-items-container {
@@ -89,4 +116,54 @@
   font-weight: 600;
   color: var(--font-primary, #000);
   background-color: transparent;
+}
+
+@media screen and (max-width: 768px) {
+  .nav-menu-open {
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+
+  .nav-menu-toggle {
+    display: block;
+  }
+
+  .nav-items-wrapper {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 0;
+    top: 60px;
+    background: #fff;
+    transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    z-index: 1000;
+  }
+
+  .nav-items-wrapper.is-mobile-open {
+    height: calc(100vh - 60px);
+  }
+
+  .nav-items-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    gap: 1rem;
+  }
+
+  .nav-title {
+    display: none;
+  }
+
+  .nav-book-demo {
+    display: none;
+  }
+
+  .nav-search-container {
+    width: auto;
+  }
 }
