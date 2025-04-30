@@ -1,9 +1,9 @@
 ---
-import { flattenSidebar } from '@/vendor/starlight/utils/navigation';
-import type { SidebarEntry } from '@/vendor/starlight/utils/routing/types';
-import Icon from '@/vendor/starlight/user-components/Icon.astro';
-import Badge from '@/vendor/starlight/user-components/Badge.astro';
-import SidebarRestorePoint from '@/vendor/starlight/components/SidebarRestorePoint.astro';
+import { flattenSidebar } from "@/vendor/starlight/utils/navigation";
+import type { SidebarEntry } from "@/vendor/starlight/utils/routing/types";
+import Icon from "@/vendor/starlight/user-components/Icon.astro";
+import Badge from "@/vendor/starlight/user-components/Badge.astro";
+import SidebarRestorePoint from "@/vendor/starlight/components/SidebarRestorePoint.astro";
 
 interface Props {
   sublist: SidebarEntry[];
@@ -75,14 +75,12 @@ const { sublist, nested } = Astro.props;
 
   ul ul li {
     margin-inline-start: var(--sl-sidebar-item-padding-inline);
-    border-inline-start: 1px solid var(--sl-color-hairline-light);
+    /* border-inline-start: 1px solid var(--sl-color-hairline-light); */
     padding-inline-start: var(--sl-sidebar-item-padding-inline);
   }
 
   .large {
-    font-size: var(--sl-text-lg);
-    font-weight: 600;
-    color: var(--sl-color-white);
+    font-size: 14px;
   }
 
   .top-level > li + li {
@@ -131,9 +129,8 @@ const { sublist, nested } = Astro.props;
   [aria-current="page"],
   [aria-current="page"]:hover,
   [aria-current="page"]:focus {
-    font-weight: 600;
-    color: var(--sl-color-text-invert);
-    background-color: var(--sl-color-text-accent);
+    font-weight: 500;
+    background-color: hsla(0, 0%, 0%, 0.05);
   }
 
   a > *:not(:last-child),
@@ -146,10 +143,10 @@ const { sublist, nested } = Astro.props;
       margin-top: 0.5rem;
     }
     .large {
-      font-size: var(--sl-text-base);
+      font-size: 14px;
     }
     a {
-      font-size: var(--sl-text-sm);
+      font-size: 14px;
     }
   }
 </style>
