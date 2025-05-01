@@ -23,6 +23,9 @@ importers:
       astro:
         specifier: ^5.5.5
         version: 5.5.5(@types/node@22.15.2)(jiti@2.4.2)(lightningcss@1.29.2)(rollup@4.38.0)(tsx@4.19.3)(typescript@5.8.2)(yaml@2.7.0)
+      mdast-util-to-string:
+        specifier: ^4.0.0
+        version: 4.0.0
       minisearch:
         specifier: ^7.1.2
         version: 7.1.2
@@ -35,6 +38,9 @@ importers:
       react-error-boundary:
         specifier: ^5.0.0
         version: 5.0.0(react@19.1.0)
+      reading-time:
+        specifier: ^1.5.0
+        version: 1.5.0
       tailwindcss:
         specifier: ^4.0.17
         version: 4.0.17
@@ -1904,6 +1910,9 @@ packages:
   readdirp@4.1.2:
     resolution: {integrity: sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg==}
     engines: {node: '>= 14.18.0'}
+
+  reading-time@1.5.0:
+    resolution: {integrity: sha512-onYyVhBNr4CmAxFsKS7bz+uTLRakypIe4R+5A824vBSkQy/hB3fZepoVEf8OVAxzLvK+H/jm9TzpI3ETSm64Kg==}
 
   recma-build-jsx@1.0.0:
     resolution: {integrity: sha512-8GtdyqaBcDfva+GUKDr3nev3VpKAhup1+RvkMvUxURHpW7QyIvk9F5wz7Vzo06CEMSilw6uArgRqhpiUcWp8ew==}
@@ -4820,6 +4829,8 @@ snapshots:
   react@19.1.0: {}
 
   readdirp@4.1.2: {}
+
+  reading-time@1.5.0: {}
 
   recma-build-jsx@1.0.0:
     dependencies:

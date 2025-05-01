@@ -16,10 +16,12 @@
     "@tailwindcss/vite": "^4.0.17",
     "@types/react-dom": "^19.1.2",
     "astro": "^5.5.5",
+    "mdast-util-to-string": "^4.0.0",
     "minisearch": "^7.1.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-error-boundary": "^5.0.0",
+    "reading-time": "^1.5.0",
     "tailwindcss": "^4.0.17"
   },
   "devDependencies": {

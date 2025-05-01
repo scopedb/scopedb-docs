@@ -1,0 +1,56 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import {getCollection} from 'astro:content';
+import {getReadingTime} from '@/utils/readingTime';
+import {topBlog} from '@/config';
+
+import type {BlogData, RankedBlogData} from './interface';
+import {BlogList} from '@/components/BlogList/BlogList';
+
+export async function getBlogPosts() {
+  const posts = await getCollection('blogs');
+
+  function processPost(post: any): BlogData {
+    const readTime = getReadingTime(post.body);
+    post.data;
+    return {
+      title: post.data.title || `Blog Post: ${post.slug}`,
+      link: `/blog/${post.slug}`,
+      description: post.data.description || '',
+      date: post.data.date || '',
+      cover: post.data.cover,
+      readTime: readTime,
+    };
+  }
+
+  const postsData = posts.map(post => processPost(post));
+
+  const topPosts = topBlog
+    .map(top => {
+      const post = posts.find(p => p.slug.includes(top.link));
+      if (!post) {
+        return null;
+      }
+
+      const processedPost = processPost(post);
+      return {
+        rank: top.rank,
+        ...processedPost,
+      };
+    })
+    .filter(Boolean) as RankedBlogData[];
+
+  topPosts.sort((a, b) => a.rank - b.rank);
+
+  return {
+    allPosts: postsData,
+    topPosts,
+  };
+}
+
+const {allPosts, topPosts} = await getBlogPosts();
+---
+
+<Layout title={'Blog List'}>
+  <BlogList allPosts={allPosts} topPosts={topPosts} client:only />
+</Layout>

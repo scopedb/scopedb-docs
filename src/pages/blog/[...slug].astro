@@ -2,6 +2,7 @@
 import Layout from '@/layouts/Layout.astro';
 import {resolvePageTitle} from '@/utils/pagetitle';
 import {getCollection} from 'astro:content';
+import {getReadingTime} from '@/utils/readingTime';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blogs');
@@ -14,11 +15,46 @@ export async function getStaticPaths() {
 const {entry} = Astro.props;
 const {Content, headings} = await entry.render();
 const title = resolvePageTitle(entry.data.title, headings);
+const readTime = getReadingTime(entry.body);
+const coverPath = entry.data.cover?.src;
 ---
 
 <Layout title={title}>
   <div class="markdown-body">
+    {coverPath && <img src={coverPath} alt={entry.data.title} class="cover-image" />}
     <h1>{entry.data.title}</h1>
+    <div class="blog-meta">
+      {entry.data.date && <span class="blog-date">{entry.data.date}</span>}
+      <span class="blog-reading-time">{readTime}</span>
+    </div>
     <Content />
   </div>
 </Layout>
+
+<style>
+.cover-image-container {
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 400px;
+}
+
+.cover-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.blog-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.blog-date, .blog-reading-time {
+  display: inline-flex;
+  align-items: center;
+}
+</style>
