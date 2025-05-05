@@ -1,0 +1,24 @@
+---
+const { title, description, link } = Astro.props;
+---
+
+<a href={link} aria-label={title}>
+  <div
+    class="rounded-[16px] border-[1px] p-[16px]"
+    style="border-color: hsla(0, 0%, 92%, 1); 
+    background-color: hsla(0, 0%, 96%, 1);"
+  >
+    <h3
+      style="font-size: 16px;
+font-weight: 600;
+line-height: 24px;
+color: var(--text-primary);
+"
+    >
+      {title}
+    </h3>
+    <p class="text-secondary text-[14px]" style="margin-top: 12px;">
+      {description}
+    </p>
+  </div>
+</a>

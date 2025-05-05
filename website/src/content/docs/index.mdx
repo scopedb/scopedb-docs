@@ -1,10 +1,118 @@
 ---
-title: Welcome to ScopeDB
+title: ""
 description: ScopeDB
 template: splash
 ---
 
-<a href="/reference">
-   Reference
-</a>
+import DocCard from "@/src/components/DocCard.astro";
+import DocCardWithTopic from "@/src/components/DocCardWithTopic.astro";
 
+<div class="overflow-hidden">
+  <div>
+    <h1>
+      <span>ScopeDB</span>
+      <br />
+      <span>Documentation</span>
+    </h1>
+  </div>
+  <div class="text-[24px] max-w-[520px]">
+    <p>
+      Get an overview of ScopeDB's features, integrations, and how to use them.
+    </p>
+  </div>
+  <div style="margin-top: 73px;">
+    <h2
+    style="
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 24px;
+    ">
+      Most popular
+    </h2>
+    <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <li style="margin-top: 0;">
+        <DocCardWithTopic
+          topic="User Guide"
+          title="Connecting to ScopeDB"
+          description="Learn about the applications and tools that you can use to access ScopeDB"
+          link="/reference"
+        />
+      </li>
+      <li style="margin-top: 0;">
+        <DocCardWithTopic
+          topic="User Guide"
+          title="Louis Vuitton"
+          description="Learn about the applications and tools that you can use to access Snowflake"
+          link="/reference"
+        />
+      </li>
+      <li style="margin-top: 0;">
+        <DocCardWithTopic
+          topic="User Guide"
+          title="The Walt Disney Company"
+          description="Learn about the applications and tools that you can use to access Snowflake"
+          link="/reference"
+        />
+      </li>
+    </ul>
+
+  </div>
+  <div style="margin-top: 60px;">
+    <h2
+    style="
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 24px;
+    ">ScopeDB basics</h2>
+    <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <li style="margin-top: 0;">
+        <DocCard
+          title="Medical Assistant"
+          description="Learn about the applications and tools that you can use to access Snowflake"
+          link="/reference"
+        />
+      </li>
+      <li style="margin-top: 0;"  >
+        <DocCard
+          title="The Walt Disney Company"
+          description="Learn about the applications and tools that you can use to access Snowflake"
+          link="/reference"
+        />
+      </li>
+      <li style="margin-top: 0;">
+        <DocCard
+          title="Biffco Enterprises Ltd."
+          description="Learn about the applications and tools that you can use to access Snowflake"
+          link="/reference"
+        />
+      </li>
+      <li style="margin-top: 0;">
+        <DocCard
+          title="Big Kahuna Burger Ltd."
+          description="Learn about the applications and tools that you can use to access Snowflake"
+          link="/reference"
+        />
+      </li>
+      <li style="margin-top: 0;">
+        <DocCard
+          title="Connecting to ScopeDB"
+          description="Learn about the applications and tools that you can use to access Snowflake"
+          link="/reference"
+        />
+      </li>
+      <li style="margin-top: 0;">
+        <DocCard
+          title="Big Kahuna Burger Ltd."
+          description="Learn about the applications and tools that you can use to access Snowflake"
+          link="/reference"
+        />
+      </li>
+    </ul>
+  </div>
+<div class="absolute -z-10
+ top-[-20px] left-[-500px] right-0
+ h-[456px]" style="background: linear-gradient(180deg, #FBFBFB 0%, #ECF5FB 100%);">
+</div>
+</div>

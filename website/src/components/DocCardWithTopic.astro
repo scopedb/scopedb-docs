@@ -1,0 +1,27 @@
+---
+const { topic, title, description, link } = Astro.props;
+---
+
+<a href={link} aria-label={title} class="rounded-[16px]">
+  <div
+    class="rounded-[16px] p-[16px]"
+    style={`
+  box-shadow: 0px 5px 14px 2px #F3F3F3;
+  background-color: hsla(0, 0%, 100%, 1);
+`}
+  >
+    <p class="text-secondary text-[14px]">{topic}</p>
+    <h3
+      style="font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    color: var(--text-primary);
+    margin-top: 12px;
+    ">
+      {title}
+    </h3>
+    <p class="text-secondary text-[14px]" style="margin-top: 12px;">
+      {description}
+    </p>
+  </div>
+</a>

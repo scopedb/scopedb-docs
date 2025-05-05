@@ -1,5 +1,5 @@
-<div class="grid grid-cols-8 gap-x-[32px]">
-  <div class="col-span-8 lg:col-span-6"><slot /></div>
+<div class="grid grid-cols-8 gap-x-[32px] relative">
+  <div class={`col-span-8 ${Astro.locals.starlightRoute.toc ? 'lg:col-span-6' : ''}`}><slot /></div>
   {
     Astro.locals.starlightRoute.toc && (
       <aside class="right-sidebar-container print:hidden col-span-2">
