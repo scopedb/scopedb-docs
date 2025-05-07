@@ -58,6 +58,7 @@ export default defineConfig({
         PageSidebar: "./src/overrides/PageSidebar.astro",
         TwoColumnContent: "./src/overrides/TwoColumnContent.astro",
         ContentPanel: "./src/overrides/ContentPanel.astro",
+        ThemeSelect: "./src/overrides/ThemeSelect.astro",
       },
     }),
   ],
