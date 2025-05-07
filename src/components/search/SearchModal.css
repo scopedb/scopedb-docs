@@ -1,29 +1,25 @@
 .search-container {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 100%;
-  width: 100%;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 100;
 }
 
 .search-mask {
   position: absolute;
-  width: 100%;
-  height: 100%;
   inset: 0;
-  flex-shrink: 0;
   background: rgba(217, 217, 217, 0.50);
   backdrop-filter: blur(5px);
+  transition: opacity 0.5s;
 }
 
 .search-form {
   position: relative;
-  padding-top: 20vh;
+  height: min-content;
+  padding: 12px;
+  margin: 20vh auto;
 }
 
 .search-input {
