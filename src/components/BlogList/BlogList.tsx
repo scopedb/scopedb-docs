@@ -1,5 +1,5 @@
 import {Card} from '../Card';
-import {useMedia} from '@/hooks/media';
+import {useMedia} from 'huse';
 import type {BlogData, RankedBlogData} from '../../pages/blog/interface';
 import type {CardSize} from '../Card';
 

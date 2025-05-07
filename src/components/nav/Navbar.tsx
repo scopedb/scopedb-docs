@@ -4,7 +4,7 @@ import {SearchButton} from '../search/SearchButton';
 import {SearchModal} from '../search/SearchModal';
 import {useState} from 'react';
 import './nav.css';
-import {useMedia} from '@/hooks/media';
+import {useMedia, useScrollLock} from 'huse';
 import {CloseIcon, MenuIcon} from '@/icons';
 
 interface NavItem {
@@ -42,6 +42,8 @@ export function Navbar({pathname}: NavbarProps) {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(prev => !prev);
   };
+  
+  useScrollLock(isMobileMenuOpen);
 
   function toggleSearchBox() {
     setShowSearchBox(prev => !prev);
@@ -84,7 +86,7 @@ export function Navbar({pathname}: NavbarProps) {
       <div
         className={`nav-items-wrapper${isMobileMenuOpen ? ' is-mobile-open' : ''}`}
         style={{
-          justifyContent: isDocsOrHome ? 'flex-start' : 'center',
+          justifyContent: isDocsOrHome&&!isMobile ? 'flex-start' : 'center',
         }}
       >
         <NavItems navItems={currentNavItems} onItemClick={() => setIsMobileMenuOpen(false)} />

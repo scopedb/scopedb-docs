@@ -1,4 +1,4 @@
-import {useMedia} from '@/hooks/media';
+import {useMedia} from 'huse';
 import type {NavItemProps} from '../../interface';
 import './nav.css';
 

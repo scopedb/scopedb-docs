@@ -23,6 +23,9 @@ importers:
       astro:
         specifier: ^5.5.5
         version: 5.5.5(@types/node@22.15.2)(jiti@2.4.2)(lightningcss@1.29.2)(rollup@4.38.0)(tsx@4.19.3)(typescript@5.8.2)(yaml@2.7.0)
+      huse:
+        specifier: ^2.0.4
+        version: 2.0.4(react@19.1.0)
       mdast-util-to-string:
         specifier: ^4.0.0
         version: 4.0.0
@@ -425,6 +428,196 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@huse/action-pending@1.1.2':
+    resolution: {integrity: sha512-uitOZWivOD63hCmN3K1wbsUDNRXIrOqBhA7rcseEGq2UmPXZB17OkHncbqHP1x4yNUrMwnPQn9MTVPruFMNvtA==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/boolean@1.2.0':
+    resolution: {integrity: sha512-ZsC+RfXyrg9bhdY9+B+4RJh9fwXCUL7Cwh0lvxintCnqgjCb1mT0j7Pjcrg1jwzoeRrRWsHPcm1oW/8Gc8+aFw==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/click-outside@1.1.1':
+    resolution: {integrity: sha512-jR+8K9iaPdHlWsbm3Ka5NyWtjkITzKtiRIq62YSA0Cv6s+M37uthpxuo0rBOny1uCnSeRZa2WPJslxhsVIt+Ug==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/collection@1.1.2':
+    resolution: {integrity: sha512-3bwtHjHWOhVEoXncMiIR4UmxNKP/rHBgD/KP+uVehBuhx83nfulfuuziswPYOfMTmE+z2BCdq65DppOZM11Buw==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/debounce@1.1.2':
+    resolution: {integrity: sha512-NBJqyHd3XmJA7PghtHh+BCSyR7zt4wD0w1ylnogyf9eH2XzyCsKrKJYe6Zv6OImkFHXkpqenU0UoZi2r7jJKOw==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/debug@1.1.1':
+    resolution: {integrity: sha512-bhgH1O0M0neKMw9OcWhFJlH5sXdVqWkn80Sa1aT+QI/2e3RhdKA6l1xXZR7pIZwZ+5KP4I+vT3i0B4jdtdBLKA==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/derived-state@1.1.1':
+    resolution: {integrity: sha512-y/Auo/xdrS4oXEaaNl0dWDm3EEUUOmaxWWVtypv7oyEh7loP2VnmhGnia6RvInI/edGiqMumFtE4XF5Lt7z0yg==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/document-event@1.1.1':
+    resolution: {integrity: sha512-KKk0gBiZd7L7sg8h8BU+am/iG6Bx7IPGXc1/rUMX+of9X4OmLl/+igog5wt5c+MZOzetWks/oiulxxZg1/qmRg==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/document-title@1.1.1':
+    resolution: {integrity: sha512-v6DohedNn2YN0lbwzTdALQ+dOfw2gXEyYx5XKaRWYVbk1HOmCzS7ELK6g9zAi5Rnz/H7fA9RO0I30UATUtWJiQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/effect-ref@1.1.1':
+    resolution: {integrity: sha512-WVMw6kGIFjzPOnCvByxNQYAl0bEeXy3iI43y7JAHY78uGsxKbH0yL6MOvqCWlKyRUx7iHRuNrPjtGogGIueizw==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/element-size@1.1.1':
+    resolution: {integrity: sha512-vuUS8tgfhv+hST7JCns0vLNjBRTP3fk5piCWkx3gW5W1y+TSzIWEwACuHmWJIHKmkcpKwS1IQYtvv0RzBv4c6A==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/hover@1.1.3':
+    resolution: {integrity: sha512-dOagOcxSr+88EbBIaBg2w9AiYFtZucjHug+VlZ4SSZrH2FKDX/MgE8Gtx9Mm2aClUfEnYJ/5gttAlBDAhqiGbA==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/infinite-scroll@1.2.2':
+    resolution: {integrity: sha512-rgXd6wFU3Ib+sqgq4ZqykJttZKkTfYg34c+jHR4bWCnXOSi78VeUqNWhm0z8CvTizMYgwP3OALNM/gaGjXpEdA==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/input-value@1.1.1':
+    resolution: {integrity: sha512-j7F9006zILVdo2tFzBexhReXxQqJBqELrQQIG0G88u8zHid/Ltm0tfRjh+VKXFcUu3bAFjWdZOrKk2Eqf+9h1w==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/intersection@1.2.1':
+    resolution: {integrity: sha512-2lalFd6J2MoVWmTD+SOVgidF97jMJL35FkyzGjjqCK0dfqyLOe1tCC85tR1V2RdvL2QEs5/tJRoDCx1nBpOijQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/local-storage@1.1.1':
+    resolution: {integrity: sha512-p3jDOT5vXBxtKKzp/QD18ACBvi2qzlYqMbEX7PwfNZwtctX3tvBU7W2dm2IHNPlsbBCmFcve2Aw8BFzdKuOxGQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/media@1.1.1':
+    resolution: {integrity: sha512-xwiKpolkT+40lrgbNhPFSL0ckxLL2Fj3fsLSsIRQigpMrrAZwJtyEcj65xRQI3+B8FCKYbhNSdlkl5hJBwRCNw==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/merged-ref@1.2.1':
+    resolution: {integrity: sha512-aHkf8n7l42bMcppCf1Uclv6QzopVCIhfoIwix/+Vc4iXGh0e/FnMiKLASE8hVn89Em9O8CR0JxePBC0ZB9Rk7Q==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/methods@1.2.2':
+    resolution: {integrity: sha512-8b8cw0uabwNiQny4ebTIsE7mu8JnPOJZqCeEeW15MZaU3d3GdODrb+nB+45fi0BFzr7asc0wVpgR5/jNu1vmfg==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/network@1.1.3':
+    resolution: {integrity: sha512-rIPSFaTbj8gdYAPoH1VQtFXtTaRuu5DzmiqoOGIixVZrf915GpRUE/SFV4JpJEAuOcuxSYlMhlU4wEEzEJNpIA==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/number@1.2.2':
+    resolution: {integrity: sha512-2ZLFuhhB1m2MPTVFMP3tDK+RglpnO86cPaGwIMzFOaVAaFvoF0PwH5aX66Dw7C9PLVIC/5+0raFoVhBWOwCS5w==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/optimistic@0.10.1':
+    resolution: {integrity: sha512-xO3dbkL4YHtimOZ4Qz7Fjl7PN7kTac5OOvTJ0fByfXveFUqJ0krsiu3Y748z13krBEcCq7g7cG570cDDA418CQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/performance@1.1.1':
+    resolution: {integrity: sha512-cbRJuZj4ObRctW50ZGDXgMJXaH3k9QLGwF2tehejp2620H3Q1DzEDipoZCR/Q4B6ytzbsnDqBZPZGoQqOIRy9A==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/poll@1.1.2':
+    resolution: {integrity: sha512-zcTZlgbVxABJn1Sq6G6Y2QzLtqe1O1lBQYI3rJIk035TcuaP0pgrndNu7Fbwf3sPni8h7KwXQrzRlQ+U/TVHXA==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/previous-value@1.1.1':
+    resolution: {integrity: sha512-NHjE02+PjkMf0FwEdg8JcAASHwUT9JIGtfu6a8Un0Hs9kIZHsoEHffX5ZMUUDHI/lqS36AewQoUuTDY4spywEg==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/request@1.3.0':
+    resolution: {integrity: sha512-AR0vkIreD0eON+FkFvxq+CQn71/9T+GIuF8W6ZY/Yyjeq7WxAGqMJKpVtzI9p5KZnjpQtYZDebEEUmCaiGhYRQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/script@1.1.1':
+    resolution: {integrity: sha512-ZxdZ5wD0RQlN7BUo9eaEWW630c23wM37yWHVF7uclTMQhCksdpVweuhPC5j+yf3FWvJDceoRfgm+TG5J6drfVg==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/scroll-into-view@1.1.1':
+    resolution: {integrity: sha512-Tj7jv8nO3EOLO8/fuSniIfx1RFkqY/jboF/5K/LBzDSY4LJP/1teDi+cQmObWYQXxFuhGg/KUgd7quLe3Zny4Q==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/scroll-lock@1.1.1':
+    resolution: {integrity: sha512-xaAbSJ3Fih0D7g4C3Rj60YgVUclKJt0l7CaUjoXRf9Wli6NjlfV1xJC0JAXGE2s04FIyKHK0BVKTqhTHOmPIfQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/scroll-position@1.1.1':
+    resolution: {integrity: sha512-lSIkd7SjyrqgiZb3XP0EAF4ggTFOPPkbqDgVggRvGW3cO+9s9xfQe113ZWuAkLqbNawxi+Y1Uq2tLPiOjxwUMQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/selection@1.1.2':
+    resolution: {integrity: sha512-Db1zo2p9fRGCVB1MIz0i46AQauIScqRYi1hd2QhbRxBD2YdMHAULpPYO+EFjPNGTVmzJTeXcpin5s0FQuFeHsw==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/snapshot@1.1.2':
+    resolution: {integrity: sha512-b/mFu4WK5tOdOLsAdmlW4yynkKOOw9Uk3h7/k64ExHquHeA9wMqxBgfU8yvMhw5th0f2NeOm8JiRJMLnLkR2/g==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/timeout@1.1.1':
+    resolution: {integrity: sha512-Y4HTnLq07NAsmXCBLujDkHDALOfNKr8kbi7Ydyrk2Xnt4z3f49ovcnfrv6NPMGH/LYImAoVtEbN+6Vi5PJpMjQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/transition-state@1.1.1':
+    resolution: {integrity: sha512-7bE0bXmX2uJWpY0Ihlq+1G5s3FL76xZtzkJ/hEVbb89+fjgsBCQIKY4lU9y72rcai6Qf54KmHHG2A8Zvog58tQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/update@1.1.1':
+    resolution: {integrity: sha512-AeIKE1UJjIbH21sALRmbjmBLwUxfgriqI093+Z8j0XTomo8uJh/czlUsN7G/cwzM6GpB/9brizOAOjo9N6HNBw==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/user-media@0.10.1':
+    resolution: {integrity: sha512-dBGtneWtbb4seOcvEqR/b8O0qPbpTvTnYdi7GSi01NjH72NxyV6NuKlAmIIXWXgk/z5hkh4a2mktUPBAdtFPYQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/web-socket@0.11.1':
+    resolution: {integrity: sha512-509xO5G+4ZwueSenfYCX7IwKTLaj+EBxR1y2sd7YWoFfdhfA+amD0bbUL/DJxCR6oLfs0C6WpAnCvCRZ58Bpxg==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@huse/window-size@1.1.1':
+    resolution: {integrity: sha512-Mp8W2AOZ+uAOP/aroz++F1b5RUk+TdF3p33O+XB/0Jn5jxIe6X8XltGCXP50l4clSFjqBBzKROVfYvkA/O1Zig==}
+    peerDependencies:
+      react: '>=16.8.0'
+
   '@img/sharp-darwin-arm64@0.33.5':
     resolution: {integrity: sha512-UT4p+iz/2H4twwAoLCqfA9UH5pI6DggwKEGuaPy7nCVQ8ZsiY5PIcrRvD1DzuY3qYL07NtIQcWnBSY/heikIFQ==}
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
@@ -810,6 +1003,9 @@ packages:
   '@types/nlcst@2.0.3':
     resolution: {integrity: sha512-vSYNSDe6Ix3q+6Z7ri9lyWqgGhJTmzRjZRqyq15N0Z/1/UnVsno9G/N40NBijoYx2seFDIl0+B2mgAb9mezUCA==}
 
+  '@types/node@18.19.97':
+    resolution: {integrity: sha512-4r3Y9EuCJjWduiam85Fo4GBQtneaEuoaBSdiKo+o6qwQUh0JFVBe7cRUK6I6yVzA0S1gBJJfoQx4VtBH4e5ikg==}
+
   '@types/node@22.15.2':
     resolution: {integrity: sha512-uKXqKN9beGoMdBfcaTY1ecwz6ctxuJAcUlwE55938g0ZJ8lRxwAZqRz2AJ4pzpt5dHdTPMB863UZ0ESiFUcP7A==}
 
@@ -1048,6 +1244,9 @@ packages:
 
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
+
+  debounce@1.2.1:
+    resolution: {integrity: sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==}
 
   debug@4.4.0:
     resolution: {integrity: sha512-6WTZ/IxCY/T6BALoZHaE4ctp9xm+Z5kY/pzYaCHRFeyVhojxlrm+46y68HA6hr0TcwEssoxNiDEUJQjfPZ/RYA==}
@@ -1292,6 +1491,9 @@ packages:
   h3@1.15.1:
     resolution: {integrity: sha512-+ORaOBttdUm1E2Uu/obAyCguiI7MbBvsLTndc3gyK3zU+SYLoZXlyCP9Xgy0gikkGufFLTZXCXD6+4BsufnmHA==}
 
+  has-passive-events@1.0.0:
+    resolution: {integrity: sha512-2vSj6IeIsgvsRMyeQ0JaCX5Q3lX4zMn5HpoVc7MEhQ6pv8Iq9rsXjsp+E5ZwaT7T0xhMT0KmU8gtt1EFVdbJiw==}
+
   has-property-descriptors@1.0.2:
     resolution: {integrity: sha512-55JNKuIW+vq4Ke1BjOTjM2YctQIvCT7GFzHwmfZPGo5wnrgkid0YQtnAleFSqumZm4az3n2BS+erby5ipJdgrg==}
 
@@ -1373,6 +1575,14 @@ packages:
   http-cache-semantics@4.1.1:
     resolution: {integrity: sha512-er295DKPVsV82j5kw1Gjt+ADA/XYHsajl82cGNQG2eyoPkvgUhX+nDIyelzhIWbbsXP39EHcI6l5tYs2FYqYXQ==}
 
+  huse@2.0.4:
+    resolution: {integrity: sha512-7YBPf1fLfRT/i+TR9JVGxiHCTpL9gQqave8QricjbPZKvzDORVb2zjY/kyoieJoAInd6XJTGkUAI4O10uBgfeQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  immer@9.0.21:
+    resolution: {integrity: sha512-bc4NBHqOqSfRW7POMkHd51LvClaeMXpm8dx0e8oE2GORbq5aRK7Bxl4FyzVLdGtLmvLKL7BTDBG5ACQm4HWjTA==}
+
   import-meta-resolve@4.1.0:
     resolution: {integrity: sha512-I6fiaX09Xivtk+THaMfAwnA3MVA5Big1WHF1Dfx9hFuvNIWpXnorlkzhcQf6ehrqQiiZECRt1poOAkPmer3ruw==}
 
@@ -1397,6 +1607,9 @@ packages:
 
   is-arrayish@0.3.2:
     resolution: {integrity: sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==}
+
+  is-browser@2.1.0:
+    resolution: {integrity: sha512-F5rTJxDQ2sW81fcfOR1GnCXT6sVJC104fCyfj+mjpwNEwaPYSn5fte5jiHmBg3DHsIoL/l8Kvw5VN5SsTRcRFQ==}
 
   is-callable@1.2.7:
     resolution: {integrity: sha512-1BC0BVFhS/p0qtw6enp8e+8OD0UrK0oFLztSjNzhcKA3WDuJxxAPXzPuPtKkjEY9UUoEWlX/8fgKeu2S8i9JTA==}
@@ -1883,6 +2096,9 @@ packages:
   property-information@7.0.0:
     resolution: {integrity: sha512-7D/qOz/+Y4X/rzSB6jKxKUsQnphO046ei8qxG59mtM3RG3DHgTK81HrxrmoDVINJb8NKT5ZsRbwHvQ6B68Iyhg==}
 
+  query-shape@1.0.2:
+    resolution: {integrity: sha512-6p5K0EABPhrc4GpoE7D6zQgiJs59hk3GzFoHOUGXuZi8tOaX2KlMB7EFmH9hxowRVg8Rxmu4BkMuGxljjTqrIQ==}
+
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
@@ -1992,6 +2208,9 @@ packages:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
 
+  resize-detector@0.3.0:
+    resolution: {integrity: sha512-R/tCuvuOHQ8o2boRP6vgx8hXCCy87H1eY9V5imBYeVNyNVpuL9ciReSccLj2gDcax9+2weXy3bc8Vv+NRXeEvQ==}
+
   resolve-pkg-maps@1.0.0:
     resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
 
@@ -2038,6 +2257,9 @@ packages:
   set-function-length@1.2.2:
     resolution: {integrity: sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg==}
     engines: {node: '>= 0.4'}
+
+  shallowequal@1.1.0:
+    resolution: {integrity: sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==}
 
   sharp@0.33.5:
     resolution: {integrity: sha512-haPVm1EkS9pgvHrQ/F3Xy+hgcuMV0Wm9vfIBSiwZ05k+xgb0PkBQpGsAA/oWdDobNaZTH5ppvHtzCFbnSEwHVw==}
@@ -2169,6 +2391,9 @@ packages:
   uncrypto@0.1.3:
     resolution: {integrity: sha512-Ql87qFHB3s/De2ClA9e0gsnS6zXG27SkTiSJwjCc9MebbfapQfuPzumMIUMi38ezPZVNFcHI9sUIepeQfw8J8Q==}
 
+  undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
@@ -2272,6 +2497,15 @@ packages:
     hasBin: true
     peerDependencies:
       browserslist: '>= 4.21.0'
+
+  use-immer@0.6.0:
+    resolution: {integrity: sha512-dFGRfvWCqPDTOt/S431ETYTg6+uxbpb7A1pptufwXVzGJY3RlXr38+3wyLNpc6SbbmAKjWl6+EP6uW74fkEsXQ==}
+    peerDependencies:
+      immer: '>=2.0.0'
+      react: ^16.8.0 || ^17.0.1
+
+  user-attention@1.0.3:
+    resolution: {integrity: sha512-ZSb/dqTRZWfkM9xeP7Zj+f3mH86Trgm6q1isi6qTV2t+tEOPH0JKBit+nJCN9sejwZJlQmedPNniR09/6Q7LPQ==}
 
   util@0.12.5:
     resolution: {integrity: sha512-kZf/K6hEIrWHI6XqOFUiiMa+79wE/D8Q+NCNAWclkyg3b4d2k7s0QGepNjiABc+aR3N1PAyHL7p6UcLY6LmrnA==}
@@ -2899,6 +3133,192 @@ snapshots:
   '@esbuild/win32-x64@0.25.1':
     optional: true
 
+  '@huse/action-pending@1.1.2(react@19.1.0)':
+    dependencies:
+      '@huse/number': 1.2.2(react@19.1.0)
+      react: 19.1.0
+
+  '@huse/boolean@1.2.0(react@19.1.0)':
+    dependencies:
+      '@huse/methods': 1.2.2(react@19.1.0)
+      react: 19.1.0
+
+  '@huse/click-outside@1.1.1(react@19.1.0)':
+    dependencies:
+      '@huse/document-event': 1.1.1(react@19.1.0)
+      react: 19.1.0
+
+  '@huse/collection@1.1.2(react@19.1.0)':
+    dependencies:
+      '@huse/methods': 1.2.2(react@19.1.0)
+      react: 19.1.0
+
+  '@huse/debounce@1.1.2(react@19.1.0)':
+    dependencies:
+      debounce: 1.2.1
+      react: 19.1.0
+
+  '@huse/debug@1.1.1(react@19.1.0)':
+    dependencies:
+      '@huse/previous-value': 1.1.1(react@19.1.0)
+      fast-deep-equal: 3.1.3
+      lodash: 4.17.21
+      react: 19.1.0
+      shallowequal: 1.1.0
+
+  '@huse/derived-state@1.1.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+
+  '@huse/document-event@1.1.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+
+  '@huse/document-title@1.1.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+
+  '@huse/effect-ref@1.1.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+
+  '@huse/element-size@1.1.1(react@19.1.0)':
+    dependencies:
+      '@huse/effect-ref': 1.1.1(react@19.1.0)
+      react: 19.1.0
+      resize-detector: 0.3.0
+
+  '@huse/hover@1.1.3(react@19.1.0)':
+    dependencies:
+      '@huse/boolean': 1.2.0(react@19.1.0)
+      react: 19.1.0
+
+  '@huse/infinite-scroll@1.2.2(react@19.1.0)':
+    dependencies:
+      '@huse/methods': 1.2.2(react@19.1.0)
+      react: 19.1.0
+
+  '@huse/input-value@1.1.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+
+  '@huse/intersection@1.2.1(react@19.1.0)':
+    dependencies:
+      '@huse/effect-ref': 1.1.1(react@19.1.0)
+      react: 19.1.0
+
+  '@huse/local-storage@1.1.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+
+  '@huse/media@1.1.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+
+  '@huse/merged-ref@1.2.1(react@19.1.0)':
+    dependencies:
+      '@huse/previous-value': 1.1.1(react@19.1.0)
+      react: 19.1.0
+
+  '@huse/methods@1.2.2(react@19.1.0)':
+    dependencies:
+      immer: 9.0.21
+      react: 19.1.0
+      use-immer: 0.6.0(immer@9.0.21)(react@19.1.0)
+
+  '@huse/network@1.1.3(react@19.1.0)':
+    dependencies:
+      '@huse/boolean': 1.2.0(react@19.1.0)
+      react: 19.1.0
+
+  '@huse/number@1.2.2(react@19.1.0)':
+    dependencies:
+      '@huse/methods': 1.2.2(react@19.1.0)
+      react: 19.1.0
+
+  '@huse/optimistic@0.10.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+
+  '@huse/performance@1.1.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+
+  '@huse/poll@1.1.2(react@19.1.0)':
+    dependencies:
+      '@huse/action-pending': 1.1.2(react@19.1.0)
+      '@huse/timeout': 1.1.1(react@19.1.0)
+      react: 19.1.0
+      user-attention: 1.0.3
+
+  '@huse/previous-value@1.1.1(react@19.1.0)':
+    dependencies:
+      fast-deep-equal: 3.1.3
+      react: 19.1.0
+      shallowequal: 1.1.0
+
+  '@huse/request@1.3.0(react@19.1.0)':
+    dependencies:
+      '@huse/previous-value': 1.1.1(react@19.1.0)
+      '@huse/update': 1.1.1(react@19.1.0)
+      query-shape: 1.0.2
+      react: 19.1.0
+
+  '@huse/script@1.1.1(react@19.1.0)':
+    dependencies:
+      '@huse/update': 1.1.1(react@19.1.0)
+      react: 19.1.0
+
+  '@huse/scroll-into-view@1.1.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+
+  '@huse/scroll-lock@1.1.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+
+  '@huse/scroll-position@1.1.1(react@19.1.0)':
+    dependencies:
+      has-passive-events: 1.0.0
+      react: 19.1.0
+
+  '@huse/selection@1.1.2(react@19.1.0)':
+    dependencies:
+      '@huse/collection': 1.1.2(react@19.1.0)
+      react: 19.1.0
+
+  '@huse/snapshot@1.1.2(react@19.1.0)':
+    dependencies:
+      '@huse/debounce': 1.1.2(react@19.1.0)
+      react: 19.1.0
+
+  '@huse/timeout@1.1.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+
+  '@huse/transition-state@1.1.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+
+  '@huse/update@1.1.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+
+  '@huse/user-media@0.10.1(react@19.1.0)':
+    dependencies:
+      '@huse/previous-value': 1.1.1(react@19.1.0)
+      react: 19.1.0
+
+  '@huse/web-socket@0.11.1(react@19.1.0)':
+    dependencies:
+      '@huse/previous-value': 1.1.1(react@19.1.0)
+      '@types/node': 18.19.97
+      react: 19.1.0
+
+  '@huse/window-size@1.1.1(react@19.1.0)':
+    dependencies:
+      react: 19.1.0
+
   '@img/sharp-darwin-arm64@0.33.5':
     optionalDependencies:
       '@img/sharp-libvips-darwin-arm64': 1.0.4
@@ -3244,6 +3664,10 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.3
 
+  '@types/node@18.19.97':
+    dependencies:
+      undici-types: 5.26.5
+
   '@types/node@22.15.2':
     dependencies:
       undici-types: 6.21.0
@@ -3585,6 +4009,8 @@ snapshots:
 
   csstype@3.1.3: {}
 
+  debounce@1.2.1: {}
+
   debug@4.4.0:
     dependencies:
       ms: 2.1.3
@@ -3854,6 +4280,10 @@ snapshots:
       ufo: 1.5.4
       uncrypto: 0.1.3
 
+  has-passive-events@1.0.0:
+    dependencies:
+      is-browser: 2.1.0
+
   has-property-descriptors@1.0.2:
     dependencies:
       es-define-property: 1.0.1
@@ -4059,6 +4489,50 @@ snapshots:
 
   http-cache-semantics@4.1.1: {}
 
+  huse@2.0.4(react@19.1.0):
+    dependencies:
+      '@huse/action-pending': 1.1.2(react@19.1.0)
+      '@huse/boolean': 1.2.0(react@19.1.0)
+      '@huse/click-outside': 1.1.1(react@19.1.0)
+      '@huse/collection': 1.1.2(react@19.1.0)
+      '@huse/debounce': 1.1.2(react@19.1.0)
+      '@huse/debug': 1.1.1(react@19.1.0)
+      '@huse/derived-state': 1.1.1(react@19.1.0)
+      '@huse/document-event': 1.1.1(react@19.1.0)
+      '@huse/document-title': 1.1.1(react@19.1.0)
+      '@huse/effect-ref': 1.1.1(react@19.1.0)
+      '@huse/element-size': 1.1.1(react@19.1.0)
+      '@huse/hover': 1.1.3(react@19.1.0)
+      '@huse/infinite-scroll': 1.2.2(react@19.1.0)
+      '@huse/input-value': 1.1.1(react@19.1.0)
+      '@huse/intersection': 1.2.1(react@19.1.0)
+      '@huse/local-storage': 1.1.1(react@19.1.0)
+      '@huse/media': 1.1.1(react@19.1.0)
+      '@huse/merged-ref': 1.2.1(react@19.1.0)
+      '@huse/methods': 1.2.2(react@19.1.0)
+      '@huse/network': 1.1.3(react@19.1.0)
+      '@huse/number': 1.2.2(react@19.1.0)
+      '@huse/optimistic': 0.10.1(react@19.1.0)
+      '@huse/performance': 1.1.1(react@19.1.0)
+      '@huse/poll': 1.1.2(react@19.1.0)
+      '@huse/previous-value': 1.1.1(react@19.1.0)
+      '@huse/request': 1.3.0(react@19.1.0)
+      '@huse/script': 1.1.1(react@19.1.0)
+      '@huse/scroll-into-view': 1.1.1(react@19.1.0)
+      '@huse/scroll-lock': 1.1.1(react@19.1.0)
+      '@huse/scroll-position': 1.1.1(react@19.1.0)
+      '@huse/selection': 1.1.2(react@19.1.0)
+      '@huse/snapshot': 1.1.2(react@19.1.0)
+      '@huse/timeout': 1.1.1(react@19.1.0)
+      '@huse/transition-state': 1.1.1(react@19.1.0)
+      '@huse/update': 1.1.1(react@19.1.0)
+      '@huse/user-media': 0.10.1(react@19.1.0)
+      '@huse/web-socket': 0.11.1(react@19.1.0)
+      '@huse/window-size': 1.1.1(react@19.1.0)
+      react: 19.1.0
+
+  immer@9.0.21: {}
+
   import-meta-resolve@4.1.0: {}
 
   inherits@2.0.4: {}
@@ -4081,6 +4555,8 @@ snapshots:
 
   is-arrayish@0.3.2:
     optional: true
+
+  is-browser@2.1.0: {}
 
   is-callable@1.2.7: {}
 
@@ -4810,6 +5286,8 @@ snapshots:
 
   property-information@7.0.0: {}
 
+  query-shape@1.0.2: {}
+
   queue-microtask@1.2.3: {}
 
   radix3@1.1.2: {}
@@ -4976,6 +5454,8 @@ snapshots:
 
   require-from-string@2.0.2: {}
 
+  resize-detector@0.3.0: {}
+
   resolve-pkg-maps@1.0.0:
     optional: true
 
@@ -5056,6 +5536,8 @@ snapshots:
       get-intrinsic: 1.3.0
       gopd: 1.2.0
       has-property-descriptors: 1.0.2
+
+  shallowequal@1.1.0: {}
 
   sharp@0.33.5:
     dependencies:
@@ -5202,6 +5684,8 @@ snapshots:
 
   uncrypto@0.1.3: {}
 
+  undici-types@5.26.5: {}
+
   undici-types@6.21.0: {}
 
   unified@11.0.5:
@@ -5280,6 +5764,15 @@ snapshots:
       browserslist: 4.24.4
       escalade: 3.2.0
       picocolors: 1.1.1
+
+  use-immer@0.6.0(immer@9.0.21)(react@19.1.0):
+    dependencies:
+      immer: 9.0.21
+      react: 19.1.0
+
+  user-attention@1.0.3:
+    dependencies:
+      has-passive-events: 1.0.0
 
   util@0.12.5:
     dependencies:

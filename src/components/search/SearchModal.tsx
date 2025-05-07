@@ -3,6 +3,7 @@ import type {FormEvent, KeyboardEvent, ChangeEvent, MouseEvent} from 'react';
 import {createPortal} from 'react-dom';
 import './SearchModal.css';
 import {SearchResults} from './SearchResult';
+import { useScrollLock } from 'huse';
 
 interface Props {
   onClose: () => void;
@@ -16,6 +17,7 @@ function SearchBox(props: Props) {
   const [query, setQuery] = useState<string>('');
   const deferredQuery = useDeferredValue(query);
   const isStale = query !== deferredQuery;
+  useScrollLock(true);
 
   function handleEnterKeyDown() {
     if (selectedIndex < 0) {
