@@ -103,46 +103,48 @@ function SearchBox(props: Props) {
   return (
     <div className="search-container">
       <div className="search-mask" onClick={handleClose} />
-      <form onSubmit={handleSearch} className="search-form">
-        <input
-          autoFocus
-          ref={searchInputRef}
-          id="search-input"
-          className="search-input"
-          type="search"
-          placeholder="Search Docs..."
-          autoCapitalize="off"
-          autoComplete="off"
-          autoCorrect="off"
-          spellCheck="false"
-          aria-activedescendant={selectedIndex > -1 ? ('search-result-item' + selectedIndex) : undefined}
-          maxLength={64}
-          value={query}
-          onChange={handleQueryChange}
-          onFocus={focusSearchInput}
-          onKeyDown={handleKeyDown}
-        />
-      </form>
-      <Suspense
-        fallback={<h2 className="search-result search-result-empty">Searching...</h2>}
-      >
-        <div
-          style={{
-            opacity: isStale ? 0.5 : 1,
-            transition: isStale ? 'opacity 0.2s 0.2s linear' : 'opacity 0s 0s linear',
-          }}
-        >
-          <SearchResults
-            query={deferredQuery}
-            disableMouseOver={disableMouseOver}
-            onClose={handleClose}
-            setSelectedIndex={setSelectedIndex}
-            selectedIndex={selectedIndex}
-            onResultsCountChange={setResultsCount}
-            onMouseMove={handleMouseOver}
+      <div className="search-modal">
+        <form onSubmit={handleSearch} className="search-form">
+          <input
+            autoFocus
+            ref={searchInputRef}
+            id="search-input"
+            className="search-input"
+            type="search"
+            placeholder="Search Docs..."
+            autoCapitalize="off"
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck="false"
+            aria-activedescendant={selectedIndex > -1 ? ('search-result-item' + selectedIndex) : undefined}
+            maxLength={64}
+            value={query}
+            onChange={handleQueryChange}
+            onFocus={focusSearchInput}
+            onKeyDown={handleKeyDown}
           />
-        </div>
-      </Suspense>
+        </form>
+        <Suspense
+          fallback={<h2 className="search-result search-result-empty">Searching...</h2>}
+        >
+          <div
+            style={{
+              opacity: isStale ? 0.5 : 1,
+              transition: isStale ? 'opacity 0.2s 0.2s linear' : 'opacity 0s 0s linear',
+            }}
+          >
+            <SearchResults
+              query={deferredQuery}
+              disableMouseOver={disableMouseOver}
+              onClose={handleClose}
+              setSelectedIndex={setSelectedIndex}
+              selectedIndex={selectedIndex}
+              onResultsCountChange={setResultsCount}
+              onMouseMove={handleMouseOver}
+            />
+          </div>
+        </Suspense>
+      </div>
     </div>
   );
 }

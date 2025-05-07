@@ -10,7 +10,7 @@ interface Props {
 export function SearchButton({onClick, isMobile}: Props) {
   return (
     isMobile
-      ? <SearchIcon width={17.5} height={17.5} />
+      ? <SearchIcon width={17.5} height={17.5} onClick={onClick} />
       : (
         <Button
           className="search-btn"
