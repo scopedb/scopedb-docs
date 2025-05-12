@@ -1,30 +1,10 @@
 ---
 import type {Sidebar, SidebarItem} from '@/interface/sidebar';
 
-interface MenuItem {
-  text: string;
-  link: string;
-  items?: MenuItem[];
-}
-
 interface Props {
-  items?: MenuItem[] | Sidebar;
-  variant?: 'navbar' | 'sidebar';
+  items?:  Sidebar;
 }
 
-const menuItems: MenuItem[] = [
-  {text: '首页', link: '/'},
-  {text: '关于我们', link: '/about'},
-  {
-    text: '产品',
-    link: '/products',
-    items: [
-      {text: '产品1', link: '/products/1'},
-      {text: '产品2', link: '/products/2'},
-    ],
-  },
-  {text: '联系我们', link: '/contact'},
-];
 // TODO: support collapsed/collapsible prop
 // FIXME: correct the active logic
 // TODO: mobile view sidebar
@@ -73,11 +53,11 @@ const SIDEBAR_CLASSES = {
   icon: 'w-4 h-4',
 } as const;
 
-const {items = menuItems, variant = 'navbar'} = Astro.props;
+const {items} = Astro.props;
 ---
 
 {
-  variant === 'sidebar' ? (
+  
     <nav class="space-y-1 overflow-y-auto h-full">
       {
         (items as SidebarItem[]).map((item, index: number) => (
@@ -138,139 +118,6 @@ const {items = menuItems, variant = 'navbar'} = Astro.props;
         ))
       }
     </nav>
-  ) : (
-    <nav class="bg-white shadow-lg">
-      <div class="max-w-6xl mx-auto px-4">
-        <div class="flex justify-between">
-          <!-- Logo -->
-          <div class="flex space-x-4">
-            <a href="/" class="flex items-center py-5 px-2 text-gray-700 hover:text-gray-900">
-              <svg
-                class="h-6 w-6 mr-1 text-blue-500"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                />
-              </svg>
-              <span class="font-bold">网站名称</span>
-            </a>
-          </div>
-
-          <!-- 桌面导航 -->
-          <div class="hidden md:flex items-center space-x-1">
-            {
-              items.map(item => (
-            item.children ? (
-                <div class="relative group">
-                  <button
-                    class:list={[
-                      'py-5 px-3 flex items-center',
-                      isActive(item.link, true) ? 'text-blue-500' : 'text-gray-700 hover:text-gray-900',
-                    ]}
-                  >
-                    {item.text}
-                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                  <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-md mt-0 w-48">
-                    {
-                      item.children.map((child: any) => (
-                        <a
-                          href={child.link}
-                          class:list={[
-                            'block px-4 py-2 text-gray-700 hover:bg-gray-100',
-                            {'bg-gray-100': isActive(child.link)},
-                          ]}
-                        >
-                          {child.text}
-                        </a>
-                      ))
-                    }
-                  </div>
-                </div>
-              ) : (
-                <a
-                  href={item.link}
-                  class:list={[
-                    'py-5 px-3',
-                    isActive(item.link)
-                      ? 'text-blue-500 border-b-2 border-blue-500'
-                      : 'text-gray-700 hover:text-gray-900',
-                  ]}
-                >
-                  {item.text}
-                </a>
-              )
-          ))
-            }
-          </div>
-
-          <!-- 移动端菜单按钮 -->
-          <button id="menuButton" class="md:hidden p-2 focus:outline-none">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </div>
-
-        <!-- 移动端菜单 -->
-        <div id="mobileMenu" class="hidden md:hidden pb-4">
-          {
-            (items as MenuItem[]).map(item => (
-          item.items ? (
-              <div class="mobile-dropdown">
-                <button class="w-full text-left px-3 py-2 flex justify-between items-center">
-                  {item.text}
-                  <svg
-                    class="w-4 h-4 transform transition-transform duration-200"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                <div class="hidden pl-4">
-                  {
-                    item.items.map((child: any) => (
-                      <a
-                        href={child.link}
-                        class:list={[
-                          'block px-3 py-2',
-                          isActive(child.link) ? 'text-blue-500' : 'text-gray-700 hover:text-gray-900',
-                        ]}
-                      >
-                        {child.text}
-                      </a>
-                    ))
-                  }
-                </div>
-              </div>
-            ) : (
-              <a
-                href={item.link}
-                class:list={[
-                  'block px-3 py-2',
-                  isActive(item.link) ? 'text-blue-500' : 'text-gray-700 hover:text-gray-900',
-                ]}
-              >
-                {item.text}
-              </a>
-            )
-        ))
-          }
-        </div>
-      </div>
-    </nav>
-  )
 }
 
 <script define:vars={{SIDEBAR_CLASSES}}>
