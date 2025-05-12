@@ -3,7 +3,7 @@ import type {FormEvent, KeyboardEvent, ChangeEvent, MouseEvent} from 'react';
 import {createPortal} from 'react-dom';
 import './SearchModal.css';
 import {SearchResults} from './SearchResult';
-import { useScrollLock } from 'huse';
+import {useScrollLock} from 'huse';
 
 interface Props {
   onClose: () => void;

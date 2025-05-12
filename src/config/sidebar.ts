@@ -1,41 +1,45 @@
-import type {SidebarItem} from '../interface/sidebar';
+import type {Sidebar} from '../interface/sidebar';
 
-export const sidebarItems: SidebarItem[] = [
+export const sidebarItems = [
   {
     text: '开始',
-    href: '/docs',
-    children: [
-      {text: '简介', href: '/docs/intro'},
-      {text: '快速开始', href: '/docs/quickstart'},
-      {text: '安装', href: '/docs/installation'},
+    base: '/reference/',
+    items: [
+      {text: '简介', link: 'overview'},
+      {text: '快速开始', link: 'datatypes-variant'},
+      {text: '安装', link: 'datatypes-overview'},
     ],
   },
   {
     text: '核心概念',
-    href: '/docs/concepts',
-    children: [
-      {text: '架构', href: '/docs/concepts/architecture'},
-      {text: '数据模型', href: '/docs/concepts/data-model'},
-      {text: '查询语言', href: '/docs/concepts/query-language'},
-      {text: '存储引擎', href: '/docs/concepts/storage-engine'},
+    base: '/concepts',
+    items: [
+      {text: '架构', link: 'architecture'},
+      {text: '数据模型', link: 'data-model'},
+      {text: '查询语言', link: 'query-language'},
+      {text: '存储引擎', link: 'storage-engine'},
     ],
   },
   {
     text: 'API参考',
-    href: '#',
-    children: [
-      {text: 'RESTful API', href: '/docs/api/rest'},
-      {text: 'GraphQL API', href: '/docs/api/graphql'},
-      {text: 'SDK', href: '/docs/api/sdk'},
+    base: '/api',
+    items: [
+      {text: 'RESTful API', link: '/rest'},
+      {text: 'GraphQL API', link: '/graphql'},
+      {text: 'SDK', link: '/sdk'},
     ],
   },
   {
     text: '最佳实践',
-    href: '#',
-    children: [
-      {text: '性能优化', href: '/docs/best-practices/performance'},
-      {text: '安全', href: '/docs/best-practices/security'},
-      {text: '部署', href: '/docs/best-practices/deployment'},
+    base: '/best-practices',
+    items: [
+      {text: '性能优化', link: '/performance'},
+      {text: '安全', link: '/security'},
+      {text: '部署', link: '/deployment'},
     ],
   },
 ];
+
+export const sidebar: Sidebar = {
+  '/reference': sidebarItems,
+};

@@ -1,43 +1,47 @@
 ---
+import type {Sidebar, SidebarItem} from '@/interface/sidebar';
+
 interface MenuItem {
   text: string;
-  href: string;
-  children?: MenuItem[];
+  link: string;
+  items?: MenuItem[];
 }
 
 interface Props {
-  items?: MenuItem[];
+  items?: MenuItem[] | Sidebar;
   variant?: 'navbar' | 'sidebar';
 }
 
 const menuItems: MenuItem[] = [
-  {text: '首页', href: '/'},
-  {text: '关于我们', href: '/about'},
+  {text: '首页', link: '/'},
+  {text: '关于我们', link: '/about'},
   {
     text: '产品',
-    href: '/products',
-    children: [
-      {text: '产品1', href: '/products/1'},
-      {text: '产品2', href: '/products/2'},
+    link: '/products',
+    items: [
+      {text: '产品1', link: '/products/1'},
+      {text: '产品2', link: '/products/2'},
     ],
   },
-  {text: '联系我们', href: '/contact'},
+  {text: '联系我们', link: '/contact'},
 ];
-
+// TODO: support collapsed/collapsible prop
+// FIXME: correct the active logic
+// TODO: mobile view sidebar
 const currentPath = Astro.url.pathname;
-const isActive = (href: string, hasChildren = false) => {
-  if (href === '#') {
+const isActive = (link: string, hasChildren = false) => {
+  if (link === '#') {
     return false;
   }
 
   // 处理父级菜单的高亮逻辑
   if (hasChildren) {
     // 如果当前路径完全匹配，直接返回true
-    if (currentPath === href) {
+    if (currentPath === link) {
       return true;
     }
     // 提取前缀进行比较
-    const urlParts = href.split('/').filter(Boolean);
+    const urlParts = link.split('/').filter(Boolean);
     const currentParts = currentPath.split('/').filter(Boolean);
 
     // 如果href有前缀部分，检查当前路径是否匹配这个前缀
@@ -45,18 +49,18 @@ const isActive = (href: string, hasChildren = false) => {
       return urlParts[0] === currentParts[0];
     }
     // 检查是否是子路径
-    return currentPath.includes(href + '/');
+    return currentPath.includes(link + '/');
   }
 
   // 子菜单项也使用前缀匹配
-  const urlParts = href.split('/').filter(Boolean);
+  const urlParts = link.split('/').filter(Boolean);
   const currentParts = currentPath.split('/').filter(Boolean);
 
   if (urlParts.length > 0 && currentParts.length > 0) {
     return urlParts[0] === currentParts[0];
   }
 
-  return currentPath === href;
+  return currentPath === link;
 };
 
 const SIDEBAR_CLASSES = {
@@ -76,15 +80,15 @@ const {items = menuItems, variant = 'navbar'} = Astro.props;
   variant === 'sidebar' ? (
     <nav class="space-y-1 overflow-y-auto h-full">
       {
-        items.map((item, index) => (
+        (items as SidebarItem[]).map((item, index: number) => (
           <div class={SIDEBAR_CLASSES.group}>
             {
-              item.children ? (
+              item.items ? (
                 <div data-group-id={index}>
                   <div
                     class:list={[
                       SIDEBAR_CLASSES.groupTitle,
-                      {[SIDEBAR_CLASSES.activeLink]: isActive(item.href, true)},
+                      // {[SIDEBAR_CLASSES.activeLink]: isActive(item.link, true)},
                     ]}
                   >
                     <span>{item.text}</span>
@@ -104,15 +108,15 @@ const {items = menuItems, variant = 'navbar'} = Astro.props;
                   </div>
                   <div class={`${SIDEBAR_CLASSES.groupContent} hidden`} data-content>
                     {
-                      item.children.map(child => (
+                      item?.items?.map(item => (
                         <a
-                          href={child.href}
+                          href={item.link}
                           class:list={[
                             SIDEBAR_CLASSES.link,
-                            {[SIDEBAR_CLASSES.activeLink]: isActive(child.href)},
+                            // {[SIDEBAR_CLASSES.activeLink]: isActive(child.link)},
                           ]}
                         >
-                          {child.text}
+                          {item.text}
                         </a>
                       ))
                     }
@@ -120,10 +124,10 @@ const {items = menuItems, variant = 'navbar'} = Astro.props;
                 </div>
               ) : (
                 <a
-                  href={item.href}
+                  href={item.link}
                   class:list={[
                     SIDEBAR_CLASSES.link,
-                    {[SIDEBAR_CLASSES.activeLink]: isActive(item.href)},
+                    {[SIDEBAR_CLASSES.activeLink]: isActive(item.link ?? '')},
                   ]}
                 >
                   {item.text}
@@ -168,7 +172,7 @@ const {items = menuItems, variant = 'navbar'} = Astro.props;
                   <button
                     class:list={[
                       'py-5 px-3 flex items-center',
-                      isActive(item.href, true) ? 'text-blue-500' : 'text-gray-700 hover:text-gray-900',
+                      isActive(item.link, true) ? 'text-blue-500' : 'text-gray-700 hover:text-gray-900',
                     ]}
                   >
                     {item.text}
@@ -178,12 +182,12 @@ const {items = menuItems, variant = 'navbar'} = Astro.props;
                   </button>
                   <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-md mt-0 w-48">
                     {
-                      item.children.map(child => (
+                      item.children.map((child: any) => (
                         <a
-                          href={child.href}
+                          href={child.link}
                           class:list={[
                             'block px-4 py-2 text-gray-700 hover:bg-gray-100',
-                            {'bg-gray-100': isActive(child.href)},
+                            {'bg-gray-100': isActive(child.link)},
                           ]}
                         >
                           {child.text}
@@ -194,10 +198,10 @@ const {items = menuItems, variant = 'navbar'} = Astro.props;
                 </div>
               ) : (
                 <a
-                  href={item.href}
+                  href={item.link}
                   class:list={[
                     'py-5 px-3',
-                    isActive(item.href)
+                    isActive(item.link)
                       ? 'text-blue-500 border-b-2 border-blue-500'
                       : 'text-gray-700 hover:text-gray-900',
                   ]}
@@ -220,8 +224,8 @@ const {items = menuItems, variant = 'navbar'} = Astro.props;
         <!-- 移动端菜单 -->
         <div id="mobileMenu" class="hidden md:hidden pb-4">
           {
-            items.map(item => (
-          item.children ? (
+            (items as MenuItem[]).map(item => (
+          item.items ? (
               <div class="mobile-dropdown">
                 <button class="w-full text-left px-3 py-2 flex justify-between items-center">
                   {item.text}
@@ -236,12 +240,12 @@ const {items = menuItems, variant = 'navbar'} = Astro.props;
                 </button>
                 <div class="hidden pl-4">
                   {
-                    item.children.map(child => (
+                    item.items.map((child: any) => (
                       <a
-                        href={child.href}
+                        href={child.link}
                         class:list={[
                           'block px-3 py-2',
-                          isActive(child.href) ? 'text-blue-500' : 'text-gray-700 hover:text-gray-900',
+                          isActive(child.link) ? 'text-blue-500' : 'text-gray-700 hover:text-gray-900',
                         ]}
                       >
                         {child.text}
@@ -252,10 +256,10 @@ const {items = menuItems, variant = 'navbar'} = Astro.props;
               </div>
             ) : (
               <a
-                href={item.href}
+                href={item.link}
                 class:list={[
                   'block px-3 py-2',
-                  isActive(item.href) ? 'text-blue-500' : 'text-gray-700 hover:text-gray-900',
+                  isActive(item.link) ? 'text-blue-500' : 'text-gray-700 hover:text-gray-900',
                 ]}
               >
                 {item.text}

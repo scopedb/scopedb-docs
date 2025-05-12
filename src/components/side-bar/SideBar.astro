@@ -1,6 +1,12 @@
 ---
+import type {SidebarItem} from '@/interface/sidebar';
 import Menu from '../menu/Menu.astro';
-import {sidebarItems} from '../../config';
+
+interface Props {
+  sidebar: SidebarItem[];
+}
+
+const {sidebar} = Astro.props;
 
 const sidebarClasses = {
   'w-full': true,
@@ -13,5 +19,5 @@ const sidebarClasses = {
 ---
 
 <aside class:list={sidebarClasses}>
-  <Menu items={sidebarItems} variant="sidebar" />
+  <Menu items={sidebar} variant="sidebar" />
 </aside>

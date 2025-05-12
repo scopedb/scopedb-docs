@@ -3,24 +3,28 @@ import '@/styles/global.css';
 import type {MarkdownHeading} from 'astro';
 import Toc from '@/components/toc/Toc.astro';
 import SideBar from '@/components/side-bar/SideBar.astro';
+import type {SidebarItem} from '@/interface/sidebar';
 
 interface Props {
   headings: MarkdownHeading[];
+  sidebar: SidebarItem[];
 }
 
-const {headings} = Astro.props;
+const {headings, sidebar} = Astro.props;
+
 const toc = (headings ?? []).filter(heading => heading.depth > 1 && heading.depth <= 3);
 
 const gridClasses = {
   grid: true,
   'grid-cols-10': true,
   'gap-x-[32px]': true,
+  'w-full': true,
 };
 ---
 
 <div class:list={gridClasses}>
   <div class="col-span-2">
-    <SideBar />
+    {sidebar?.length > 0 && <SideBar sidebar={sidebar} />}
   </div>
   <div class="col-span-6">
     <div class="markdown-body">

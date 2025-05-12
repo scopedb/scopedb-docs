@@ -6,32 +6,7 @@ import {useState} from 'react';
 import './nav.css';
 import {useMedia, useScrollLock} from 'huse';
 import {CloseIcon, MenuIcon} from '@/icons';
-
-interface NavItem {
-  text: string;
-  link: string;
-}
-
-interface NavbarProps {
-  pathname: string;
-}
-
-const docOrHomeNavItems: NavItem[] = [
-  {text: 'Developer', link: '/developer'},
-  {text: 'Reference', link: '/reference'},
-  {text: 'Releases', link: '/releases'},
-  {text: 'Tutorials', link: '/tutorials'},
-  {text: 'Developer', link: '/developer-duplicate?'},
-  {text: 'Open Catalog', link: '/open-catalog'},
-];
-
-const otherNavItems: NavItem[] = [
-  {text: 'Products', link: '/products'},
-  {text: 'Reference', link: '/reference'},
-  {text: 'Blog', link: '/blog'},
-  {text: 'Contact', link: '/contact'},
-  {text: 'Changelog', link: '/changelog'},
-];
+import {docOrHomeNavItems, otherNavItems, type NavbarProps} from '@/config';
 
 export function Navbar({pathname}: NavbarProps) {
   const [showSearchBox, setShowSearchBox] = useState(false);
@@ -42,7 +17,7 @@ export function Navbar({pathname}: NavbarProps) {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(prev => !prev);
   };
-  
+
   useScrollLock(isMobileMenuOpen);
 
   function toggleSearchBox() {
@@ -86,7 +61,7 @@ export function Navbar({pathname}: NavbarProps) {
       <div
         className={`nav-items-wrapper${isMobileMenuOpen ? ' is-mobile-open' : ''}`}
         style={{
-          justifyContent: isDocsOrHome&&!isMobile ? 'flex-start' : 'center',
+          justifyContent: isDocsOrHome && !isMobile ? 'flex-start' : 'center',
         }}
       >
         <NavItems navItems={currentNavItems} onItemClick={() => setIsMobileMenuOpen(false)} />

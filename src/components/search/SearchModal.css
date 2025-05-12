@@ -7,7 +7,7 @@
   z-index: 100;
 }
 
-.search-modal{
+.search-modal {
   margin: 20vh auto;
   padding: 12px;
   width: min(100vw - 40px, 600px);

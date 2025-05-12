@@ -5,6 +5,8 @@ import Layout from '@/layouts/Layout.astro';
 import {resolvePageTitle} from '@/utils/pagetitle';
 import {getCollection} from 'astro:content';
 import Document from '../doc/Document.astro';
+import {getSidebar, getSidebarGroups} from '@/utils';
+import {sidebar as sidebarConfig} from '@/config';
 
 export async function getStaticPaths() {
   const posts = await getCollection('reference');
@@ -13,6 +15,7 @@ export async function getStaticPaths() {
     props: {entry},
   }));
 }
+const sidebar = getSidebarGroups(getSidebar(sidebarConfig, '/reference'));
 
 const {entry} = Astro.props;
 const {Content, headings} = await entry.render();
@@ -20,5 +23,5 @@ const title = resolvePageTitle(entry.data.title, headings);
 ---
 
 <Layout title={title}>
-  <Document headings={headings}><Content /></Document>
+  <Document headings={headings} sidebar={sidebar}><Content /></Document>
 </Layout>
