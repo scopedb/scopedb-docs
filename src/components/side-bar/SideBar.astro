@@ -1,6 +1,6 @@
 ---
 import type {SidebarItem} from '@/interface/sidebar';
-import Menu from '../menu/Menu.astro';
+import {SideBarMenu} from '../menu';
 
 interface Props {
   sidebar: SidebarItem[];
@@ -19,5 +19,5 @@ const sidebarClasses = {
 ---
 
 <aside class:list={sidebarClasses}>
-  <Menu items={sidebar}/>
+  <SideBarMenu sidebar={sidebar} client:only />
 </aside>

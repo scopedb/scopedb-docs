@@ -2,6 +2,7 @@ import {defineConfig} from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
+import svgr from 'vite-plugin-svgr';
 
 import {
   remarkDefinitionList,
@@ -17,7 +18,7 @@ export default defineConfig({
     svg: true,
   },
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), svgr()],
   },
   integrations: [
     react({

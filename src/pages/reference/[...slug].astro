@@ -2,10 +2,9 @@
 import '@/styles/markdown.css';
 
 import Layout from '@/layouts/Layout.astro';
-import {resolvePageTitle} from '@/utils/pagetitle';
 import {getCollection} from 'astro:content';
 import Document from '../doc/Document.astro';
-import {getSidebar, getSidebarGroups} from '@/utils';
+import {getSidebar, getSidebarGroups, resolvePageTitle} from '@/utils';
 import {sidebar as sidebarConfig} from '@/config';
 
 export async function getStaticPaths() {

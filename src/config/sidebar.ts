@@ -4,6 +4,7 @@ export const sidebarItems = [
   {
     text: '开始',
     base: '/reference/',
+    collapsed: true,
     items: [
       {text: '简介', link: 'overview'},
       {text: '快速开始', link: 'datatypes-variant'},
@@ -13,6 +14,7 @@ export const sidebarItems = [
   {
     text: '核心概念',
     base: '/concepts',
+    collapsed: false,
     items: [
       {text: '架构', link: 'architecture'},
       {text: '数据模型', link: 'data-model'},
@@ -23,6 +25,7 @@ export const sidebarItems = [
   {
     text: 'API参考',
     base: '/api',
+    collapsed: false,
     items: [
       {text: 'RESTful API', link: '/rest'},
       {text: 'GraphQL API', link: '/graphql'},

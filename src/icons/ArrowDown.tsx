@@ -9,6 +9,7 @@ export function ArrowDownIcon(props: React.SVGProps<SVGSVGElement>) {
       viewBox="0 0 512 512"
       enable-background="new 0 0 512 512"
       xmlSpace="preserve"
+      {...props}
     >
       <path
         d="M256,294.1L383,167c9.4-9.4,24.6-9.4,33.9,0s9.3,24.6,0,34L273,345c-9.1,9.1-23.7,9.3-33.1,0.7L95,201.1
