@@ -38,7 +38,7 @@ FROM variant_insert;
 +-----------------------------------+
 ```
 
-:::info[Syntax of variant literal]
+:::note[Syntax of variant literal]
 
 The syntax or variant literal extends [the JSON format](https://datatracker.ietf.org/doc/html/rfc8259), with additions:
 

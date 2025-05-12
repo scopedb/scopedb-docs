@@ -2,7 +2,7 @@
 import starlight from "@astrojs/starlight";
 import { defineConfig } from "astro/config";
 import starlightLinksValidator from "starlight-links-validator";
-import { sidebar } from "./astro.sidebar.ts";
+import { sidebar } from "./src/content/docs/reference/sidebar.ts";
 import { devServerFileWatcher } from "./config/integrations/dev-server-file-watcher.ts";
 import tailwindcss from "@tailwindcss/vite";
 import starlightSidebarTopics from "starlight-sidebar-topics";
@@ -10,7 +10,7 @@ import starlightSidebarTopics from "starlight-sidebar-topics";
 // https://astro.build/config
 export default defineConfig({
   integrations: [
-    devServerFileWatcher(["./config/*", "./astro.sidebar.ts"]),
+    devServerFileWatcher(["./config/*", "./src/content/docs/reference/sidebar.ts"]),
     starlight({
       title: "ScopeDB",
       social: [
@@ -23,6 +23,11 @@ export default defineConfig({
       plugins: [
         starlightSidebarTopics([
           {
+            label: "Guides",
+            link: "/guides",
+            items: [],
+          },
+          {
             label: "Developer",
             link: "/developer",
             items: [],
@@ -31,21 +36,6 @@ export default defineConfig({
             label: "Reference",
             link: "/reference",
             items: [...sidebar],
-          },
-          {
-            label: "Releases",
-            link: "/releases",
-            items: [
-              {
-                label: "ScopeDB Releases",
-                link: "/releases",
-              },
-            ],
-          },
-          {
-            label: "Tutorials",
-            link: "/tutorials",
-            items: [],
           },
         ]),
         starlightLinksValidator(),
