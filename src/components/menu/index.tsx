@@ -70,11 +70,11 @@ function SidebarMenuItem(props: SidebarItemProps) {
     <div>
       {isGroup
         ? (
-          <div className="group-item item-hover">
+          <div className="group-item item-hover" onClick={handleToggleCollapsed}>
             <div>{item.text}</div>
             {collapsed
-              ? <ArrowLeftIcon onClick={handleToggleCollapsed} />
-              : <ArrowDownIcon width={'16px'} height={'16px'} onClick={handleToggleCollapsed} />}
+              ? <ArrowLeftIcon />
+              : <ArrowDownIcon width={'16px'} height={'16px'} />}
           </div>
         )
         : null}
