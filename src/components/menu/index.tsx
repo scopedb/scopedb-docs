@@ -1,12 +1,13 @@
 import type {SidebarItem} from '@/interface/sidebar';
 import './index.css';
 import {ArrowDownIcon, ArrowLeftIcon} from '@/icons';
-import {useState} from 'react';
+import {useMemo, useState} from 'react';
+import {useMedia, useScrollLock} from 'huse';
+import {ListMinusIcon} from '@/icons/ListMinus';
 
 interface Props {
   sidebar: SidebarItem[];
 }
-// TODO: mobile view sidebar
 const isActive = (item: SidebarItem) => {
   const pathname = window.location.pathname;
   const normalize = (path: string) => path.split('/').filter(Boolean).join('/');
@@ -21,10 +22,28 @@ const isActive = (item: SidebarItem) => {
 
 export function SideBarMenu(props: Props) {
   const {sidebar: items} = props;
+  const isMobile = useMedia('(max-width: 480px)');
+  const [open, setOpen] = useState(false);
+  useScrollLock(open);
 
-  console.log('sidebar', items);
+  function toggleOpen() {
+    setOpen(prev => !prev);
+  }
 
-  return <SideBarGroup items={items} />;
+  const mobileClassName = useMemo(() => {
+    if (!isMobile) {
+      return '';
+    }
+    return open ? 'visible' : 'hidden';
+  }, [isMobile, open]);
+
+  return (
+    <div>
+      {open ? <div className="mask" onClick={toggleOpen} /> : null}
+      {isMobile ? <ListMinusIcon onClick={toggleOpen} /> : null}
+      <SideBarGroup items={items} classNames={`sidebar ${mobileClassName}`} />
+    </div>
+  );
 }
 
 interface SidebarItemProps {
@@ -88,12 +107,13 @@ function SidebarMenuItem(props: SidebarItemProps) {
 
 interface SideBarGroupProps {
   items: SidebarItem[];
+  classNames: string;
 }
 
 function SideBarGroup(props: SideBarGroupProps) {
-  const {items} = props;
+  const {items, classNames} = props;
   return (
-    <aside>
+    <aside className={classNames}>
       <nav>
         {items.map((item, index) => (
           <SidebarMenuItem

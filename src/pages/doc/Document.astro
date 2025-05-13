@@ -13,25 +13,82 @@ interface Props {
 const {headings, sidebar} = Astro.props;
 
 const toc = (headings ?? []).filter(heading => heading.depth > 1 && heading.depth <= 3);
-
-const gridClasses = {
-  grid: true,
-  'grid-cols-10': true,
-  'gap-x-[32px]': true,
-  'w-full': true,
-};
 ---
 
-<div class:list={gridClasses}>
-  <div class="col-span-2">
-    {sidebar?.length > 0 && <SideBar sidebar={sidebar} />}
+<div class="main-container">
+  <div class="sidebar-container">
+    <div class="sidebar">
+      {sidebar?.length > 0 && <SideBar sidebar={sidebar} />}
+    </div>
+    <div class="toc-container">
+      {toc.length > 0 ? <Toc toc={toc} /> : null}
+    </div>
   </div>
-  <div class="col-span-6">
+  <div class="content-container">
     <div class="markdown-body">
       <slot />
     </div>
   </div>
-  <div class="col-span-2">
-    {toc.length > 0 ? <Toc toc={toc} /> : null}
-  </div>
 </div>
+
+<style>
+.main-container {
+  display: grid;
+  grid-template-areas: "sidebar content toc";
+  grid-template-columns: minmax(0, 2fr) minmax(0, 6fr) minmax(0, 2fr);
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.sidebar-container {
+  height: calc(100vh - 68px);
+  display: contents;
+}
+.sidebar {
+  grid-area: sidebar;
+  position: sticky;
+  top: 68px;
+  height: 100%;
+  z-index: 100;
+}
+.toc-container {
+  grid-area: toc;
+  position: sticky;
+  top: 68px;
+}
+.content-container {
+  grid-area: content;
+  height: 100%;
+  overflow-y: auto;
+}
+
+@media (max-width: 960px) {
+  .main-container {
+    display: grid;
+    grid-template-areas: "sidebar content ";
+
+    grid-template-columns: 1fr 3fr;
+  }
+  .toc-container {
+    display: none;
+  }
+  .content-container {
+    position: unset;
+  }
+}
+@media (max-width: 480px) {
+  .main-container {
+    display: grid;
+    grid-template-areas:
+      "sidebar toc"
+      "content content";
+
+    grid-template-columns: 1fr 1fr;
+  }
+  .sidebar {
+    position: unset;
+  }
+  .content-container {
+    position: unset;
+  }
+}
+</style>
