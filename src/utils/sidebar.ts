@@ -59,16 +59,3 @@ function addBase(items: SidebarItem[], _base?: string): SidebarItem[] {
 export function ensureStartWithSlash(path: string): string {
   return path.startsWith('/') ? path : `/${path}`;
 }
-
-export function getCrumbs(path: string) {
-  const segments = path.split('/').filter(Boolean);
-
-  const crumbs = [];
-  let currentPath = '';
-
-  for (const segment of segments) {
-    currentPath += ensureStartWithSlash(segment);
-    crumbs.push({text: segment, link: currentPath});
-  }
-  return [];
-}
