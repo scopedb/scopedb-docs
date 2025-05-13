@@ -6,41 +6,17 @@ import {useState} from 'react';
 interface Props {
   sidebar: SidebarItem[];
 }
-// FIXME: correct the active logic
 // TODO: mobile view sidebar
-const currentPath = window.location.pathname;
-const isActive = (link: string, hasChildren = false) => {
-  if (link === '#') {
-    return false;
+const isActive = (item: SidebarItem) => {
+  const pathname = window.location.pathname;
+  const normalize = (path: string) => path.split('/').filter(Boolean).join('/');
+
+  if (item.items && item.items.length > 0) {
+    return normalize(pathname).includes(normalize(item.base || ''));
   }
-
-  // 处理父级菜单的高亮逻辑
-  if (hasChildren) {
-    // 如果当前路径完全匹配，直接返回true
-    if (currentPath === link) {
-      return true;
-    }
-    // 提取前缀进行比较
-    const urlParts = link.split('/').filter(Boolean);
-    const currentParts = currentPath.split('/').filter(Boolean);
-
-    // 如果href有前缀部分，检查当前路径是否匹配这个前缀
-    if (urlParts.length > 0 && currentParts.length > 0) {
-      return urlParts[0] === currentParts[0];
-    }
-    // 检查是否是子路径
-    return currentPath.includes(link + '/');
+  else {
+    return pathname === item.link;
   }
-
-  // 子菜单项也使用前缀匹配
-  const urlParts = link.split('/').filter(Boolean);
-  const currentParts = currentPath.split('/').filter(Boolean);
-
-  if (urlParts.length > 0 && currentParts.length > 0) {
-    return urlParts[0] === currentParts[0];
-  }
-
-  return currentPath === link;
 };
 
 export function SideBarMenu(props: Props) {
@@ -70,7 +46,7 @@ function SidebarMenuItem(props: SidebarItemProps) {
     <div>
       {isGroup
         ? (
-          <div className="group-item item-hover" onClick={handleToggleCollapsed}>
+          <div className={`group-item item-hover ${isActive(item) ? 'active' : ''}`} onClick={handleToggleCollapsed}>
             <div>{item.text}</div>
             {collapsed
               ? <ArrowLeftIcon />
@@ -86,7 +62,9 @@ function SidebarMenuItem(props: SidebarItemProps) {
             style={{
               paddingLeft: 6 * (depth + 1),
             }}
-            className={`single-item item-hover ${`single-item item-hover ${collapsed ? 'collapsed' : ''}`}`}
+            className={`single-item item-hover ${collapsed ? 'collapsed' : ''} ${isActive(item) ? 'active' : ''} ${
+              item.items === undefined ? 'is-leaf' : ''
+            }`}
           >
             <SidebarMenuItem
               item={item}
