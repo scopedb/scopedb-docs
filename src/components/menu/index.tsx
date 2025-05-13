@@ -40,9 +40,41 @@ export function SideBarMenu(props: Props) {
   return (
     <div>
       {open ? <div className="mask" onClick={toggleOpen} /> : null}
-      {isMobile ? <ListMinusIcon onClick={toggleOpen} /> : null}
+      {isMobile
+        ? (
+          <div className="menu-actions">
+            <ListMinusIcon onClick={toggleOpen} />
+            <Crumbs />
+          </div>
+        )
+        : null}
       <SideBarGroup items={items} classNames={`sidebar ${mobileClassName}`} />
     </div>
+  );
+}
+
+export function Crumbs() {
+  function getCrumbs(path: string) {
+    const segments = path.split('/').filter(Boolean);
+    const crumbs = [];
+    let currentPath = '';
+
+    for (const segment of segments) {
+      currentPath += `/${segment}`;
+      crumbs.push({text: segment, link: currentPath});
+    }
+    return crumbs;
+  }
+
+  const crumbs = getCrumbs(window.location.pathname);
+  return (
+    <span className="breadcrumbs">
+      {crumbs.map(b => (
+        <a key={b.link} href={b.link} className="crumb">
+          {b.text}
+        </a>
+      ))}
+    </span>
   );
 }
 

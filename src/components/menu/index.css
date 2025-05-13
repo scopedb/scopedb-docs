@@ -6,7 +6,6 @@
   top: 0px;
   left: 0;
   overflow-y: auto;
-  margin: 8px 16px;
 }
 .mask {
   position: absolute;
@@ -71,4 +70,20 @@
 .item-hover:hover {
   border-radius: 8px;
   background: var(--docs-toc-select-bg, rgba(0, 0, 0, 0.05));
+}
+.menu-actions {
+  display: flex;
+  flex-direction: row;
+}
+.breadcrumbs {
+  padding-left: 12px;
+  color: var(--font-secondary, rgba(0, 0, 0, 0.60));
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.breadcrumbs .crumb:not(:last-child)::after {
+  content: " / ";
+  margin: 0 4px;
+  color: #999;
 }
