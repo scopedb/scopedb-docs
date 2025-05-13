@@ -1,55 +1,48 @@
 ---
 import '@/styles/markdown.css';
 import Layout from '@/layouts/Layout.astro';
-import { getCollection, getEntry, render } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
+import {getCollection, getEntry} from 'astro:content';
 import Document from '../doc/Document.astro';
-import { getSidebar, getSidebarGroups, resolvePageTitle } from '@/utils';
-import { sidebar as sidebarConfig } from '@/config';
-import type { SidebarItem } from '@/interface/sidebar';
+import {getSidebar, getSidebarGroups, resolvePageTitle} from '@/utils';
+import {sidebar as sidebarConfig} from '@/config';
 
 export async function getStaticPaths() {
   const sidebar = getSidebarGroups(getSidebar(sidebarConfig, '/reference'));
-  
+
   const posts = await getCollection('reference');
-  
+
   const firstItem = sidebar[0].items?.[0];
   const firstItemSlug = firstItem?.link?.split('/').pop() ?? '';
-  
-  const  indexEntry = await getEntry('reference', firstItemSlug)??posts[0];
+
+  const indexEntry = await getEntry('reference', firstItemSlug) ?? posts[0];
 
   return [
     // Index route (no slug)
     {
-      params: { slug: undefined },
-      props: { 
+      params: {slug: undefined},
+      props: {
         entry: indexEntry,
         sidebar,
       },
     },
     // All other routes
     ...posts.map(entry => ({
-      params: { slug: entry.slug },
+      params: {slug: entry.slug},
       props: {
         entry,
         sidebar,
       },
-    }))
+    })),
   ];
 }
 
-interface Props {
-  entry: CollectionEntry<'reference'>;
-  sidebar: SidebarItem[]; 
-}
-
-const { entry, sidebar } = Astro.props as Props;
+const {entry, sidebar} = Astro.props;
 
 if (!entry) {
   throw new Error('Entry is undefined');
 }
 
-const { Content, headings } = await entry.render();
+const {Content, headings} = await entry.render();
 const title = resolvePageTitle(entry.data.title, headings);
 ---
 
