@@ -7,16 +7,6 @@ interface Props {
 }
 
 const {sidebar} = Astro.props;
-
-const sidebarClasses = {
-  'w-full': true,
-  'max-w-[240px]': true,
-  'border-gray-200': true,
-  'max-h-[calc(100vh-6em)]': true,
-  'overflow-y-auto': true,
-};
 ---
 
-<aside class:list={sidebarClasses}>
-  <SideBarMenu sidebar={sidebar} client:only />
-</aside>
+<SideBarMenu sidebar={sidebar} client:only />

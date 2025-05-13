@@ -3,7 +3,7 @@ import Layout from '@/layouts/Layout.astro';
 ---
 
 <Layout title="404 - Page Not Found">
-  <div class="container">
+  <div class="page-container">
     <div class="title">Not Found</div>
     <p class="desc">The page you're trying to access does not exist.</p>
     <button class="btn">
@@ -13,12 +13,13 @@ import Layout from '@/layouts/Layout.astro';
 </Layout>
 
 <style>
-.container {
+.page-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 35px;
+  padding: 16px;
 }
 .title {
   color: #000;

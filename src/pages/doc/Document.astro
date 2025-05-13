@@ -15,14 +15,12 @@ const {headings, sidebar} = Astro.props;
 const toc = (headings ?? []).filter(heading => heading.depth > 1 && heading.depth <= 3);
 ---
 
-<div class="main-container">
-  <div class="sidebar-container">
-    <div class="sidebar">
-      {sidebar?.length > 0 && <SideBar sidebar={sidebar} />}
-    </div>
-    <div class="toc-container">
-      {toc.length > 0 ? <Toc toc={toc} /> : null}
-    </div>
+<div class="doc-container">
+  <div class="sidebar">
+    {sidebar?.length > 0 && <SideBar sidebar={sidebar} />}
+  </div>
+  <div class="toc-container">
+    {toc.length > 0 ? <Toc toc={toc} /> : null}
   </div>
   <div class="content-container">
     <div class="markdown-body">
@@ -32,40 +30,35 @@ const toc = (headings ?? []).filter(heading => heading.depth > 1 && heading.dept
 </div>
 
 <style>
-.main-container {
+.doc-container {
   display: grid;
   grid-template-areas: "sidebar content toc";
   grid-template-columns: minmax(0, 2fr) minmax(0, 6fr) minmax(0, 2fr);
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-.sidebar-container {
-  height: calc(100vh - 68px);
-  display: contents;
+  width: 100%;
 }
 .sidebar {
   grid-area: sidebar;
   position: sticky;
-  top: 68px;
-  height: 100%;
+  top: 0;
   z-index: 100;
+  margin: 8px 16px;
+  height: 100vh;
+  overflow-y: auto;
 }
 .toc-container {
   grid-area: toc;
   position: sticky;
   top: 68px;
+  overflow: hidden;
 }
 .content-container {
   grid-area: content;
-  height: 100%;
-  overflow-y: auto;
 }
 
 @media (max-width: 960px) {
-  .main-container {
+  .doc-container {
     display: grid;
     grid-template-areas: "sidebar content ";
-
     grid-template-columns: 1fr 3fr;
   }
   .toc-container {
@@ -76,7 +69,7 @@ const toc = (headings ?? []).filter(heading => heading.depth > 1 && heading.dept
   }
 }
 @media (max-width: 480px) {
-  .main-container {
+  .doc-container {
     display: grid;
     grid-template-areas:
       "sidebar toc"
@@ -86,6 +79,7 @@ const toc = (headings ?? []).filter(heading => heading.depth > 1 && heading.dept
   }
   .sidebar {
     position: unset;
+    height: fit-content;
   }
   .content-container {
     position: unset;
