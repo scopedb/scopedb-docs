@@ -1,7 +1,7 @@
 ---
 import '@/styles/global.css';
 import type {MarkdownHeading} from 'astro';
-import Toc from '@/components/toc/Toc.astro';
+import {Toc} from '@/components/toc';
 import SideBar from '@/components/side-bar/SideBar.astro';
 import type {SidebarItem} from '@/interface/sidebar';
 
@@ -20,7 +20,7 @@ const toc = (headings ?? []).filter(heading => heading.depth > 1 && heading.dept
     {sidebar?.length > 0 && <SideBar sidebar={sidebar} />}
   </div>
   <div class="toc-container">
-    {toc.length > 0 ? <Toc toc={toc} /> : null}
+    {toc.length > 0 ? <Toc toc={toc} client:only /> : null}
   </div>
   <div class="content-container">
     <div class="markdown-body">

@@ -1,4 +1,4 @@
-import Search from './search.svg?react'
+import Search from './search.svg?react';
 export function SearchIcon(props: React.SVGProps<SVGSVGElement>) {
-  return <Search {...props}/>;
+  return <Search {...props} />;
 }
