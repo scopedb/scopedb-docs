@@ -1,12 +1,13 @@
 // @ts-check
 import starlight from "@astrojs/starlight";
-import sitemap from '@astrojs/sitemap';
+import sitemap from "@astrojs/sitemap";
 import { defineConfig } from "astro/config";
 import starlightLinksValidator from "starlight-links-validator";
 import { sidebar } from "./src/content/docs/reference/sidebar.ts";
 import { devServerFileWatcher } from "./config/integrations/dev-server-file-watcher.ts";
 import tailwindcss from "@tailwindcss/vite";
 import starlightSidebarTopics from "starlight-sidebar-topics";
+
 // import { loadEnv } from "vite";
 // import starlightDocSearch from '@astrojs/starlight-docsearch';
 
@@ -17,7 +18,10 @@ export default defineConfig({
   site: "https://docs.scopedb.io",
 
   integrations: [
-    devServerFileWatcher(["./config/*", "./src/content/docs/reference/sidebar.ts"]),
+    devServerFileWatcher([
+      "./config/*",
+      "./src/content/docs/reference/sidebar.ts",
+    ]),
     starlight({
       title: "ScopeDB",
       social: [
@@ -68,5 +72,13 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+  },
+
+  markdown: {
+    shikiConfig: {
+      langAlias: {
+        scopeql: "sql",
+      },
+    },
   },
 });
