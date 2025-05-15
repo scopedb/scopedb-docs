@@ -71,7 +71,9 @@ const toc = (headings ?? []).filter(heading => heading.depth > 1 && heading.dept
     position: unset;
   }
   .toc-container {
-    height: fit-content;
+    height: 20px;
+    overflow: unset;
+    position: unset;
   }
 }
 @media (max-width: 480px) {
@@ -86,7 +88,7 @@ const toc = (headings ?? []).filter(heading => heading.depth > 1 && heading.dept
     justify-content: space-between;
   }
   .toc-container {
-    height: fit-content;
+    position: unset;
   }
   .sidebar {
     position: unset;

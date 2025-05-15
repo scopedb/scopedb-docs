@@ -28,8 +28,8 @@
   width: 70%;
   padding: 12px;
   margin: 0;
-  position: fixed;
-  inset: 0 0 unset;
+  position: fixed !important;
+  inset: 0 0 unset !important;
   z-index: 1;
   transform: translateX(0%);
   transition: opacity 0.5s, transform 0.25s ease-in-out;
