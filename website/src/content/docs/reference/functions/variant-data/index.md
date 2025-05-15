@@ -1,5 +1,8 @@
 ---
 title: Variant data functions
+relatedContents:
+  - title: "Variant data type"
+    url: "/reference/data-types/variant"
 ---
 
 These functions are used with semi-structured data (variant).

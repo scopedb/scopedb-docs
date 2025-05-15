@@ -1,6 +1,11 @@
 ---
+import RelatedContent from '@/src/components/RelatedContent.astro';
 import MobileTableOfContents from '@astrojs/starlight/components/MobileTableOfContents.astro';
 import TableOfContents from '@astrojs/starlight/components/TableOfContents.astro';
+
+// Get relatedContent from the current page data
+const { entry } = Astro.locals.starlightRoute;
+const relatedContents = entry?.data?.relatedContents;
 ---
 
 {
@@ -9,7 +14,10 @@ import TableOfContents from '@astrojs/starlight/components/TableOfContents.astro
 			<div class="hidden">
 				<MobileTableOfContents />
 			</div>
-			<div class="right-sidebar-panel sl-hidden lg:sl-block">
+			<div class="right-sidebar-panel sl-hidden lg:sl-block flex flex-col">
+				<div class="sl-container">
+					<RelatedContent relatedContents={relatedContents} />
+				</div>
 				<div class="sl-container">
 					<TableOfContents />
 				</div>
