@@ -16,11 +16,11 @@ const toc = (headings ?? []).filter(heading => heading.depth > 1 && heading.dept
 ---
 
 <div class="doc-container">
-  <div class="sidebar">
-    {sidebar?.length > 0 && <SideBar sidebar={sidebar} />}
-  </div>
-  <div class="toc-container">
-    {toc.length > 0 ? <Toc toc={toc} client:only /> : null}
+  <div class="doc-aside">
+    <div class="sidebar">
+      {sidebar?.length > 0 && <SideBar sidebar={sidebar} />}
+    </div>
+    {toc.length > 0 ? <div class="toc-container"><Toc toc={toc} client:only /></div> : null}
   </div>
   <div class="content-container">
     <div class="markdown-body">
@@ -36,12 +36,14 @@ const toc = (headings ?? []).filter(heading => heading.depth > 1 && heading.dept
   grid-template-columns: minmax(0, 2fr) minmax(0, 6fr) minmax(0, 2fr);
   width: 100%;
 }
+.doc-aside {
+  display: contents;
+}
 .sidebar {
   grid-area: sidebar;
   position: sticky;
   top: 0;
-  z-index: 100;
-  margin: 8px 16px;
+  padding: 8px 16px;
   height: 100vh;
   overflow-y: auto;
 }
@@ -59,24 +61,32 @@ const toc = (headings ?? []).filter(heading => heading.depth > 1 && heading.dept
 @media (max-width: 960px) {
   .doc-container {
     display: grid;
-    grid-template-areas: "sidebar content ";
-    grid-template-columns: 1fr 3fr;
-  }
-  .toc-container {
-    display: none;
+    grid-template-areas:
+      "sidebar toc toc "
+      "sidebar content content ";
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
   }
   .content-container {
     position: unset;
   }
+  .toc-container {
+    height: fit-content;
+  }
 }
 @media (max-width: 480px) {
   .doc-container {
-    display: grid;
-    grid-template-areas:
-      "sidebar toc"
-      "content content";
-
-    grid-template-columns: 3fr 1fr;
+    display: flex;
+    flex-direction: column;
+  }
+  .doc-aside {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .toc-container {
+    height: fit-content;
   }
   .sidebar {
     position: unset;

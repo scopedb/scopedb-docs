@@ -4,12 +4,14 @@ import {AlignLeftIcon} from '@/icons/AlignLeft';
 import './index.css';
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {throttle} from 'lodash-es';
+import {useMedia} from 'huse';
 
 interface Props {
   toc: MarkdownHeading[];
 }
 interface TocItemProps {
   item: MarkdownHeading;
+  isActive: boolean;
 }
 
 interface LinkInfo {
@@ -35,13 +37,19 @@ export function getOffset(el: HTMLElement, scrollTarget: OffsetTarget): {
   };
 }
 
-// TODO: mobile toc view
 export function Toc(props: Props) {
   const {toc} = props;
+  const collectedLinkHrefs = toc.map(t => t.slug);
+
   const [activeHref, setActiveHref] = useState<string | null>(null);
   const [activeLink, setActiveLink] = useState<LinkInfo | null>(null);
   const tocListRef = useRef<HTMLUListElement>(null);
-  const collectedLinkHrefs = toc.map(t => t.slug);
+  const [open, setOpen] = useState(false);
+  const isMobile = useMedia('(max-width:960px)');
+
+  function toggleOpen() {
+    setOpen(prev => !prev);
+  }
 
   function updateActiveHref(href: string): void {
     const linkEl = document.getElementById(href);
@@ -123,37 +131,36 @@ export function Toc(props: Props) {
   }, [activeLink]);
 
   return (
-    <div className="toc-wrapper">
-      <div className="toc-title">
-        <AlignLeftIcon />
-        <span>On this page</span>
-      </div>
-      <div className="toc-list-container">
-        <div
-          className="toc-rail"
-          style={{
-            height: tocListRef?.current?.offsetHeight,
-          }}
-        >
-          <div
-            className={`toc-rail-bar ${activeLink ? 'toc-rail-bar-active' : ''}`}
-            style={{
-              top: `${tocBarTop}px`,
-            }}
-          />
+    <div className="toc">
+      {isMobile ? <AlignLeftIcon onClick={toggleOpen} width={20} height={20} /> : null}
+      {open ? <div className="toc-mask" onClick={toggleOpen} /> : null}
+      <div className={`toc-wrapper ${isMobile ? open ? 'open' : 'close' : ''}`}>
+        <div className="toc-title">
+          <AlignLeftIcon />
+          <span>On this page</span>
         </div>
-        <ul className="toc-list" ref={tocListRef}>
-          {toc.map(toc => <TocItem item={toc} key={toc.slug} />)}
-        </ul>
+        <div className="toc-list-container">
+          <div className="toc-rail">
+            <div
+              className={`toc-rail-bar ${activeLink ? 'toc-rail-bar-active' : ''}`}
+              style={{
+                top: `${tocBarTop}px`,
+              }}
+            />
+          </div>
+          <ul className="toc-list" ref={tocListRef}>
+            {toc.map(toc => <TocItem item={toc} key={toc.slug} isActive={toc.slug === activeHref} />)}
+          </ul>
+        </div>
       </div>
     </div>
   );
 }
 
 export function TocItem(props: TocItemProps) {
-  const {item} = props;
+  const {item, isActive} = props;
   return (
-    <li className="toc-item">
+    <li className={`toc-item ${isActive ? 'toc-item-active' : ''}`}>
       <a
         target="_self"
         title={item.text}
