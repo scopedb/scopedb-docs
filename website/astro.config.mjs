@@ -1,6 +1,6 @@
 // @ts-check
 import starlight from "@astrojs/starlight";
-import sitemap from '@astrojs/sitemap';
+import sitemap from "@astrojs/sitemap";
 import { defineConfig } from "astro/config";
 import starlightLinksValidator from "starlight-links-validator";
 import { sidebar } from "./src/content/docs/reference/sidebar.ts";
@@ -17,7 +17,10 @@ export default defineConfig({
   site: "https://docs.scopedb.io",
 
   integrations: [
-    devServerFileWatcher(["./config/*", "./src/content/docs/reference/sidebar.ts"]),
+    devServerFileWatcher([
+      "./config/*",
+      "./src/content/docs/reference/sidebar.ts",
+    ]),
     starlight({
       title: "ScopeDB",
       social: [
