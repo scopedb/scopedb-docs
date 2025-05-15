@@ -12,7 +12,7 @@ interface Props {
 
 const {headings, sidebar} = Astro.props;
 
-const toc = (headings ?? []).filter(heading => heading.depth > 1 && heading.depth <= 3);
+const toc = (headings ?? []).filter(heading => heading.depth > 1 && heading.depth <= 6);
 ---
 
 <div class="doc-container">
@@ -48,8 +48,9 @@ const toc = (headings ?? []).filter(heading => heading.depth > 1 && heading.dept
 .toc-container {
   grid-area: toc;
   position: sticky;
-  top: 68px;
-  overflow: hidden;
+  top: 0px;
+  height: 100vh;
+  overflow: auto;
 }
 .content-container {
   grid-area: content;
