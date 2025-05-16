@@ -1,15 +1,15 @@
 import type {SidebarItem} from '@/interface/sidebar';
 import './index.css';
 import {ArrowDownIcon, ArrowLeftIcon} from '@/icons';
-import {useMemo, useState} from 'react';
+import React, {useMemo, useState, useCallback, useEffect} from 'react';
 import {useMedia, useScrollLock} from 'huse';
 import {ListMinusIcon} from '@/icons/ListMinus';
 
 interface Props {
   sidebar: SidebarItem[];
 }
-const isActive = (item: SidebarItem) => {
-  const pathname = window.location.pathname;
+
+const isActive = (item: SidebarItem, pathname: string) => {
   const normalize = (path: string) => path.split('/').filter(Boolean).join('/');
 
   if (item.items && item.items.length > 0) {
@@ -24,11 +24,27 @@ export function SideBarMenu(props: Props) {
   const {sidebar: items} = props;
   const isMobile = useMedia('(max-width: 480px)');
   const [open, setOpen] = useState(false);
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+
   useScrollLock(open);
 
-  function toggleOpen() {
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setCurrentPath(window.location.pathname);
+    };
+
+    window.addEventListener('popstate', handleRouteChange);
+    document.addEventListener('astro:page-load', handleRouteChange);
+
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+      document.removeEventListener('astro:page-load', handleRouteChange);
+    };
+  }, []);
+
+  const toggleOpen = useCallback(() => {
     setOpen(prev => !prev);
-  }
+  }, []);
 
   const mobileClassName = useMemo(() => {
     if (!isMobile) {
@@ -48,7 +64,7 @@ export function SideBarMenu(props: Props) {
           </div>
         )
         : null}
-      <SideBarGroup items={items} classNames={`sidebar ${mobileClassName}`} />
+      <SideBarGroup items={items} classNames={`sidebar ${mobileClassName}`} currentPath={currentPath} />
     </div>
   );
 }
@@ -81,23 +97,35 @@ export function Crumbs() {
 interface SidebarItemProps {
   item: SidebarItem;
   depth: number;
+  currentPath: string;
 }
-function SidebarMenuItem(props: SidebarItemProps) {
-  const {item, depth} = props;
 
-  const isGroup = item?.items && item?.items?.length >= 0;
-  const groupItems = isGroup ? item.items : [];
+const SidebarMenuItem = React.memo(function SidebarMenuItem(props: SidebarItemProps) {
+  const {item, depth, currentPath} = props;
+
+  const isGroup = useMemo(() => item?.items && item?.items?.length >= 0, [item]);
+  const groupItems = useMemo(() => isGroup ? item.items : [], [isGroup, item]);
 
   const [collapsed, setCollapsed] = useState(item.collapsed ?? false);
-  function handleToggleCollapsed() {
+
+  const handleToggleCollapsed = useCallback(() => {
     setCollapsed(prev => !prev);
-  }
+  }, []);
+
+  const itemStyle = useMemo(() => ({
+    paddingLeft: 6 * (depth + 1),
+  }), [depth]);
+
+  const isItemActive = useMemo(() => isActive(item, currentPath), [item, currentPath]);
 
   return (
     <div>
       {isGroup
         ? (
-          <div className={`group-item item-hover ${isActive(item) ? 'active' : ''}`} onClick={handleToggleCollapsed}>
+          <div
+            className={`group-item item-hover ${isItemActive ? 'active' : ''}`}
+            onClick={handleToggleCollapsed}
+          >
             <div>{item.text}</div>
             {collapsed
               ? <ArrowLeftIcon />
@@ -110,40 +138,39 @@ function SidebarMenuItem(props: SidebarItemProps) {
         ? (groupItems.map((item, index) => (
           <div
             key={`${item?.link ?? index}-${depth + 1}`}
-            style={{
-              paddingLeft: 6 * (depth + 1),
-            }}
-            className={`single-item item-hover ${collapsed ? 'collapsed' : ''} ${isActive(item) ? 'active' : ''} ${
-              item.items === undefined ? 'is-leaf' : ''
-            }`}
+            style={itemStyle}
+            className={`single-item item-hover ${collapsed ? 'collapsed' : ''} ${
+              isActive(item, currentPath) ? 'active' : ''
+            } ${item.items === undefined ? 'is-leaf' : ''}`}
           >
             <SidebarMenuItem
               item={item}
               depth={depth + 1}
+              currentPath={currentPath}
             />
           </div>
         )))
         : (
           <a
             href={item.link}
-            style={{
-              paddingLeft: 6 * (depth + 1),
-            }}
+            style={itemStyle}
+            data-astro-prefetch
           >
             {item.text}
           </a>
         )}
     </div>
   );
-}
+});
 
 interface SideBarGroupProps {
   items: SidebarItem[];
   classNames: string;
+  currentPath: string;
 }
 
-function SideBarGroup(props: SideBarGroupProps) {
-  const {items, classNames} = props;
+const SideBarGroup = React.memo(function SideBarGroup(props: SideBarGroupProps) {
+  const {items, classNames, currentPath} = props;
   return (
     <aside className={classNames}>
       <nav>
@@ -152,9 +179,10 @@ function SideBarGroup(props: SideBarGroupProps) {
             key={`${item.base ?? item.link}${index}`}
             item={item}
             depth={0}
+            currentPath={currentPath}
           />
         ))}
       </nav>
     </aside>
   );
-}
+});

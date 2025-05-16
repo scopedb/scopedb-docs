@@ -17,12 +17,12 @@ const toc = (headings ?? []).filter(heading => heading.depth > 1 && heading.dept
 
 <div class="doc-container">
   <div class="doc-aside">
-    <div class="sidebar">
+    <div class="sidebar" transition:persist>
       {sidebar?.length > 0 && <SideBar sidebar={sidebar} />}
     </div>
     {toc.length > 0 ? <div class="toc-container"><Toc toc={toc} client:only /></div> : null}
   </div>
-  <div class="content-container">
+  <div class="content-container" transition:animate="slide">
     <div class="markdown-body">
       <slot />
     </div>

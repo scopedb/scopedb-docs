@@ -5,6 +5,7 @@ import {getCollection, getEntry} from 'astro:content';
 import Document from '../doc/Document.astro';
 import {getSidebar, getSidebarGroups, resolvePageTitle} from '@/utils';
 import {sidebar as sidebarConfig} from '@/config';
+import MyHeading from '@/components/MyHeading.astro';
 
 export async function getStaticPaths() {
   const sidebar = getSidebarGroups(getSidebar(sidebarConfig, '/reference'));
@@ -48,6 +49,6 @@ const title = resolvePageTitle(entry.data.title, headings);
 
 <Layout title={title}>
   <Document headings={headings} sidebar={sidebar}>
-    <Content />
+    <Content components={{h1: MyHeading}} />
   </Document>
 </Layout>
