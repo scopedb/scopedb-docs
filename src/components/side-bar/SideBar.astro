@@ -1,0 +1,12 @@
+---
+import type {SidebarItem} from '@/interface/sidebar';
+import {SideBarMenu} from '../menu';
+
+interface Props {
+  sidebar: SidebarItem[];
+}
+
+const {sidebar} = Astro.props;
+---
+
+<SideBarMenu sidebar={sidebar} client:only />

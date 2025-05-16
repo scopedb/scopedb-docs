@@ -1,0 +1,81 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px;
+  width: 760px;
+  height: 522px;
+  border-radius: 12px;
+  background: #f7f7f7;
+  text-decoration: none !important; /* Remove underline cause by tailwind injection*/
+}
+.card-small {
+  max-width: 500px;
+  height: 251px;
+}
+.card-medium {
+  max-width: 628px;
+  height: 522px;
+}
+.card-large {
+  max-width: 760px;
+  height: 522px;
+}
+.card-tiny {
+  max-width: 362px;
+  height: auto;
+  max-height: 342px;
+}
+.cover {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+.cover-tiny {
+  height: 129px;
+}
+.time {
+  flex-shrink: 0;
+  color: var(--font-primary, #000);
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  gap: 1rem;
+}
+.time-tiny {
+  font-size: 14px;
+}
+.date-time, .read-time {
+  display: flex;
+  align-items: center;
+}
+.title {
+  flex-shrink: 0;
+  color: var(--font-primary, #000);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.title-tiny {
+  font-size: 16px;
+  font-weight: 600;
+}
+.desc {
+  color: var(--font-secondary, rgba(0, 0, 0, 0.60));
+  font-size: 16px;
+  font-weight: 400;
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.desc-tiny {
+  font-size: 14px;
+}

@@ -1,52 +1,64 @@
 ---
-import "@/styles/global.css";
+import '@/styles/global.css';
+import '@/styles/markdown.css';
 
-import Navbar from "@/components/Navbar.astro";
+import {Navbar} from '@/components/nav/Navbar.tsx';
+import Footer from '@/components/footer/Footer.astro';
+import {ClientRouter} from 'astro:transitions';
 
 interface Props {
-    title: string;
+  title: string;
 }
 
-const { title } = Astro.props;
+const {title} = Astro.props;
 ---
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <meta name="generator" content={Astro.generator} />
-        <title>{title}</title>
-    </head>
-    <body>
-        <div class="navbarContainer sticky top-0"><Navbar /></div>
-        <div class="mainContainer"><slot /></div>
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+  <body>
+    <main>
+      <div class="navbarContainer top-0"><Navbar client:only pathname={Astro.url.pathname} /></div>
+      <slot />
+    </main>
+    <Footer />
+  </body>
 </html>
 
 <style>
-    body {
-        font-family: sans-serif;
-    }
+body {
+  font-family: sans-serif;
+  width: 100%;
+  overflow-x: hidden;
+  box-sizing: content-box;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-    .navbarContainer {
-        padding: clamp(
-            var(--container-min-padding),
-            var(--container-default-padding),
-            var(--container-max-padding)
-        );
-        padding-bottom: 12px;
-        background-color: #fbfbfb;
-        background-clip: border-box;
-        border-bottom: 1px solid #ebebeb;
-    }
-
-    .mainContainer {
-        padding: clamp(
-            var(--container-min-padding),
-            var(--container-default-padding),
-            var(--container-max-padding)
-        );
-    }
+.navbarContainer {
+  padding-left: clamp(
+    var(--container-min-padding),
+    var(--container-default-padding),
+    var(--container-max-padding)
+  );
+  padding-right: clamp(
+    var(--container-min-padding),
+    var(--container-default-padding),
+    var(--container-max-padding)
+  );
+  padding-top: var(--nav-padding-y);
+  padding-bottom: var(--nav-padding-y);
+  background-color: #fbfbfb;
+  background-clip: border-box;
+  border-bottom: 1px solid #ebebeb;
+}
 </style>

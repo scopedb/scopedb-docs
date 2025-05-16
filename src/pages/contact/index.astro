@@ -1,0 +1,198 @@
+---
+import {ContactForm} from '../../components/ContactForm';
+import Layout from '../../layouts/Layout.astro';
+import {Button} from '../../components/Button';
+---
+
+<Layout title="Contact | Scopedb">
+  <main class="contact-page-main">
+    <h1 class="contact-page-title">How can we Help ?</h1>
+    <p class="contact-page-desc">
+      Contact our sales and support teams for demos, onboarding guidance, or answers to product questions.
+    </p>
+    <section class="contact-section">
+      <div class="contact-sales">
+        <h2 class="contact-sales-title">Sales</h2>
+        <p class="contact-sales-desc">
+          Speak to our sales team about plans, pricing, enterprise contracts, or request a demo. Talk to sales
+        </p>
+        <ul class="contact-sales-list">
+          <li>
+            <span>✔</span>
+            <p>Request a demo</p>
+          </li>
+          <li>
+            <span>✔</span>
+            <p>Understand what problems ScopedDB can actually solve.</p>
+          </li>
+          <li>
+            <span>✔</span>
+            <p>Get onboarding help</p>
+          </li>
+        </ul>
+        <Button client:only="react" type="info">Book A Demo</Button>
+      </div>
+      <div class="contact-form-wrap">
+        <ContactForm client:only="react" />
+      </div>
+    </section>
+    <footer class="contact-footer">
+      <div class="contact-footer-col">
+        <h3 class="contact-footer-title">Join the community</h3>
+        <p class="contact-footer-desc">
+          More than 10,000 users share questions and best practices in our Slack community.
+        </p>
+        <a class="contact-footer-link" href="#">Join Discord</a>
+      </div>
+      <div class="contact-footer-col">
+        <h3 class="contact-footer-title">General communicate</h3>
+        <p class="contact-footer-desc">For other queries, please get in touch with us via email.</p>
+        <a class="contact-footer-link" href="mailto:hello@scopedb.com">hello@scopedb.com</a>
+      </div>
+      <div class="contact-footer-col">
+        <h3 class="contact-footer-title">Documentation</h3>
+        <p class="contact-footer-desc">Get an overview of ScopeDB's features, integrations, and how to use them.</p>
+        <a class="contact-footer-link" href="#">ScopeDB Docs</a>
+      </div>
+    </footer>
+  </main>
+</Layout>
+
+<style>
+.contact-page-main {
+  width: 100%;
+  min-width: 375px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+}
+.contact-page-title {
+  margin-top: 48px;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+.contact-page-desc {
+  margin-top: 16px;
+  font-size: 1.1rem;
+  color: #333;
+  max-width: 600px;
+  text-align: center;
+}
+.contact-section {
+  width: 100%;
+  min-width: 375px;
+  max-width: 1020px;
+  margin: 0 auto;
+  margin-top: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 89px;
+  padding: 64px;
+  box-sizing: border-box;
+  background: #f7f7f7;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px #0001;
+}
+
+@media (max-width: 768px) {
+  .contact-section {
+    flex-direction: column;
+    gap: 32px;
+    padding: 24px 8px;
+    justify-content: center;
+    margin: 0 20px;
+  }
+  .contact-footer {
+    flex-direction: column;
+    gap: 32px;
+    justify-content: center;
+    padding: 24px 24px !important;
+    margin: 64px 20px 0 20px;
+  }
+  .contact-form-wrap {
+    max-width: 100%;
+  }
+}
+.contact-sales {
+  flex: 1;
+}
+.contact-sales-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+.contact-sales-desc {
+  margin: 16px 0 24px 0;
+  color: #555;
+  font-size: 1rem;
+  word-break: break-word;
+  white-space: normal;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .contact-sales-desc {
+    width: 100%;
+    max-width: 100%;
+    text-align: left;
+  }
+}
+
+.contact-sales-list {
+  margin-bottom: 24px;
+  color: #222;
+}
+.contact-sales-list li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  height: 37px;
+  flex-shrink: 0;
+  color: var(--font-secondary, rgba(0, 0, 0, 0.60));
+  font-size: 16px;
+  font-weight: 400;
+}
+.contact-sales-list li:last-child {
+  margin-bottom: 0;
+}
+.contact-form-wrap {
+  max-width: 375px;
+  flex: 1.5;
+}
+.contact-footer {
+  width: 100%;
+  min-width: 375px;
+  max-width: 1020px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 54px;
+  padding: 64px;
+  padding-bottom: 48px;
+  box-sizing: border-box;
+}
+.contact-footer-col {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.contact-footer-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+.contact-footer-desc {
+  font-size: 14px;
+  color: #555;
+}
+.contact-footer-link {
+  font-size: 14px;
+  font-weight: 600;
+}
+</style>
