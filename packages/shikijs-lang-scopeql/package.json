@@ -1,0 +1,20 @@
+{
+  "name": "shikijs-lang-scopeql",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "types": "./index.d.mts"
+    }
+  },
+  "files": [
+    "index.js",
+    "index.d.mts",
+    "scopeql-textmate-grammar.json"
+  ],
+  "devDependencies": {
+    "@shikijs/types": "^3.2.1"
+  }
+}

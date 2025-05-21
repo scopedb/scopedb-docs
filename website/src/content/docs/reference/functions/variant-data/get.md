@@ -53,7 +53,7 @@ VALUES
 INSERT INTO vartab;
 ```
 
-```scopedb
+```scopeql
 FROM vartab;
 ```
 
@@ -67,7 +67,7 @@ FROM vartab;
 
 Extract the first element of an ARRAY:
 
-```scopedb
+```scopeql
 FROM vartab SELECT get(a, 0), a[0];
 ```
 
@@ -81,7 +81,7 @@ FROM vartab SELECT get(a, 0), a[0];
 
 Given the name of a country, extract the name of the capital city of that country from an OBJECT containing country names and capital cities:
 
-```scopedb
+```scopeql
 FROM vartab SELECT get(o, 'Germany'), o['Germany'];
 ```
 
@@ -95,7 +95,7 @@ FROM vartab SELECT get(o, 'Germany'), o['Germany'];
 
 Extract the temperature from a variant that contains an OBJECT:
 
-```scopedb
+```scopeql
 FROM vartab SELECT get(v, 'temperature');
 ```
 

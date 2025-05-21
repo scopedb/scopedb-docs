@@ -8,6 +8,12 @@ importers:
 
   .: {}
 
+  packages/shikijs-lang-scopeql:
+    devDependencies:
+      '@shikijs/types':
+        specifier: ^3.2.1
+        version: 3.4.2
+
   packages/starlight-scopedb: {}
 
   website:
@@ -60,6 +66,9 @@ importers:
       sharp:
         specifier: ^0.32.5
         version: 0.32.6
+      shikijs-lang-scopeql:
+        specifier: link:../packages/shikijs-lang-scopeql
+        version: link:../packages/shikijs-lang-scopeql
       starlight-links-validator:
         specifier: ^0.15.1
         version: 0.15.1(@astrojs/starlight@0.33.0(astro@5.6.1(jiti@2.4.2)(lightningcss@1.29.2)(rollup@4.39.0)(typescript@5.8.3)(yaml@2.7.1)))
@@ -747,6 +756,9 @@ packages:
 
   '@shikijs/types@3.3.0':
     resolution: {integrity: sha512-KPCGnHG6k06QG/2pnYGbFtFvpVJmC3uIpXrAiPrawETifujPBv0Se2oUxm5qYgjCvGJS9InKvjytOdN+bGuX+Q==}
+
+  '@shikijs/types@3.4.2':
+    resolution: {integrity: sha512-zHC1l7L+eQlDXLnxvM9R91Efh2V4+rN3oMVS2swCBssbj2U/FBwybD1eeLaq8yl/iwT+zih8iUbTBCgGZOYlVg==}
 
   '@shikijs/vscode-textmate@10.0.2':
     resolution: {integrity: sha512-83yeghZ2xxin3Nj8z1NMd/NCuca+gsYXswywDy5bHvwlWL8tpTQmzGeUuHd9FC3E/SBEMvzJRwWEOz5gGes9Qg==}
@@ -3149,6 +3161,11 @@ snapshots:
       '@types/hast': 3.0.4
 
   '@shikijs/types@3.3.0':
+    dependencies:
+      '@shikijs/vscode-textmate': 10.0.2
+      '@types/hast': 3.0.4
+
+  '@shikijs/types@3.4.2':
     dependencies:
       '@shikijs/vscode-textmate': 10.0.2
       '@types/hast': 3.0.4

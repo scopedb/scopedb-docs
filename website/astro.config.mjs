@@ -7,6 +7,7 @@ import { sidebar } from "./src/content/docs/reference/sidebar.ts";
 import { devServerFileWatcher } from "./config/integrations/dev-server-file-watcher.ts";
 import tailwindcss from "@tailwindcss/vite";
 import starlightSidebarTopics from "starlight-sidebar-topics";
+import scopeql from "shikijs-lang-scopeql";
 
 // import { loadEnv } from "vite";
 // import starlightDocSearch from '@astrojs/starlight-docsearch';
@@ -76,9 +77,7 @@ export default defineConfig({
 
   markdown: {
     shikiConfig: {
-      langAlias: {
-        scopeql: "sql",
-      },
+      langs: [scopeql],
     },
   },
 });
