@@ -6,15 +6,8 @@ import { defineConfig } from "astro/config";
 import scopeql from "./shiki-scopeql-grammar.json";
 import starlightLinksValidator from "starlight-links-validator";
 import starlightSidebarTopics from "starlight-sidebar-topics";
-import { loadEnv } from "vite";
 import { devServerFileWatcher } from "./config/integrations/dev-server-file-watcher.ts";
 import { sidebar } from "./src/content/docs/reference/sidebar.ts";
-
-const { ALGOLIA_APIKEY, ALGOLIA_APPID, ALGOLIA_INDEXNAME } = loadEnv(
-  "production",
-  process.cwd(),
-  "",
-);
 
 // https://astro.build/config
 export default defineConfig({
@@ -54,9 +47,9 @@ export default defineConfig({
         ]),
         starlightLinksValidator(),
         starlightDocSearch({
-          appId: ALGOLIA_APPID,
-          apiKey: ALGOLIA_APIKEY,
-          indexName: ALGOLIA_INDEXNAME,
+          appId: "WHHXVN2FB9",
+          apiKey: "aa8e5889d050ad97cf07bcaecc2173fc",
+          indexName: "scopedb",
         }),
       ],
       customCss: ["./src/styles/global.css"],
