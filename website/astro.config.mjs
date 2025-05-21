@@ -1,16 +1,19 @@
-// @ts-check
-import starlight from "@astrojs/starlight";
 import sitemap from "@astrojs/sitemap";
+import starlight from "@astrojs/starlight";
+import starlightDocSearch from "@astrojs/starlight-docsearch";
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import starlightLinksValidator from "starlight-links-validator";
-import { sidebar } from "./src/content/docs/reference/sidebar.ts";
-import { devServerFileWatcher } from "./config/integrations/dev-server-file-watcher.ts";
-import tailwindcss from "@tailwindcss/vite";
 import starlightSidebarTopics from "starlight-sidebar-topics";
-// import { loadEnv } from "vite";
-// import starlightDocSearch from '@astrojs/starlight-docsearch';
+import { loadEnv } from "vite";
+import { devServerFileWatcher } from "./config/integrations/dev-server-file-watcher.ts";
+import { sidebar } from "./src/content/docs/reference/sidebar.ts";
 
-// const { ALGOLIA_APIKEY, ALGOLIA_APPID, ALGOLIA_INDEXNAME } = loadEnv('production', process.cwd(), "");
+const { ALGOLIA_APIKEY, ALGOLIA_APPID, ALGOLIA_INDEXNAME } = loadEnv(
+  "production",
+  process.cwd(),
+  "",
+);
 
 // https://astro.build/config
 export default defineConfig({
@@ -49,11 +52,11 @@ export default defineConfig({
           },
         ]),
         starlightLinksValidator(),
-        // starlightDocSearch({
-        //   appId: ALGOLIA_APPID,
-        //   apiKey: ALGOLIA_APIKEY,
-        //   indexName: ALGOLIA_INDEXNAME,
-        // }),
+        starlightDocSearch({
+          appId: ALGOLIA_APPID,
+          apiKey: ALGOLIA_APIKEY,
+          indexName: ALGOLIA_INDEXNAME,
+        }),
       ],
       customCss: ["./src/styles/global.css"],
       components: {
