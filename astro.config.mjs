@@ -3,7 +3,7 @@ import starlight from "@astrojs/starlight";
 import starlightDocSearch from "@astrojs/starlight-docsearch";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
-import scopeql from "shikijs-lang-scopeql";
+import scopeql from "./shiki-scopeql-grammar.json" with { type: "json" };
 import starlightLinksValidator from "starlight-links-validator";
 import starlightSidebarTopics from "starlight-sidebar-topics";
 import { loadEnv } from "vite";

@@ -1,8 +1,0 @@
-packages:
-  - packages/starlight-scopedb
-  - packages/shikijs-lang-scopeql
-  - website
-
-ignoredBuiltDependencies:
-  - esbuild
-  - sharp
