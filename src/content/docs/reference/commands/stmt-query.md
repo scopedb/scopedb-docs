@@ -366,7 +366,7 @@ GROUP BY product_id AGGREGATE SUM(retail_price * quantity) AS gross_revenue;
 
 Group by multiple columns:
 
-```sccopeql
+```scopeql
 FROM sales
 GROUP BY state, city AGGREGATE SUM(retail_price * quantity) AS gross_revenue;
 ```

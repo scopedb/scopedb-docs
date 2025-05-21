@@ -6,7 +6,7 @@ Returns the number of records with non-NULL values for the specified field. If a
 
 ## Syntax
 
-```scope
+```scopeql
 count( <expr> )
 ```
 
