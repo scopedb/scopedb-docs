@@ -7,18 +7,16 @@ template: splash
 import DocCard from "@/src/components/DocCard.astro";
 import DocCardWithTopic from "@/src/components/DocCardWithTopic.astro";
 
-<div class="overflow-hidden">
+<div class="overflow-hidden px-[12px]">
   <div>
-    <h1>
-      <span>ScopeDB</span>
-      <br />
-      <span>Documentation</span>
-    </h1>
+    <div>
+      <span  class="text-[46px] font-[600] leading-[52px]">ScopeDB <br /> Documentation</span>
+    </div>
   </div>
-  <div class="text-[24px] max-w-[520px]">
-    <p>
+  <div class="text-[24px] leading-[32px] max-w-[560px] text-[rgba(0,0,0,0.60)]">
+    <div>
       Get an overview of ScopeDB's features, integrations, and how to use them.
-    </p>
+    </div>
   </div>
   <div style="margin-top: 73px;">
     <h2
@@ -30,32 +28,32 @@ import DocCardWithTopic from "@/src/components/DocCardWithTopic.astro";
     ">
       Featured Resources
     </h2>
-    <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <li style="margin-top: 0;">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-[24px]">
+      <div style="margin-top: 0;">
         <DocCardWithTopic
           topic="Reference"
           title="Data Types"
           description="Reference for ScopeQL data types."
           link="/reference/data-types"
         />
-      </li>
-      <li style="margin-top: 0;">
+      </div>
+      <div style="margin-top: 0;">
         <DocCardWithTopic
           topic="Reference"
           title="Functions"
           description="Reference for ScopeQL functions."
           link="/reference/functions"
         />
-      </li>
-      <li style="margin-top: 0;">
+      </div>
+      <div style="margin-top: 0;">
         <DocCardWithTopic
           topic="Reference"
           title="Query Syntax"
           description="Reference for ScopeQL query syntax."
           link="/reference/commands/stmt-query"
         />
-      </li>
-    </ul>
+      </div>
+    </div>
 
   </div>
   {/* <div style="margin-top: 60px;">
@@ -113,6 +111,6 @@ import DocCardWithTopic from "@/src/components/DocCardWithTopic.astro";
   </div> */}
 <div class="absolute -z-10
  top-[-20px] left-[-500px] right-0
- h-[456px]" style="background: linear-gradient(180deg, #FBFBFB 0%, #ECF5FB 100%);">
+ h-[456px]" style="background: linear-gradient(180deg, #FBFBFB 0%, #F3FAFF 100%);">
 </div>
 </div>
