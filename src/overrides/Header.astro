@@ -1,9 +1,7 @@
 ---
 import config from "virtual:starlight/user-config";
-
 import Search from "virtual:starlight/components/Search";
-import SiteTitle from "@astrojs/starlight/components/SiteTitle.astro";
-import Topics from "../components/Topics.astro";
+import Topics from "@/src/components/Topics.astro";
 
 /**
  * Render the `Search` component if Pagefind is enabled or the default search component has been overridden.
@@ -16,16 +14,21 @@ const shouldRenderSearch =
 <div>
   <div class="flex">
     <div class="title-wrapper flex items-center gap-[24px]">
-      <!-- TODO: Replace with logo image -->
-      <SiteTitle />
-      <div class="text-[14px] font-[600]">
+      <div class="flex items-center gap-[12px]">
+        <img
+          src="/assets/scopedb_logo.svg"
+          alt="ScopeDB Logo"
+          class="h-[28px] w-[28px]"
+        />
+        <a href="/" class="text-[20px] text-[#000000] font-[600]">ScopeDB</a>
+      </div>
+      <div class="text-[16px] text-[rgba(0,0,0,0.80)] font-[600]">
         DOCUMENTATION
       </div>
     </div>
     <div class="flex-1"></div>
     <div class="flex items-center gap-[16px]">
-      <div class="
-      hidden sm:block
+      <div class="hidden sm:block
       text-[14px]">
         <div>
           <a href="https://www.scopedb.io/contact">Book a demo</a>
@@ -33,16 +36,16 @@ const shouldRenderSearch =
       </div>
       {
         shouldRenderSearch && (
-          <!-- TODO: Customized 32px height -->
-          <div class="max-w-[207px]">
+          <div class="search-container">
             <Search />
           </div>
         )
       }
     </div>
   </div>
-  <Topics/>
+  <Topics />
 </div>
+
 <style>
   .header {
     gap: var(--sl-nav-gap);
@@ -89,11 +92,12 @@ const shouldRenderSearch =
               var(--__toc-width, var(--sl-sidebar-width)) -
               (2 * var(--__toc-width, var(--sl-nav-pad-x))) -
               var(--sl-content-inline-start, 0rem) - var(--sl-content-width)
-          ) / 2
+          ) /
+          2
       );
       display: grid;
       grid-template-columns:
-        /* 1 (site title): runs up until the main content column’s left edge or the width of the title, whichever is the largest  */
+        /* 1 (site title): runs up until the main content column's left edge or the width of the title, whichever is the largest  */
         minmax(
           calc(
             var(--__sidebar-width) +
@@ -107,5 +111,91 @@ const shouldRenderSearch =
         auto;
       align-content: center;
     }
+  }
+
+  .search-container {
+    width: 220px;
+  }
+
+  :global(.sl-search) {
+    --sl-search-border-color: #ebebeb;
+    --sl-search-bg-color: #fbfbfb;
+    --sl-search-text-color: #000000;
+    --sl-search-placeholder-color: rgba(0, 0, 0, 0.4);
+  }
+  :global(.sl-search-input) {
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    border-radius: 6px !important;
+    border: 1px solid var(--sl-search-border-color) !important;
+    background-color: var(--sl-search-bg-color) !important;
+    color: var(--sl-search-text-color) !important;
+    font-size: 14px !important;
+    padding: 0 12px !important;
+    line-height: 32px !important;
+  }
+  :global(.sl-search-input::placeholder) {
+    color: var(--sl-search-placeholder-color) !important;
+  }
+  :global(.sl-search-input:focus) {
+    border-color: var(--sl-search-border-color) !important;
+    outline: none !important;
+  }
+  :global(.sl-search > div) {
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+  }
+
+  :global(.DocSearch-Button) {
+    border-radius: 10px !important;
+    border: 1px solid #ebebeb !important;
+    padding-inline-start: 12px;
+    padding-inline-end: 12px;
+    max-width: 220px;
+    height: 36px;
+    font-size: 14px;
+  }
+  :global(.DocSearch-Container) {
+    background-color: rgba(244, 244, 244, 0.8);
+  }
+  :global(.DocSearch-Modal) {
+    border-radius: 16px !important;
+    border: none !important;
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0px 10px 20px 5px rgba(0, 0, 0, 0.15);
+    margin: 160px auto auto !important;
+  }
+  :global(.DocSearch-Form) {
+    border-radius: 12px !important;
+    border: 1px solid #ebebeb !important;
+    box-shadow: none !important;
+    height: 48px !important;
+    font-size: 14px !important;
+  }
+  :global(.DocSearch-Input) {
+    border-radius: 10px !important;
+  }
+  :global(.DocSearch-Footer) {
+    border-radius: 0 0 16px 16px;
+  }
+  :global(.DocSearch-MagnifierLabel),
+  :global(.DocSearch-Reset) {
+    color: #000000 !important;
+    width: 16px !important;
+    height: 16px !important;
+  }
+  :global(.DocSearch-MagnifierLabel) {
+    font-size: 14px !important;
+  }
+  :global(.DocSearch-Screen-Icon) {
+    justify-items: center;
+  }
+  :global(.DocSearch-Commands-Key) {
+    background-color: #fbfbfb !important;
+    border: 1px solid #ebebeb !important;
+    border-radius: 4px !important;
+    color: #000000 !important;
   }
 </style>
