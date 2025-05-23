@@ -61,6 +61,7 @@ export default defineConfig({
         TwoColumnContent: "./src/overrides/TwoColumnContent.astro",
         ContentPanel: "./src/overrides/ContentPanel.astro",
         ThemeSelect: "./src/overrides/ThemeSelect.astro",
+        MarkdownContent: './src/overrides/MarkdownContent.astro',
       },
     }),
     sitemap(),

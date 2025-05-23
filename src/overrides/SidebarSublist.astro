@@ -66,7 +66,6 @@ const { sublist, nested } = Astro.props;
   ul {
     --sl-sidebar-item-padding-inline: 0.5rem;
     list-style: none;
-    padding: 0;
   }
 
   li {
@@ -74,13 +73,12 @@ const { sublist, nested } = Astro.props;
   }
 
   ul ul li {
-    margin-inline-start: var(--sl-sidebar-item-padding-inline);
-    /* border-inline-start: 1px solid var(--sl-color-hairline-light); */
-    padding-inline-start: var(--sl-sidebar-item-padding-inline);
+    margin-inline-start: 8px;
+    padding-inline-start: 8px;
   }
 
   .large {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .top-level > li + li {
@@ -91,11 +89,11 @@ const { sublist, nested } = Astro.props;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.2em var(--sl-sidebar-item-padding-inline);
-    line-height: 1.4;
+    padding: 8px 12px;
     cursor: pointer;
     user-select: none;
   }
+
   summary::marker,
   summary::-webkit-details-marker {
     display: none;
@@ -105,9 +103,11 @@ const { sublist, nested } = Astro.props;
     transition: transform 0.2s ease-in-out;
     flex-shrink: 0;
   }
+
   :global([dir="rtl"]) .caret {
     transform: rotateZ(180deg);
   }
+
   [open] > summary .caret {
     transform: rotateZ(90deg);
   }
@@ -131,6 +131,12 @@ const { sublist, nested } = Astro.props;
   [aria-current="page"]:focus {
     font-weight: 500;
     background-color: hsla(0, 0%, 0%, 0.05);
+    padding: 8px 12px;
+    align-items: center;
+    font-size: 15px;
+    border-radius: 8px;
+    color: rgba(0, 0, 0, 1);
+    transition: all 0.3s ease-in-out;
   }
 
   a > *:not(:last-child),
@@ -140,13 +146,29 @@ const { sublist, nested } = Astro.props;
 
   @media (min-width: 50rem) {
     .top-level > li + li {
-      margin-top: 0.5rem;
+      margin-top: 0rem;
+      align-items: center;
+      font-size: 15px;
+      border-radius: 8px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.6);
     }
+
     .large {
-      font-size: 14px;
+      align-items: center;
+      font-size: 15px;
+      border-radius: 8px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.8);
     }
+
     a {
-      font-size: 14px;
+      align-items: center;
+      font-size: 15px;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.6);
     }
   }
 </style>
