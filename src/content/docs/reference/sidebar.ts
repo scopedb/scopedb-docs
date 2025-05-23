@@ -19,7 +19,12 @@ export const sidebar = [
         }, {
             label: 'Conversion',
             link: '/reference/data-types/conversion',
-        }]
+        },
+        {
+            label: 'Test',
+            link: '/reference/data-types/test',
+        }
+    ]
     }, {
         label: 'Commands',
         collapsed: true,

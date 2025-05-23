@@ -63,112 +63,135 @@ const { sublist, nested } = Astro.props;
 </ul>
 
 <style>
+  /* 基础列表样式 */
   ul {
-    --sl-sidebar-item-padding-inline: 0.5rem;
-    list-style: none;
+    --sl-sidebar-item-padding-inline: 0.5rem; /* 侧边栏项目的内边距变量 */
+    list-style: none; /* 移除默认的列表样式（圆点） */
   }
 
+  /* 列表项基础样式 */
   li {
-    overflow-wrap: anywhere;
+    overflow-wrap: anywhere; /* 允许在任何字符处换行，防止长文本溢出 */
   }
 
+  /* 嵌套列表样式（子目录） */
   ul ul li {
-    margin-inline-start: 8px;
-    padding-inline-start: 8px;
+    margin-inline-start: 8px; /* 子目录的左边距 */
+    padding-inline-start: 8px; /* 子目录的左边内边距 */
+    /* 注释掉的边框线，原本用于显示层级关系 */
+    /* border-inline-start: 1px solid var(--sl-color-hairline-light); */
   }
 
+  /* 大号文本样式（用于非嵌套的顶级项目） */
   .large {
     font-size: 15px;
   }
 
+  /* 顶级列表项之间的间距 */
   .top-level > li + li {
-    margin-top: 0.75rem;
+    margin-top: 0.75rem; /* 顶级项目之间的垂直间距 */
   }
 
+  /* 可折叠目录的标题栏样式 */
   summary {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
-    cursor: pointer;
-    user-select: none;
+    justify-content: space-between; /* 标题和箭头图标两端对齐 */
+    padding: 8px 12px; /* 上下8px，左右12px的内边距 */
+    cursor: pointer; /* 鼠标指针变为手型 */
+    user-select: none; /* 防止文本被选中 */
   }
 
+  /* 移除默认的展开/折叠箭头 */
   summary::marker,
   summary::-webkit-details-marker {
     display: none;
   }
 
+  /* 自定义箭头图标样式 */
   .caret {
-    transition: transform 0.2s ease-in-out;
-    flex-shrink: 0;
+    transition: transform 0.2s ease-in-out; /* 箭头旋转动画 */
+    flex-shrink: 0; /* 防止箭头被压缩 */
   }
 
+  /* RTL（从右到左）布局下的箭头方向 */
   :global([dir="rtl"]) .caret {
-    transform: rotateZ(180deg);
+    transform: rotateZ(180deg); /* RTL模式下箭头旋转180度 */
   }
 
+  /* 展开状态下的箭头方向 */
   [open] > summary .caret {
-    transform: rotateZ(90deg);
+    transform: rotateZ(90deg); /* 展开时箭头旋转90度 */
   }
 
+  /* 链接样式 */
   a {
     display: block;
-    border-radius: 0.25rem;
-    text-decoration: none;
-    color: var(--sl-color-gray-2);
-    padding: 0.3em var(--sl-sidebar-item-padding-inline);
-    line-height: 1.4;
+    border-radius: 0.25rem; /* 圆角边框 */
+    text-decoration: none; /* 移除下划线 */
+    color: var(--sl-color-gray-2); /* 链接颜色 */
+    padding: 0.3em var(--sl-sidebar-item-padding-inline); /* 内边距 */
+    line-height: 1.4; /* 行高 */
   }
 
+  /* 链接悬停和焦点状态 */
   a:hover,
   a:focus {
-    color: var(--sl-color-white);
+    color: var(--sl-color-white); /* 悬停时变为白色 */
   }
 
+  /* 当前页面的链接样式 */
   [aria-current="page"],
   [aria-current="page"]:hover,
   [aria-current="page"]:focus {
-    font-weight: 500;
-    background-color: hsla(0, 0%, 0%, 0.05);
-    padding: 8px 12px;
-    align-items: center;
-    font-size: 15px;
-    border-radius: 8px;
-    color: rgba(0, 0, 0, 1);
+    font-weight: 500; /* 加粗 */
+    background-color: hsla(0, 0%, 0%, 0.05); /* 浅灰色背景 */
+    padding: 8px 12px; /* 内边距 */
+    align-items: center; /* 垂直居中 */
+    font-size: 14px; /* 字体大小 */
+    border-radius: 8px; /* 圆角 */
+    color: rgb(0, 0, 0);
     transition: all 0.3s ease-in-out;
   }
 
+  /* 链接和标签组内元素间距 */
   a > *:not(:last-child),
   .group-label > *:not(:last-child) {
-    margin-inline-end: 0.25em;
+    margin-inline-end: 0.25em; /* 元素之间的间距 */
   }
 
+  /* 大屏幕下的样式调整 */
   @media (min-width: 50rem) {
+    /* 顶级列表项样式 */
     .top-level > li + li {
-      margin-top: 0rem;
-      align-items: center;
-      font-size: 15px;
-      border-radius: 8px;
+      margin-top: 0rem; /* 移除垂直间距 */
+      align-items: center; /* 垂直居中 */
+      font-size: 14px; /* 字体大小 */
+      border-radius: 8px; /* 圆角 */
       font-weight: 500;
-      color: rgba(0, 0, 0, 0.6);
+      color: rgba(0, 0, 0, 0.4);
+
+
     }
 
+    /* 大号文本样式 */
     .large {
-      align-items: center;
-      font-size: 15px;
-      border-radius: 8px;
-      font-weight: 500;
-      color: rgba(0, 0, 0, 0.8);
-    }
-
-    a {
-      align-items: center;
-      font-size: 15px;
-      border-radius: 8px;
-      padding: 8px 12px;
+      align-items: center; /* 垂直居中 */
+      font-size: 14px; /* 字体大小 */
+      border-radius: 8px; /* 圆角 */
       font-weight: 500;
       color: rgba(0, 0, 0, 0.6);
+    }
+
+    /* 链接样式 */
+    a {
+      align-items: center; /* 垂直居中 */
+      font-size: 14px; /* 字体大小 */
+      border-radius: 8px; /* 圆角 */
+      padding: 8px 12px; /* 内边距 */
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.6);
+
     }
   }
 </style>

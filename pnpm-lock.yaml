@@ -82,8 +82,6 @@ importers:
         specifier: ^3.2.1
         version: 3.4.2
 
-  packages/starlight-scopedb: {}
-
   website:
     dependencies:
       '@astrojs/sitemap':

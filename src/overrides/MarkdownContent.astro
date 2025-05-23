@@ -1,8 +1,21 @@
 ---
-import "@astrojs/starlight/style/markdown.css";
-import "../styles/markdown.css";
+// Import Starlight's default Markdown styles
+import '@astrojs/starlight/style/markdown.css';
+// 引入我们的自定义样式
+import '../styles/markdown.css';
+
+// Import the default component for reference
+import Default from '@astrojs/starlight/components/MarkdownContent.astro';
 ---
 
 <div class="sl-markdown-content custom-markdown">
-    <slot />
+  <slot />
 </div>
+
+<style>
+  /* 这里可以添加组件特定的样式覆盖 */
+  .custom-markdown {
+    /* 可以在这里添加额外的自定义样式 */
+  }
+</style>
+

@@ -10,9 +10,7 @@ const { hasSidebar } = Astro.locals.starlightRoute;
 </script>
 
 <div class="page sl-flex">
-  <header class="header px-[12px] md:px-[24px] py-[16px]">
-    <slot name="header" />
-  </header>
+  <header class="header px-[12px]  md:px-[24px] py-[16px]"><slot name="header" /></header>
   <div class="relative grid grid-cols-10 gap-x-[32px] break-normal">
     {
       hasSidebar && (
