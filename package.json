@@ -1,14 +1,21 @@
 {
-  "name": "scopedb-docs-ng",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "astro": "^5.9.1"
-  }
+	"name": "scopedb-docs-ng",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro build && wrangler dev",
+		"astro": "astro",
+		"deploy": "astro build && wrangler deploy",
+		"cf-typegen": "wrangler types"
+	},
+	"dependencies": {
+		"@astrojs/cloudflare": "^12.5.4",
+		"astro": "^5.9.1"
+	},
+	"devDependencies": {
+		"@types/node": "^22.15.30",
+		"wrangler": "^4.19.1"
+	}
 }
