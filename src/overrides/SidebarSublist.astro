@@ -1,174 +1,174 @@
 ---
-import { flattenSidebar } from "@/vendor/starlight/utils/navigation";
-import type { SidebarEntry } from "@/vendor/starlight/utils/routing/types";
+import {flattenSidebar} from "@/vendor/starlight/utils/navigation";
+import type {SidebarEntry} from "@/vendor/starlight/utils/routing/types";
 import Icon from "@/vendor/starlight/user-components/Icon.astro";
 import Badge from "@/vendor/starlight/user-components/Badge.astro";
 import SidebarRestorePoint from "@/vendor/starlight/components/SidebarRestorePoint.astro";
 
 interface Props {
-  sublist: SidebarEntry[];
-  nested?: boolean;
+    sublist: SidebarEntry[];
+    nested?: boolean;
 }
 
-const { sublist, nested } = Astro.props;
+const {sublist, nested} = Astro.props;
 ---
 
-<ul class:list={{ "top-level": !nested }}>
-  {
-    sublist.map((entry) => (
-      <li>
-        {entry.type === "link" ? (
-          <a
-            href={entry.href}
-            aria-current={entry.isCurrent && "page"}
-            class:list={[{ large: !nested }, entry.attrs.class]}
-            {...entry.attrs}
-          >
-            <span>{entry.label}</span>
-            {entry.badge && (
-              <Badge
-                variant={entry.badge.variant}
-                class={entry.badge.class}
-                text={entry.badge.text}
-              />
-            )}
-          </a>
-        ) : (
-          <details
-            open={
-              flattenSidebar(entry.entries).some((i) => i.isCurrent) ||
-              !entry.collapsed
-            }
-          >
-            <SidebarRestorePoint />
-            <summary>
-              <div class="group-label">
-                <span class="large">{entry.label}</span>
-                {entry.badge && (
-                  <Badge
-                    variant={entry.badge.variant}
-                    class={entry.badge.class}
-                    text={entry.badge.text}
-                  />
-                )}
-              </div>
-              <Icon name="right-caret" class="caret" size="1.25rem" />
-            </summary>
-            <Astro.self sublist={entry.entries} nested />
-          </details>
-        )}
-      </li>
-    ))
-  }
+<ul class:list={{"top-level": !nested}}>
+    {
+        sublist.map((entry) => (
+                <li>
+                    {entry.type === "link" ? (
+                            <a
+                                    href={entry.href}
+                                    aria-current={entry.isCurrent && "page"}
+                                    class:list={[{large: !nested}, entry.attrs.class]}
+                                    {...entry.attrs}
+                            >
+                                <span>{entry.label}</span>
+                                {entry.badge && (
+                                        <Badge
+                                                variant={entry.badge.variant}
+                                                class={entry.badge.class}
+                                                text={entry.badge.text}
+                                        />
+                                )}
+                            </a>
+                    ) : (
+                            <details
+                                    open={
+                                        flattenSidebar(entry.entries).some((i) => i.isCurrent) ||
+                                        !entry.collapsed
+                                    }
+                            >
+                                <SidebarRestorePoint/>
+                                <summary>
+                                    <div class="group-label">
+                                        <span class="large">{entry.label}</span>
+                                        {entry.badge && (
+                                                <Badge
+                                                        variant={entry.badge.variant}
+                                                        class={entry.badge.class}
+                                                        text={entry.badge.text}
+                                                />
+                                        )}
+                                    </div>
+                                    <Icon name="right-caret" class="caret" size="1.25rem"/>
+                                </summary>
+                                <Astro.self sublist={entry.entries} nested/>
+                            </details>
+                    )}
+                </li>
+        ))
+    }
 </ul>
 
 <style>
-  ul {
-    --sl-sidebar-item-padding-inline: 0.5rem;
-    list-style: none;
-  }
+    ul {
+        --sl-sidebar-item-padding-inline: 0.5rem;
+        list-style: none;
+    }
 
-  li {
-    overflow-wrap: anywhere;
-  }
+    li {
+        overflow-wrap: anywhere;
+    }
 
-  ul ul li {
-    margin-inline-start: 8px;
-    padding-inline-start: 8px;
-  }
-
-  .large {
-    font-size: 15px;
-  }
-
-  .top-level > li + li {
-    margin-top: 0.75rem;
-  }
-
-  summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  summary::marker,
-  summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .caret {
-    transition: transform 0.2s ease-in-out;
-    flex-shrink: 0;
-  }
-
-  :global([dir="rtl"]) .caret {
-    transform: rotateZ(180deg);
-  }
-
-  [open] > summary .caret {
-    transform: rotateZ(90deg);
-  }
-
-  a {
-    display: block;
-    border-radius: 0.25rem;
-    text-decoration: none;
-    color: var(--sl-color-gray-2);
-    padding: 0.3em var(--sl-sidebar-item-padding-inline);
-    line-height: 1.4;
-  }
-
-  a:hover,
-  a:focus {
-    color: var(--sl-color-white);
-  }
-
-  [aria-current="page"],
-  [aria-current="page"]:hover,
-  [aria-current="page"]:focus {
-    font-weight: 500;
-    background-color: hsla(0, 0%, 0%, 0.05);
-    padding: 8px 12px;
-    align-items: center;
-    font-size: 14px;
-    border-radius: 8px;
-    color: rgb(0, 0, 0);
-    transition: all 0.3s ease-in-out;
-  }
-
-  a > *:not(:last-child),
-  .group-label > *:not(:last-child) {
-    margin-inline-end: 0.25em;
-  }
-
-  @media (min-width: 50rem) {
-    .top-level > li + li {
-      margin-top: 0rem;
-      align-items: center;
-      font-size: 14px;
-      border-radius: 8px;
-      font-weight: 500;
-      color: rgba(0, 0, 0, 0.4);
+    ul ul li {
+        margin-inline-start: 8px;
+        padding-inline-start: 8px;
     }
 
     .large {
-      align-items: center;
-      font-size: 14px;
-      border-radius: 8px;
-      font-weight: 500;
-      color: rgba(0, 0, 0, 0.8);
+        font-size: 15px;
+    }
+
+    .top-level > li + li {
+        margin-top: 0.75rem;
+    }
+
+    summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    summary::marker,
+    summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .caret {
+        transition: transform 0.2s ease-in-out;
+        flex-shrink: 0;
+    }
+
+    :global([dir="rtl"]) .caret {
+        transform: rotateZ(180deg);
+    }
+
+    [open] > summary .caret {
+        transform: rotateZ(90deg);
     }
 
     a {
-      align-items: center;
-      font-size: 14px;
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-weight: 500;
-      color: rgba(0, 0, 0, 0.6);
+        display: block;
+        border-radius: 0.25rem;
+        text-decoration: none;
+        color: var(--sl-color-gray-2);
+        padding: 0.3em var(--sl-sidebar-item-padding-inline);
+        line-height: 1.4;
     }
-  }
+
+    a:hover,
+    a:focus {
+        color: var(--sl-color-white);
+    }
+
+    [aria-current="page"],
+    [aria-current="page"]:hover,
+    [aria-current="page"]:focus {
+        font-weight: 500;
+        background-color: hsla(0, 0%, 0%, 0.05);
+        padding: 8px 12px;
+        align-items: center;
+        font-size: 14px;
+        border-radius: 8px;
+        color: rgb(0, 0, 0);
+        transition: all 0.3s ease-in-out;
+    }
+
+    a > *:not(:last-child),
+    .group-label > *:not(:last-child) {
+        margin-inline-end: 0.25em;
+    }
+
+    @media (min-width: 50rem) {
+        .top-level > li + li {
+            margin-top: 0rem;
+            align-items: center;
+            font-size: 14px;
+            border-radius: 8px;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.4);
+        }
+
+        .large {
+            align-items: center;
+            font-size: 14px;
+            border-radius: 8px;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.8);
+        }
+
+        a {
+            align-items: center;
+            font-size: 14px;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.6);
+        }
+    }
 </style>

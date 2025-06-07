@@ -323,7 +323,7 @@
 .sl-markdown-content a:not(:where(.not-content *)) {
   color: var(--sl-color-accent) !important;
   text-decoration: none;
-  text-underline-offset: 0.25em!important;
+  text-underline-offset: 0.25em !important;
 }
 
 .sl-markdown-content a:not(:where(.not-content *)):hover {
@@ -416,7 +416,7 @@
   top: 0;
   z-index: 1;
   background-color: var(--sl-color-bg-sidebar);
-  padding: 12px!important;
+  padding: 12px !important;
 }
 
 /* Table Cell */
@@ -426,7 +426,7 @@
   color: var(--sl-color-text);
   vertical-align: top;
   min-width: 120px;
-  padding: 12px!important;
+  padding: 12px !important;
 
 }
 
@@ -536,6 +536,7 @@
 .sl-markdown-content .starlight-aside__content {
   font-size: 0.9em;
 }
+
 .sl-markdown-content p {
   margin-bottom: 0px;
   line-height: 1.6;
@@ -552,8 +553,8 @@
   position: relative;
 }
 
-.expressive-code .frame.is-terminal .header{
-  display: none!important;
+.expressive-code .frame.is-terminal .header {
+  display: none !important;
 }
 
 .expressive-code .frame {
@@ -610,7 +611,7 @@
 
 .expressive-code .ec-line .code {
   grid-area: code;
-  padding: 0px;
+  padding: 0;
   font-size: 13px;
 }
 
@@ -648,7 +649,7 @@
 }
 
 .expressive-code .copy button {
-  background: #ffffff!important;
+  background: #ffffff !important;
   border-radius: 8px !important;
   padding: 0.5rem;
   cursor: pointer;
@@ -656,7 +657,7 @@
 
 }
 
-.expressive-code .copy button::before{
+.expressive-code .copy button::before {
   border: 1px solid rgba(0, 0, 0, 0.25) !important;
   opacity: unset !important;
 }
@@ -667,33 +668,103 @@
 }
 
 /* Code Highlight */
-.expressive-code .token.comment { color: #6a9955; }
-.expressive-code .token.string { color: #ce9178; }
-.expressive-code .token.number { color: #b5cea8; }
-.expressive-code .token.keyword { color: #94d656; }
-.expressive-code .token.function { color: #dcdcaa; }
-.expressive-code .token.class { color: #4ec9b0; }
-.expressive-code .token.type { color: #4ec9b0; }
-.expressive-code .token.property { color: #9cdcfe; }
-.expressive-code .token.variable { color: #9cdcfe; }
-.expressive-code .token.parameter { color: #9cdcfe; }
-.expressive-code .token.operator { color: #d4d4d4; }
-.expressive-code .token.punctuation { color: #d4d4d4; }
+.expressive-code .token.comment {
+  color: #6a9955;
+}
+
+.expressive-code .token.string {
+  color: #ce9178;
+}
+
+.expressive-code .token.number {
+  color: #b5cea8;
+}
+
+.expressive-code .token.keyword {
+  color: #94d656;
+}
+
+.expressive-code .token.function {
+  color: #dcdcaa;
+}
+
+.expressive-code .token.class {
+  color: #4ec9b0;
+}
+
+.expressive-code .token.type {
+  color: #4ec9b0;
+}
+
+.expressive-code .token.property {
+  color: #9cdcfe;
+}
+
+.expressive-code .token.variable {
+  color: #9cdcfe;
+}
+
+.expressive-code .token.parameter {
+  color: #9cdcfe;
+}
+
+.expressive-code .token.operator {
+  color: #d4d4d4;
+}
+
+.expressive-code .token.punctuation {
+  color: #d4d4d4;
+}
 
 /* Code Hightlight: Light Mode */
 @media (prefers-color-scheme: light) {
-  .expressive-code .token.comment { color: #008000; }
-  .expressive-code .token.string { color: #a31515; }
-  .expressive-code .token.number { color: #098658; }
-  .expressive-code .token.keyword { color: #0000ff; }
-  .expressive-code .token.function { color: #795e26; }
-  .expressive-code .token.class { color: #267f99; }
-  .expressive-code .token.type { color: #267f99; }
-  .expressive-code .token.property { color: #001080; }
-  .expressive-code .token.variable { color: #001080; }
-  .expressive-code .token.parameter { color: #001080; }
-  .expressive-code .token.operator { color: #000000; }
-  .expressive-code .token.punctuation { color: #000000; }
+  .expressive-code .token.comment {
+    color: #008000;
+  }
+
+  .expressive-code .token.string {
+    color: #a31515;
+  }
+
+  .expressive-code .token.number {
+    color: #098658;
+  }
+
+  .expressive-code .token.keyword {
+    color: #0000ff;
+  }
+
+  .expressive-code .token.function {
+    color: #795e26;
+  }
+
+  .expressive-code .token.class {
+    color: #267f99;
+  }
+
+  .expressive-code .token.type {
+    color: #267f99;
+  }
+
+  .expressive-code .token.property {
+    color: #001080;
+  }
+
+  .expressive-code .token.variable {
+    color: #001080;
+  }
+
+  .expressive-code .token.parameter {
+    color: #001080;
+  }
+
+  .expressive-code .token.operator {
+    color: #000000;
+  }
+
+  .expressive-code .token.punctuation {
+    color: #000000;
+  }
 }
 
 /* Link in Pagination */
@@ -745,10 +816,10 @@
 
 /* Right Sidebar */
 .right-sidebar-panel {
-    padding: 1.5rem;
-    background-color: var(--sl-color-bg-sidebar);
-    border-radius: 0.5rem;
-    margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background-color: var(--sl-color-bg-sidebar);
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
 
 }
 
@@ -771,12 +842,12 @@
 
 .right-sidebar-panel ul,
 .right-sidebar-panel ol {
-  padding-left: 0px;
+  padding-left: 0;
 }
 
 .right-sidebar-panel li {
   color: var(--sl-color-text);
-  font-size: 12px!important;
+  font-size: 12px !important;
 }
 
 .right-sidebar-panel a {

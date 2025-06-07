@@ -3,13 +3,13 @@ import MobileMenuFooter from "@astrojs/starlight/components/MobileMenuFooter.ast
 import SidebarPersister from "@astrojs/starlight/components/SidebarPersister.astro";
 import SidebarSublist from "./SidebarSublist.astro";
 
-const { sidebar } = Astro.locals.starlightRoute;
+const {sidebar} = Astro.locals.starlightRoute;
 ---
 
 <SidebarPersister>
-  <SidebarSublist sublist={sidebar} />
+    <SidebarSublist sublist={sidebar}/>
 </SidebarPersister>
 
 <div class="md:sl-hidden">
-  <MobileMenuFooter />
+    <MobileMenuFooter/>
 </div>

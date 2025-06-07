@@ -1,110 +1,107 @@
 ---
 import MobileMenuToggle from "@astrojs/starlight/components/MobileMenuToggle.astro";
 import SiteFooter from "../components/SiteFooter.astro";
-const { hasSidebar } = Astro.locals.starlightRoute;
+const {hasSidebar} = Astro.locals.starlightRoute;
 ---
 
-<!-- stick in the light theme -->
-<script is:inline>
-  document.documentElement.dataset.theme = "light";
-</script>
-
 <div class="page sl-flex">
-  <header class="header px-[12px]  md:px-[24px] py-[16px]"><slot name="header" /></header>
-  <div class="relative grid grid-cols-10 gap-x-[32px] break-normal">
-    {
-      hasSidebar && (
-        <nav
-          class="sidebar print:hidden hidden md:block col-span-2"
-          aria-label={Astro.locals.t("sidebarNav.accessibleLabel")}
-        >
-          <MobileMenuToggle />
-          <div
-            id="starlight__sidebar"
-            class="h-screen sidebar-pane pt-[var(--sl-nav-height)]"
-          >
-            <div class="sidebar-content sl-flex">
-              <slot name="sidebar" />
-            </div>
-          </div>
-        </nav>
-      )
-    }
-    <div
-      class=`main-frame min-h-screen
-      col-span-10
-      ${Astro.locals.starlightRoute.entry.data.template != 'splash' ? 'md:col-span-8' : ''}
-      `
-    >
-      <slot />
+    <header class="header px-[12px]  md:px-[24px] py-[16px]">
+        <slot name="header"/>
+    </header>
+    <div class="relative grid grid-cols-10 gap-x-[32px] break-normal">
+        {
+            hasSidebar && (
+                        <nav class="sidebar print:hidden hidden md:block col-span-2"
+                             aria-label={Astro.locals.t("sidebarNav.accessibleLabel")}
+                        >
+                            <MobileMenuToggle/>
+                            <div id="starlight__sidebar" class="h-screen sidebar-pane pt-[var(--sl-nav-height)]">
+                                <div class="sidebar-content sl-flex">
+                                    <slot name="sidebar"/>
+                                </div>
+                            </div>
+                        </nav>
+            )
+        }
+        <div class=`
+            main-frame min-h-screen col-span-10
+            ${Astro.locals.starlightRoute.entry.data.template != 'splash' ? 'md:col-span-8' : ''}
+            `>
+            <slot/>
+        </div>
     </div>
-  </div>
-  <div class="z-[10]">
-    <SiteFooter />
-  </div>
+    <div class="z-[10]">
+        <SiteFooter/>
+    </div>
 </div>
 
 <style>
-  .page {
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  .header {
-    z-index: var(--sl-z-index-navbar);
-    position: fixed;
-    inset-inline-start: 0;
-    inset-block-start: 0;
-    width: 100%;
-    height: var(--sl-nav-height);
-    border-bottom: 1px solid #ebebeb;
-    padding-inline-end: var(--sl-nav-pad-x);
-    background-color: #fbfbfb;
-  }
-
-  .sidebar-pane {
-    visibility: var(--sl-sidebar-visibility, hidden);
-    top: 0;
-    position: sticky;
-    z-index: var(--sl-z-index-menu);
-    inset-inline-start: 0;
-    width: 100%;
-    background-color: var(--sl-color-black);
-    overflow-y: auto;
-  }
-
-  :global([aria-expanded="true"]) ~ .sidebar-pane {
-    --sl-sidebar-visibility: visible;
-  }
-
-  .sidebar-content {
-    height: 100%;
-    min-height: max-content;
-    padding: 1rem var(--sl-sidebar-pad-x) 0;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  @media (min-width: 50rem) {
-    .sidebar-content::after {
-      content: "";
-      padding-bottom: 1px;
+    .page {
+        flex-direction: column;
+        min-height: 100vh;
     }
-  }
 
-  .main-frame {
-    padding-top: calc(var(--sl-nav-height));
-  }
-
-  @media (min-width: 50rem) {
-    :global([data-has-sidebar]) .header {
-      padding-inline-end: var(--sl-nav-pad-x);
+    .header {
+        z-index: var(--sl-z-index-navbar);
+        position: fixed;
+        inset-inline-start: 0;
+        inset-block-start: 0;
+        width: 100%;
+        height: var(--sl-nav-height);
+        border-bottom: 1px solid #ebebeb;
+        padding-inline-end: var(--sl-nav-pad-x);
+        background-color: #fbfbfb;
     }
+
     .sidebar-pane {
-      --sl-sidebar-visibility: visible;
-      /* width: var(--sl-sidebar-width); */
-      background-color: var(--sl-color-bg-sidebar);
-      border-inline-end: 1px solid var(--sl-color-hairline-shade);
+        visibility: var(--sl-sidebar-visibility, hidden);
+        top: 0;
+        position: sticky;
+        z-index: var(--sl-z-index-menu);
+        inset-inline-start: 0;
+        width: 100%;
+        background-color: var(--sl-color-black);
+        overflow-y: auto;
     }
-  }
+
+    :global([aria-expanded="true"]) ~ .sidebar-pane {
+        --sl-sidebar-visibility: visible;
+    }
+
+    .sidebar-content {
+        height: 100%;
+        min-height: max-content;
+        padding: 1rem var(--sl-sidebar-pad-x) 0;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    @media (min-width: 50rem) {
+        .sidebar-content::after {
+            content: "";
+            padding-bottom: 1px;
+        }
+    }
+
+    .main-frame {
+        padding-top: calc(var(--sl-nav-height));
+    }
+
+    @media (min-width: 50rem) {
+        :global([data-has-sidebar]) .header {
+            padding-inline-end: var(--sl-nav-pad-x);
+        }
+
+        .sidebar-pane {
+            --sl-sidebar-visibility: visible;
+            /* width: var(--sl-sidebar-width); */
+            background-color: var(--sl-color-bg-sidebar);
+            border-inline-end: 1px solid var(--sl-color-hairline-shade);
+        }
+    }
 </style>
+
+<!-- stick in the light theme -->
+<script is:inline>
+    document.documentElement.dataset.theme = "light";
+</script>
