@@ -3,100 +3,94 @@ import config from "virtual:starlight/user-config";
 import Search from "virtual:starlight/components/Search";
 import Topics from "../components/Topics.astro";
 
-/**
- * Render the `Search` component if Pagefind is enabled or the default search component has been overridden.
- */
 const shouldRenderSearch =
-  config.pagefind ||
-  config.components.Search !== "@astrojs/starlight/components/Search.astro";
+    config.pagefind ||
+    config.components.Search !== "@astrojs/starlight/components/Search.astro";
 ---
 
 <div>
-  <div class="flex">
-    <div class="title-wrapper flex items-center gap-[24px]">
-      <a href="/"  class="flex items-center gap-[12px]">
-        <img src="/logo.svg" alt="ScopeDB Logo" class="h-[28px] w-[28px]" />
-        <div class="text-[20px] text-[#000000] font-[600]">ScopeDB</div>
-      </div>
-      <div class="text-[16px] pl-[12px] md:pl-[24px] text-[rgba(0,0,0,0.80)] font-[600]">
-        DOCUMENTATION
-      </div>
-    </a>
-    <div class="flex-1"></div>
-    <div class="flex items-center gap-[16px]">
-      <div class="hidden sm:block
-      text-[14px]">
-        <div>
-          <a href="https://www.scopedb.io/contact">Book a demo</a>
+    <div class="flex">
+        <div class="title-wrapper flex items-center gap-[24px]">
+            <a href="/" class="flex items-center gap-[12px]">
+                <img src="/logo.svg" alt="ScopeDB Logo" class="h-[28px] w-[28px]"/>
+                <div class="text-[20px] text-[#000000] font-[600]">ScopeDB</div>
+                <div class="text-[16px] pl-[12px] md:pl-[24px] text-[rgba(0,0,0,0.80)] font-[600]">
+                    DOCUMENTATION
+                </div>
+            </a>
         </div>
-      </div>
-      {
-        shouldRenderSearch && (
-          <div class="search-container md:min-w-[220px]">
-            <Search />
-          </div>
-        )
-      }
+
+        <div class="flex-1"></div>
+        <div class="flex items-center gap-[16px]">
+            <div class="hidden sm:block text-[14px]">
+                <div><a href="https://www.scopedb.io/contact">Book a demo</a></div>
+            </div>
+            {
+                shouldRenderSearch && (
+                            <div class="search-container md:min-w-[220px]">
+                                <Search/>
+                            </div>)
+            }
+        </div>
     </div>
-  </div>
-  <Topics />
+    <Topics/>
 </div>
 <style>
-  .header {
-    gap: var(--sl-nav-gap);
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-  }
-
-  .title-wrapper {
-    /* Prevent long titles overflowing and covering the search and menu buttons on narrow viewports. */
-    overflow: clip;
-    /* Avoid clipping focus ring around link inside title wrapper. */
-    padding: 0.25rem;
-    margin: -0.25rem;
-    min-width: 0;
-  }
-
-  .right-group,
-  .social-icons {
-    gap: 1rem;
-    align-items: center;
-  }
-  .social-icons::after {
-    content: "";
-    height: 2rem;
-    border-inline-end: 1px solid var(--sl-color-gray-5);
-  }
-
-  @media (min-width: 50rem) {
-    :global(:root[data-has-sidebar]) {
-      --__sidebar-pad: calc(2 * var(--sl-nav-pad-x));
-    }
-    :global(:root:not([data-has-toc])) {
-      --__toc-width: 0rem;
-    }
     .header {
-      --__sidebar-width: max(
-        0rem,
-        var(--sl-content-inline-start, 0rem) - var(--sl-nav-pad-x)
-      );
-      --__main-column-fr: calc(
-        (
-            100% + var(--__sidebar-pad, 0rem) -
-              var(--__toc-width, var(--sl-sidebar-width)) -
-              (2 * var(--__toc-width, var(--sl-nav-pad-x))) -
-              var(--sl-content-inline-start, 0rem) - var(--sl-content-width)
-          ) /
-          2
-      );
-      display: grid;
-      grid-template-columns:
-        /* 1 (site title): runs up until the main content column's left edge or the width of the title, whichever is the largest  */
-        minmax(
+        gap: var(--sl-nav-gap);
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+    }
+
+    .title-wrapper {
+        /* Prevent long titles overflowing and covering the search and menu buttons on narrow viewports. */
+        overflow: clip;
+        /* Avoid clipping focus ring around link inside title wrapper. */
+        padding: 0.25rem;
+        margin: -0.25rem;
+        min-width: 0;
+    }
+
+    .right-group,
+    .social-icons {
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .social-icons::after {
+        content: "";
+        height: 2rem;
+        border-inline-end: 1px solid var(--sl-color-gray-5);
+    }
+
+    @media (min-width: 50rem) {
+        :global(:root[data-has-sidebar]) {
+            --__sidebar-pad: calc(2 * var(--sl-nav-pad-x));
+        }
+
+        :global(:root:not([data-has-toc])) {
+            --__toc-width: 0rem;
+        }
+
+        .header {
+            --__sidebar-width: max(
+                    0rem,
+                    var(--sl-content-inline-start, 0rem) - var(--sl-nav-pad-x)
+            );
+            --__main-column-fr: calc(
+                    (100% + var(--__sidebar-pad, 0rem) -
+                    var(--__toc-width, var(--sl-sidebar-width)) -
+                    (2 * var(--__toc-width, var(--sl-nav-pad-x))) -
+                    var(--sl-content-inline-start, 0rem) - var(--sl-content-width)) /
+                    2
+            );
+            display: grid;
+            grid-template-columns:
+        /* 1 (site title): runs up until the main content column's left edge or the width of the title, whichever is the largest  */ minmax(
           calc(
-            var(--__sidebar-width) +
-              max(0rem, var(--__main-column-fr) - var(--sl-nav-gap))
+                  var(--__sidebar-width) +
+                  max(0rem, var(--__main-column-fr) - var(--sl-nav-gap))
           ),
           auto
         )
@@ -104,116 +98,129 @@ const shouldRenderSearch =
         1fr
         /* 3 (right items): use the space that these need. */
         auto;
-      align-content: center;
+            align-content: center;
+        }
     }
-  }
 
-  /* Custom Search Window */
-  :global(.sl-search) {
-    --sl-search-border-color: #ebebeb;
-    --sl-search-bg-color: #fbfbfb;
-    --sl-search-text-color: #000000;
-    --sl-search-placeholder-color: rgba(0, 0, 0, 0.4);
-  }
+    /* Custom Search Window */
+    :global(.sl-search) {
+        --sl-search-border-color: #ebebeb;
+        --sl-search-bg-color: #fbfbfb;
+        --sl-search-text-color: #000000;
+        --sl-search-placeholder-color: rgba(0, 0, 0, 0.4);
+    }
 
-  :global(.sl-search-input) {
-    height: 32px !important;
-    min-height: 32px !important;
-    max-height: 32px !important;
-    border-radius: 6px !important;
-    border: 1px solid var(--sl-search-border-color) !important;
-    background-color: var(--sl-search-bg-color) !important;
-    color: var(--sl-search-text-color) !important;
-    font-size: 14px !important;
-    padding: 0 12px !important;
-    line-height: 32px !important;
-  }
+    :global(.sl-search-input) {
+        height: 32px !important;
+        min-height: 32px !important;
+        max-height: 32px !important;
+        border-radius: 6px !important;
+        border: 1px solid var(--sl-search-border-color) !important;
+        background-color: var(--sl-search-bg-color) !important;
+        color: var(--sl-search-text-color) !important;
+        font-size: 14px !important;
+        padding: 0 12px !important;
+        line-height: 32px !important;
+    }
 
-  :global(.sl-search-input::placeholder) {
-    color: var(--sl-search-placeholder-color) !important;
-  }
+    :global(.sl-search-input::placeholder) {
+        color: var(--sl-search-placeholder-color) !important;
+    }
 
-  :global(.sl-search-input:focus) {
-    border-color: var(--sl-search-border-color) !important;
-    outline: none !important;
-  }
+    :global(.sl-search-input:focus) {
+        border-color: var(--sl-search-border-color) !important;
+        outline: none !important;
+    }
 
-  /* Ensure Search Window Height */
-  :global(.sl-search > div) {
-    height: 32px !important;
-    min-height: 32px !important;
-    max-height: 32px !important;
-  }
+    /* Ensure Search Window Height */
+    :global(.sl-search > div) {
+        height: 32px !important;
+        min-height: 32px !important;
+        max-height: 32px !important;
+    }
 
-  :global(.DocSearch-Button) {
-    border-radius: 10px !important;
-    border: 1px solid #ebebeb !important;
-    padding-inline-start: 12px;
-    padding-inline-end: 12px;
-    max-width: 220px;
-    height: 36px;
-    font-size: 14px;
-  }
-  :global(.DocSearch-Container) {
-    background-color: rgba(244, 244, 244, 0.8);
-  }
-  :global(.DocSearch-Hit-content-wrapper) {
-    font-size: 14px !important;
-  }
-  :global(.DocSearch-Modal) {
-    border-radius: 16px !important;
-    border: none !important;
-    background-color: rgba(255, 255, 255, 1);
-    box-shadow: 0px 10px 20px 5px rgba(0, 0, 0, 0.15);
-    margin: 160px auto auto !important;
-  }
-  :global(.DocSearch-Form) {
-    border-radius: 12px !important;
-    border: 1px solid #ebebeb !important;
-    box-shadow: none !important;
-    height: 48px !important;
-    font-size: 14px !important;
-  }
-  :global(.DocSearch-Hit[aria-selected="true"] a) {
-    background: #0879e0 !important;
-    font-size: 14px !important;
-  }
+    :global(.DocSearch-Button) {
+        border-radius: 10px !important;
+        border: 1px solid #ebebeb !important;
+        padding-inline-start: 12px;
+        padding-inline-end: 12px;
+        max-width: 220px;
+        height: 36px;
+        font-size: 14px;
+    }
 
-  :global(.DocSearch-Hit a) {
-    border-radius: 12px !important;
-  }
-  :global(.DocSearch-Input) {
-    border-radius: 10px !important;
-    font-size: 14px !important;
-  }
-  :global(.DocSearch-Footer) {
-    border-radius: 0 0 16px 16px;
-  }
-  :global(.DocSearch-MagnifierLabel),
-  :global(.DocSearch-Reset) {
-    color: #000000 !important;
-    width: 16px !important;
-    height: 16px !important;
-  }
-  :global(.DocSearch-MagnifierLabel) {
-    font-size: 14px !important;
-  }
-  :global(.DocSearch-Hit-source) {
-    background: #fbfbfb00 !important;
-    color: rgba(0, 0, 0, 0.6) !important;
-    font-size: 12px !important;
-    margin: 0 !important;
-    padding: 8px !important;
-  }
-  :global(.DocSearch-Screen-Icon) {
-    justify-items: center;
-  }
-  :global(.DocSearch-Commands-Key) {
-    background-color: #fbfbfb !important;
-    border: 1px solid #ebebeb !important;
-    border-radius: 4px !important;
-    color: #000000 !important;
-  }
-  :global(.DocSearch-Hit-title) {
-  }
+    :global(.DocSearch-Container) {
+        background-color: rgba(244, 244, 244, 0.8);
+    }
+
+    :global(.DocSearch-Hit-content-wrapper) {
+        font-size: 14px !important;
+    }
+
+    :global(.DocSearch-Modal) {
+        border-radius: 16px !important;
+        border: none !important;
+        background-color: rgba(255, 255, 255, 1);
+        box-shadow: 0 10px 20px 5px rgba(0, 0, 0, 0.15);
+        margin: 160px auto auto !important;
+    }
+
+    :global(.DocSearch-Form) {
+        border-radius: 12px !important;
+        border: 1px solid #ebebeb !important;
+        box-shadow: none !important;
+        height: 48px !important;
+        font-size: 14px !important;
+    }
+
+    :global(.DocSearch-Hit[aria-selected="true"] a) {
+        background: #0879e0 !important;
+        font-size: 14px !important;
+    }
+
+    :global(.DocSearch-Hit a) {
+        border-radius: 12px !important;
+    }
+
+    :global(.DocSearch-Input) {
+        border-radius: 10px !important;
+        font-size: 14px !important;
+    }
+
+    :global(.DocSearch-Footer) {
+        border-radius: 0 0 16px 16px;
+    }
+
+    :global(.DocSearch-MagnifierLabel),
+    :global(.DocSearch-Reset) {
+        color: #000000 !important;
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    :global(.DocSearch-MagnifierLabel) {
+        font-size: 14px !important;
+    }
+
+    :global(.DocSearch-Hit-source) {
+        background: #fbfbfb00 !important;
+        color: rgba(0, 0, 0, 0.6) !important;
+        font-size: 12px !important;
+        margin: 0 !important;
+        padding: 8px !important;
+    }
+
+    :global(.DocSearch-Screen-Icon) {
+        justify-items: center;
+    }
+
+    :global(.DocSearch-Commands-Key) {
+        background-color: #fbfbfb !important;
+        border: 1px solid #ebebeb !important;
+        border-radius: 4px !important;
+        color: #000000 !important;
+    }
+
+    :global(.DocSearch-Hit-title) {
+    }
 </style>

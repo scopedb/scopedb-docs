@@ -1,4 +1,4 @@
-import { PAGE_TITLE_ID } from "@/vendor/starlight/constants";
+import {PAGE_TITLE_ID} from "@/vendor/starlight/constants";
 
 export class StarlightTOC extends HTMLElement {
   private _current = this.querySelector<HTMLAnchorElement>(
@@ -64,7 +64,7 @@ export class StarlightTOC extends HTMLElement {
 
     /** Handle intersections and set the current link to the heading for the current intersection. */
     const setCurrent: IntersectionObserverCallback = (entries) => {
-      for (const { isIntersecting, target } of entries) {
+      for (const {isIntersecting, target} of entries) {
         if (!isIntersecting) continue;
         const heading = getElementHeading(target);
         if (!heading) continue;
