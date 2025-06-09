@@ -1,13 +1,12 @@
 ---
 import DocMain from "@/src/components/DocMain.astro";
 import Layout from "@/src/layouts/Layout.astro";
-import { getSidebarGroups } from "@/src/libs/sidebar";
 import { referenceSidebar } from "@/src/content/sidebar";
 import { getCollection, getEntry } from "astro:content";
 import { resolveTitle } from "@/src/libs/title";
 
 export async function getStaticPaths() {
-  const sidebar = getSidebarGroups(referenceSidebar);
+  const sidebar = referenceSidebar;
 
   const docs = await getCollection("reference");
   const indexEntry = (await getEntry("reference", "index")) ?? docs[0];
