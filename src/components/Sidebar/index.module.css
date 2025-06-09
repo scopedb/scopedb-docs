@@ -5,6 +5,10 @@
   position: sticky;
   top: 0px;
   left: 0;
+  width: 100%;
+  max-width: 300px;
+  overflow-x: hidden;
+  background: #fff;
   overflow-y: auto;
 }
 .mask {
@@ -39,27 +43,53 @@
     opacity 0.5s,
     transform 0.25s ease-in-out;
 }
-.group-item {
+.groupItem {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  color: #000000;
-  font-size: 14px;
-  font-weight: 400;
   width: 100%;
-  height: 36px;
-  padding: 10px 11px;
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+  text-align: left;
 }
-.single-item {
-  color: #000000;
-  font-size: 14px;
-  font-weight: 400;
-  height: 36px;
-  width: 100%;
+.groupLabel {
+  flex: 1;
+}
+.groupArrow {
   display: flex;
-  justify-content: flex-start;
   align-items: center;
-  padding-left: 10px;
+  margin-left: 8px;
+}
+.singleItem {
+  display: block;
+  min-height: 32px;
+  line-height: 32px;
+  font-weight: 400;
+  color: #000;
+  text-decoration: none;
+  border-radius: 8px;
+  background: none;
+  transition: background 0.2s;
+  word-break: break-all;
+  white-space: normal;
+  padding-right: 12px;
+}
+.singleItem a {
+  width: 100%;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  display: block;
+}
+.singleItem.active, .is-leaf.active {
+  background: rgba(0,0,0,0.05);
+  font-weight: 600;
+}
+.itemHover:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 .collapsed {
   display: none;
@@ -67,7 +97,7 @@
 .active {
   font-weight: 500;
 }
-.active.is-leaf {
+.active.isLeaf {
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.05);
 }

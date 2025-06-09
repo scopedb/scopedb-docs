@@ -2,6 +2,8 @@
 import "@/src/styles/global.css";
 import Footer from "@/src/components/Footer.astro";
 import Header from "@/src/components/Header.astro";
+import { ClientRouter } from "astro:transitions";
+
 
 const { title } = Astro.props;
 ---
@@ -14,6 +16,7 @@ const { title } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <ClientRouter/>
   </head>
   <body>
     <header>

@@ -1,6 +1,6 @@
 ---
 import Categories from "@/src/components/Categories.astro";
-import Search from "@/src/components/Search.astro";
+import { Search } from "./Search";
 ---
 
 <div>
@@ -22,7 +22,7 @@ import Search from "@/src/components/Search.astro";
       <div class="hidden sm:block text-[14px]">
         <div><a href="https://www.scopedb.io/contact">Book a demo</a></div>
       </div>
-      <Search />
+      <Search client:only="react"/>
     </div>
   </div>
 

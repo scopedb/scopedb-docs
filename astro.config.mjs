@@ -1,6 +1,6 @@
-// @ts-check
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
+import process from 'node:process';
 import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
@@ -52,6 +52,17 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss(), devtoolsJson()],
+    optimizeDeps: {
+      include: ['@docsearch/react']
+    },
+    css:{
+    modules: {
+      // do not use hash when dev
+      generateScopedName: process.env.NODE_ENV === 'development'
+        ? '[local]'
+        : '[hash:base64:8]'
+    }
+  }
   },
 
   markdown: {

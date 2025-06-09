@@ -18,25 +18,33 @@ const toc = (headings ?? []).filter(
 );
 ---
 
-<div class="doc-container">
-  <div class="doc-aside">
-    <div class="sidebar" transition:persist>
-      {sidebar?.length > 0 && <Sidebar sidebar={sidebar} />}
-    </div>
-    {
-      toc.length > 0 ? (
+{sidebar?.length > 0 ? (
+  <div class="doc-container">
+    <div class="doc-aside">
+      <div class="sidebar" transition:persist>
+        <Sidebar sidebar={sidebar} transition:persist/>
+      </div>
+      {toc.length > 0 ? (
         <div class="toc-container">
-          <TOC toc={toc} client:only />
+          <TOC toc={toc} client:only="react" />
         </div>
-      ) : null
-    }
-  </div>
-  <div class="content-container" transition:animate="slide">
-    <div class="markdown-body">
-      <slot />
+      ) : null}
+    </div>
+    <div class="content-container" transition:animate="fade">
+      <div class="markdown-body">
+        <slot />
+      </div>
     </div>
   </div>
-</div>
+) : (
+  <div class="doc-container-no-sidebar">
+    <div class="content-container" transition:animate="fade">
+      <div class="markdown-body">
+        <slot />
+      </div>
+    </div>
+  </div>
+)}
 
 <style>
   .doc-container {
@@ -65,6 +73,11 @@ const toc = (headings ?? []).filter(
   }
   .content-container {
     grid-area: content;
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+  }
+  .content-container:global(.astro-transition-fade) {
+    opacity: 0;
   }
 
   @media (max-width: 960px) {

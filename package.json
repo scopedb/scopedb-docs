@@ -16,7 +16,7 @@
     "@astrojs/react": "^4.3.0",
     "@astrojs/sitemap": "^3.4.1",
     "@docsearch/css": "^3.9.0",
-    "@docsearch/js": "^3.9.0",
+    "@docsearch/react": "^3.9.0",
     "@lucide/astro": "^0.513.0",
     "astro": "^5.9.1",
     "astro-expressive-code": "^0.41.2",
@@ -49,5 +49,6 @@
     "typescript-eslint": "^8.33.1",
     "vite-plugin-devtools-json": "^0.1.1",
     "wrangler": "^4.19.1"
-  }
+  },
+  "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
 }
