@@ -1,6 +1,6 @@
-// @ts-check
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
+import process from 'node:process';
 import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
