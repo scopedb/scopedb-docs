@@ -1,0 +1,110 @@
+---
+import "@/src/styles/global.css";
+import "@/src/styles/markdown.css";
+import type { MarkdownHeading } from "astro";
+import { TOC } from "@/src/components/TOC";
+import type { SidebarItem } from "@/src/libs/sidebar";
+import Sidebar from "@/src/components/Sidebar/Sidebar.astro";
+
+interface Props {
+  headings: MarkdownHeading[];
+  sidebar: SidebarItem[];
+}
+
+const { headings, sidebar } = Astro.props;
+
+const toc = (headings ?? []).filter(
+  (heading) => heading.depth > 1 && heading.depth <= 6,
+);
+---
+
+<div class="doc-container">
+  <div class="doc-aside">
+    <div class="sidebar" transition:persist>
+      {sidebar?.length > 0 && <Sidebar sidebar={sidebar} />}
+    </div>
+    {
+      toc.length > 0 ? (
+        <div class="toc-container">
+          <TOC toc={toc} client:only />
+        </div>
+      ) : null
+    }
+  </div>
+  <div class="content-container" transition:animate="slide">
+    <div class="markdown-body">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<style>
+  .doc-container {
+    display: grid;
+    grid-template-areas: "sidebar content toc";
+    grid-template-columns: minmax(0, 2fr) minmax(0, 6fr) minmax(0, 2fr);
+    width: 100%;
+  }
+  .doc-aside {
+    display: contents;
+  }
+  .sidebar {
+    grid-area: sidebar;
+    position: sticky;
+    top: 0;
+    padding: 8px 16px;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .toc-container {
+    grid-area: toc;
+    position: sticky;
+    top: 0px;
+    height: 100vh;
+    overflow: auto;
+  }
+  .content-container {
+    grid-area: content;
+  }
+
+  @media (max-width: 960px) {
+    .doc-container {
+      display: grid;
+      grid-template-areas:
+        "sidebar toc toc "
+        "sidebar content content ";
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
+      grid-template-rows: auto 1fr;
+    }
+    .content-container {
+      position: unset;
+    }
+    .toc-container {
+      height: 20px;
+      overflow: unset;
+      position: unset;
+    }
+  }
+  @media (max-width: 480px) {
+    .doc-container {
+      display: flex;
+      flex-direction: column;
+    }
+    .doc-aside {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .toc-container {
+      position: unset;
+    }
+    .sidebar {
+      position: unset;
+      height: fit-content;
+    }
+    .content-container {
+      position: unset;
+    }
+  }
+</style>

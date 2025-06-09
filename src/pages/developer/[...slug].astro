@@ -1,0 +1,28 @@
+---
+import DocMain from "@/src/components/DocMain.astro";
+import Layout from "@/src/layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("developer");
+  const indexEntry = posts[0];
+  return [
+    {
+      params: { slug: undefined },
+      props: { entry: indexEntry },
+    },
+    ...posts.map((entry) => ({
+      params: { slug: entry.slug },
+      props: { entry },
+    })),
+  ];
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
+const title = "Hello World";
+---
+
+<Layout title={title}>
+  <DocMain headings={headings}><Content /></DocMain>
+</Layout>

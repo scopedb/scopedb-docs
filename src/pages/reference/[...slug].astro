@@ -1,0 +1,35 @@
+---
+import DocMain from "@/src/components/DocMain.astro";
+import Layout from "@/src/layouts/Layout.astro";
+import { getSidebarGroups } from "@/src/libs/sidebar";
+import { referenceSidebar } from "@/src/content/sidebar";
+import { getCollection, getEntry } from "astro:content";
+import { resolveTitle } from "@/src/libs/title";
+
+export async function getStaticPaths() {
+  const sidebar = getSidebarGroups(referenceSidebar);
+
+  const docs = await getCollection("reference");
+  const indexEntry = await getEntry("reference", "index")!;
+  return [
+    {
+      params: { slug: undefined },
+      props: { entry: indexEntry, sidebar },
+    },
+    ...docs.map((entry) => ({
+      params: { slug: entry.slug },
+      props: { entry, sidebar },
+    })),
+  ];
+}
+
+const { entry, sidebar } = Astro.props;
+const { Content, headings } = await entry.render();
+const title = resolveTitle(entry.data.title, headings);
+---
+
+<Layout title={title}>
+  <DocMain headings={headings} sidebar={sidebar}>
+    <Content />
+  </DocMain>
+</Layout>
