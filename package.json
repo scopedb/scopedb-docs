@@ -19,6 +19,7 @@
     "@docsearch/react": "^3.9.0",
     "@lucide/astro": "^0.513.0",
     "astro": "^5.9.1",
+    "astro-expressive-code": "^0.41.2",
     "lodash-es": "^4.17.21",
     "lucide-react": "^0.513.0",
     "react": "^19.1.0",

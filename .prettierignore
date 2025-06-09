@@ -1,2 +1,5 @@
 dist
 pnpm-lock.yaml
+
+# Prettier's markdown rules are not pretty enough for us
+*.md
