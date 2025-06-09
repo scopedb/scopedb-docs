@@ -52,6 +52,17 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss(), devtoolsJson()],
+    optimizeDeps: {
+      include: ['@docsearch/react']
+    },
+    css:{
+    modules: {
+      // do not use hash when dev
+      generateScopedName: process.env.NODE_ENV === 'development'
+        ? '[local]'
+        : '[hash:base64:8]'
+    }
+  }
   },
 
   markdown: {

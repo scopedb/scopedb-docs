@@ -5,9 +5,12 @@ import { throttle } from "lodash-es";
 import { useMedia } from "@/src/libs/hooks";
 import { AlignLeftIcon } from "lucide-react";
 
-interface Props {
+import styles from "./index.module.css";
+
+interface TOCProps {
   toc: MarkdownHeading[];
 }
+
 interface TocItemProps {
   item: MarkdownHeading;
   isActive: boolean;
@@ -82,26 +85,12 @@ function useTOCScroll(
       const linkEl = document.getElementById(href);
       if (linkEl && offsetTarget) {
         const { top, height } = getOffset(linkEl, offsetTarget);
-        links.push({
-          top,
-          height,
-          href,
-          index,
-        });
+        links.push({ top, height, href, index });
       }
     });
 
-    links.sort((a, b) => {
-      // ascend top
-      if (a.top > b.top) {
-        return 1;
-        // descend height
-      } else if (a.top === b.top && a.height < b.height) {
-        return -1;
-      }
-      return -1;
-    });
-    const bound = 12;
+    links.sort((a, b) => a.top - b.top);
+
     const activeLink = links.reduce((prevLink: LinkInfo | null, link) => {
       if (link.top + link.height < 0) {
         return prevLink;
@@ -178,7 +167,7 @@ export function TOCItem({ item, isActive, onClick }: TocItemProps) {
   );
 
   return (
-    <li className={`toc-item ${isActive ? "toc-item-active" : ""}`}>
+    <li className={`${styles.tocItem} ${isActive ? styles.tocItemActive : ""}`}>
       <a
         target="_self"
         title={item.text}
@@ -192,7 +181,7 @@ export function TOCItem({ item, isActive, onClick }: TocItemProps) {
   );
 }
 
-export function TOC({ toc }: Props) {
+export function TOC({ toc }: TOCProps) {
   const {
     activeHref,
     setActiveHref,
@@ -238,26 +227,30 @@ export function TOC({ toc }: Props) {
   );
 
   return (
-    <div className="toc">
+    <div className={styles.toc}>
       {isMobile && (
         <AlignLeftIcon onClick={toggleOpen} width={16} height={16} />
       )}
-      {isOpen && <div className="toc-mask" onClick={toggleOpen} />}
+      {isOpen && <div className={styles.tocMask} onClick={toggleOpen} />}
       <div
-        className={`toc-wrapper ${isMobile ? (isOpen ? "open" : "close") : ""}`}
+        className={`${styles.tocWrapper} ${
+          isMobile ? (isOpen ? styles.open : styles.close) : ""
+        }`}
       >
-        <div className="toc-title">
+        <div className={styles.tocTitle}>
           <AlignLeftIcon width={16} height={16} />
           <span>On this page</span>
         </div>
-        <div className="toc-list-container">
-          <div className="toc-rail">
+        <div className={styles.tocListContainer}>
+          <div className={styles.tocRail}>
             <div
-              className={`toc-rail-bar ${activeLink ? "toc-rail-bar-active" : ""}`}
+              className={`${styles.tocRailBar} ${
+                activeLink ? styles.tocRailBarActive : ""
+              }`}
               style={{ top: `${tocBarTop}px` }}
             />
           </div>
-          <ul className="toc-list" ref={tocListRef}>
+          <ul className={styles.tocList} ref={tocListRef}>
             {toc.map((item) => (
               <TOCItem
                 key={item.slug}

@@ -1,7 +1,7 @@
-.toc-mask {
+.tocMask {
   position: fixed;
   inset: 0;
-  background: rgba(217, 217, 217, 0.5);
+  background: rgba(217, 217, 217, 0.50);
   backdrop-filter: blur(5px);
   transition: opacity 0.5s;
   z-index: 1;
@@ -13,7 +13,7 @@
     width: 100%;
   }
 
-  .toc-mask {
+  .tocMask {
     position: fixed;
     top: 0;
     left: 0;
@@ -42,9 +42,7 @@
   inset: 0 0 unset !important;
   z-index: 1;
   transform: translateX(0%);
-  transition:
-    opacity 0.5s,
-    transform 0.25s ease-in-out;
+  transition: opacity 0.5s, transform 0.25s ease-in-out;
 }
 .close {
   opacity: 0;
@@ -65,11 +63,11 @@
   padding-top: 40px;
   padding-left: 50px;
 }
-.toc-wrapper {
+.tocWrapper {
   position: relative;
   width: 240px;
 }
-.toc-title {
+.tocTitle {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -77,26 +75,26 @@
   font-size: 14px;
   font-weight: 500;
 }
-.toc-list-container {
+.tocListContainer {
   display: flex;
   flex-direction: row;
   gap: 12px;
 }
-.toc-rail {
+.tocRail {
   width: 2px;
   background: #eee;
   position: relative;
 }
-.toc-rail-bar {
+.tocRailBar {
   position: absolute;
   width: 2px;
   height: 14px;
   background: #4d4949;
 }
-.toc-rail-bar-active {
+.tocRailBarActive {
   background: #4d4949;
 }
-.toc-list {
+.tocList {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -105,18 +103,17 @@
   padding: 0;
   margin: 0;
 }
-.toc-item {
-  color: var(--font-secondary, rgba(0, 0, 0, 0.6));
+.tocItem {
+  color: var(--font-secondary, rgba(0, 0, 0, 0.60));
   font-size: 14px;
   font-weight: 400;
   line-height: 14px;
 }
-.toc-item:hover {
+.tocItem:hover {
   color: var(--font-primary, #000);
   font-weight: 500;
 }
-.toc-item-active {
+.tocItemActive {
   color: var(--font-primary, #000);
   font-weight: 500;
 }
-
