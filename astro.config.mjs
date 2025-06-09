@@ -8,10 +8,13 @@ import {
   defListHastHandlers,
 } from "remark-definition-list";
 import remarkDirective from "remark-directive";
-import remarkCalloutDirectives from "@microflash/remark-callout-directives";
 import devtoolsJson from "vite-plugin-devtools-json";
 import fs from "node:fs";
 import expressiveCode from "astro-expressive-code";
+// @ts-ignore
+import remarkCalloutDirectives from '@microflash/remark-callout-directives';
+
+import scopeql from "./shiki-scopeql-grammar.json";
 
 // https://astro.build/config
 export default defineConfig({
@@ -72,5 +75,42 @@ export default defineConfig({
       ],
     ],
     remarkRehype: { handlers: defListHastHandlers },
+  integrations: [react(), sitemap(), mdx({
+    remarkPlugins: [remarkDefinitionList, remarkDirective, [remarkCalloutDirectives, {
+      aliases: {
+        info: "assert",
+        commend: "tip"
+      },
+      callouts: {
+        commend: { title: "Tip" },
+        assert: { title: "Info" },
+      }
+    }]],
+    remarkRehype: { handlers: defListHastHandlers },
+  })],
+
+  vite: {
+    plugins: [tailwindcss(), devtoolsJson()],
+    optimizeDeps: {
+      include: ['@docsearch/react']
+    }
+  },
+
+  markdown: {
+    remarkPlugins: [remarkDefinitionList, remarkDirective, [remarkCalloutDirectives, {
+      aliases: {
+        info: "assert",
+        commend: "tip"
+      },
+      callouts: {
+        commend: { title: "Tip" },
+        assert: { title: "Info" },
+      }
+    }]],
+    remarkRehype: { handlers: defListHastHandlers },
+    shikiConfig: {
+      // @ts-ignore
+      langs: [scopeql],
+    },
   },
 });
