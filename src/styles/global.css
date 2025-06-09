@@ -1,2 +1,9 @@
 @import "tailwindcss";
 @plugin '@tailwindcss/typography';
+
+:root {
+  --container-default-padding: 5vw;
+  --container-min-padding: 20px;
+  --container-max-padding: 40px;
+  --nav-padding-y: 14px;
+}
