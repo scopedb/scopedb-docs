@@ -26,7 +26,7 @@ const toc = (headings ?? []).filter(
       </div>
       {toc.length > 0 ? (
         <div class="toc-container">
-          <TOC toc={toc} client:only />
+          <TOC toc={toc} client:only="react" />
         </div>
       ) : null}
     </div>
