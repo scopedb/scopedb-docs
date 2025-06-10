@@ -6,4 +6,15 @@
   --container-min-padding: 20px;
   --container-max-padding: 40px;
   --nav-padding-y: 14px;
+
+  --text-primary: hsla(0, 0%, 0%, 1);
+  --text-secondary: hsla(0, 0%, 0%, 0.6);
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
 }
