@@ -1,6 +1,6 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
-import process from 'node:process';
+import process from "node:process";
 import sitemap from "@astrojs/sitemap";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
@@ -11,8 +11,13 @@ import {
 import remarkDirective from "remark-directive";
 import remarkCalloutDirectives from "@microflash/remark-callout-directives";
 import devtoolsJson from "vite-plugin-devtools-json";
-import fs from "node:fs";
 import expressiveCode from "astro-expressive-code";
+import scopeql from "./shiki-scopeql-grammar.json";
+
+function viteCssModuleName() {
+  // do not use hash when dev
+  return process.env.NODE_ENV === "development" ? "[local]" : "[hash:base64:8]";
+}
 
 // https://astro.build/config
 export default defineConfig({
@@ -23,65 +28,29 @@ export default defineConfig({
     expressiveCode({
       themes: ["min-light"],
       shiki: {
-        langs: [
-          JSON.parse(fs.readFileSync("./shiki-scopeql-grammar.json", "utf-8")),
-        ],
+        langs: [scopeql],
       },
     }),
-    mdx({
-      remarkPlugins: [
-        remarkDefinitionList,
-        remarkDirective,
-        [
-          remarkCalloutDirectives,
-          {
-            aliases: {
-              info: "assert",
-              commend: "tip",
-            },
-            callouts: {
-              commend: { title: "Tip" },
-              assert: { title: "Info" },
-            },
-          },
-        ],
-      ],
-      remarkRehype: { handlers: defListHastHandlers },
-    }),
+    mdx(),
   ],
 
   vite: {
     plugins: [tailwindcss(), devtoolsJson()],
     optimizeDeps: {
-      include: ['@docsearch/react']
+      include: ["@docsearch/react"],
     },
-    css:{
-    modules: {
-      // do not use hash when dev
-      generateScopedName: process.env.NODE_ENV === 'development'
-        ? '[local]'
-        : '[hash:base64:8]'
-    }
-  }
+    css: {
+      modules: {
+        generateScopedName: viteCssModuleName(),
+      },
+    },
   },
 
   markdown: {
     remarkPlugins: [
       remarkDefinitionList,
       remarkDirective,
-      [
-        remarkCalloutDirectives,
-        {
-          aliases: {
-            info: "assert",
-            commend: "tip",
-          },
-          callouts: {
-            commend: { title: "Tip" },
-            assert: { title: "Info" },
-          },
-        },
-      ],
+      remarkCalloutDirectives,
     ],
     remarkRehype: { handlers: defListHastHandlers },
   },
