@@ -2,7 +2,7 @@ import React from "react";
 import { DocSearch } from "@docsearch/react";
 import "@docsearch/css";
 
-export function Search() {
+export default function Search() {
   return (
     <DocSearch
       appId={"WHHXVN2FB9"}
