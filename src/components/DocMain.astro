@@ -30,7 +30,6 @@ const toc = (headings ?? []).filter(
       ) : null}
     </div>
   ) : null}
- <div class="content-container" transition:animate="fade">
   <div class="markdown-body">
     <slot />
   </div>
@@ -51,10 +50,11 @@ const toc = (headings ?? []).filter(
     grid-area: sidebar;
     position: sticky;
     top: 0;
-    padding: 8px 16px;
+    padding: 0 16px;
     height: 100vh;
     overflow-y: auto;
   }
+ 
   .toc-container {
     grid-area: toc;
     position: sticky;
@@ -75,18 +75,25 @@ const toc = (headings ?? []).filter(
     .doc-container {
       display: grid;
       grid-template-areas:
-        "sidebar toc toc "
-        "sidebar content content ";
-      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
+        "sidebar toc"
+        "sidebar content";
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 3fr);
       grid-template-rows: auto 1fr;
     }
     .content-container {
       position: unset;
     }
     .toc-container {
-      height: 20px;
-      overflow: unset;
-      position: unset;
+      height: 32px;
+      overflow: hidden;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      opacity: 1;
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
     }
   }
   @media (max-width: 480px) {
@@ -99,13 +106,23 @@ const toc = (headings ?? []).filter(
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
+      position: sticky;
+      height: 32px;
+      inset: 0;
+      z-index: 100;
+      opacity: 1;
+      background: #fff;
+      padding: 8px 16px;
     }
     .toc-container {
       position: unset;
+      display: flex;
+      justify-content: flex-end;
     }
     .sidebar {
       position: unset;
       height: fit-content;
+      padding: 0;
     }
     .content-container {
       position: unset;
