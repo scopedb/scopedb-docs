@@ -25,14 +25,14 @@ const categories: Category[] = [
 ---
 
 <ul
-  class="flex gap-[32px] text-[14px] leading-[30px] pt-[12px] font-[500] text-secondary text-center"
+  class="flex gap-[32px] text-[14px] leading-[30px] pt-[12px] text-[var(--text-secondary)] text-center"
 >
   {
     categories.map((c) => (
       <li>
         <a
           href={c.link}
-          class:list={{ "font-[600] text-primary": c.isCurrent }}
+          class:list={{ " font-medium text-[var(--text-primary)]": c.isCurrent }}
         >
           <div>{c.label}</div>
         </a>

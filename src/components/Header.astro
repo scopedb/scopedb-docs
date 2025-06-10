@@ -3,14 +3,14 @@ import Categories from "@/src/components/Categories.astro";
 import { Search } from "./Search";
 ---
 
-<div>
-  <div class="flex">
-    <div class="title-wrapper flex items-center gap-[24px]">
+<div class="max-w-[1440px] mx-auto py-[16px] px-[12px] md:px-[24px] xl-[32px] ">
+  <div class="flex   border-b border-[rgba(0,0,0,0.03)] pb-[16px] items-center justify-between">
+    <div class="title-wrapper flex items-center gap-[24px] ">
       <a href="/" class="flex items-center gap-[12px]">
         <img src="/logo.svg" alt="ScopeDB Logo" class="h-[28px] w-[28px]" />
-        <div class="text-[20px] text-[#000000] font-[600]">ScopeDB</div>
+        <div class="text-[20px] text-[#000000] font-medium">ScopeDB</div>
         <div
-          class="text-[16px] pl-[12px] md:pl-[24px] text-[rgba(0,0,0,0.80)] font-[600]"
+          class="text-[16px] pl-[12px] md:pl-[24px] text-[rgba(0,0,0,0.80)] font-medium "
         >
           DOCUMENTATION
         </div>
@@ -28,19 +28,3 @@ import { Search } from "./Search";
 
   <Categories />
 </div>
-<style>
-  .header {
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-  }
-
-  .title-wrapper {
-    /* Prevent long titles overflowing and covering the search and menu buttons on narrow viewports. */
-    overflow: clip;
-    /* Avoid clipping focus ring around link inside title wrapper. */
-    padding: 0.25rem;
-    margin: -0.25rem;
-    min-width: 0;
-  }
-</style>

@@ -126,7 +126,7 @@ const SidebarMenuItem = React.memo(function SidebarMenuItem({
           onClick={() => onToggleCollapsed(itemKey)}
           aria-expanded={!collapsed}
         >
-          <span className={styles.groupLabel}>{item.label}</span>
+          <span className="bg-amber-100">{item.label}</span>
           <span className={styles.groupArrow}>
             {collapsed ? (
               <ChevronRight width={16} height={16} />
