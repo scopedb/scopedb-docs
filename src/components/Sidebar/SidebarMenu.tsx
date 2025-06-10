@@ -15,6 +15,7 @@ interface SidebarItemProps {
   collapsedStates: Record<string, boolean>;
   // eslint-disable-next-line no-unused-vars
   onToggleCollapsed: (key: string) => void;
+  closeSidebarMenu?: () => void;
 }
 
 interface SidebarGroupProps {
@@ -24,9 +25,9 @@ interface SidebarGroupProps {
   collapsedStates: Record<string, boolean>;
   // eslint-disable-next-line no-unused-vars
   onToggleCollapsed: (key: string) => void;
+  closeSidebarMenu?: () => void;
 }
 
-// Hooks
 function useCurrentPath() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
@@ -109,6 +110,7 @@ const SidebarMenuItem = React.memo(function SidebarMenuItem({
   currentPath,
   collapsedStates,
   onToggleCollapsed,
+  closeSidebarMenu,
 }: SidebarItemProps) {
   const isGroup = Boolean(item.items?.length);
   const itemKey = item.link || item.label || `item-${depth}`;
@@ -145,6 +147,7 @@ const SidebarMenuItem = React.memo(function SidebarMenuItem({
                 currentPath={currentPath}
                 collapsedStates={collapsedStates}
                 onToggleCollapsed={onToggleCollapsed}
+                closeSidebarMenu={closeSidebarMenu}
               />
             ))}
           </div>
@@ -159,6 +162,7 @@ const SidebarMenuItem = React.memo(function SidebarMenuItem({
       className={`${styles.singleItem} ${isItemActive ? styles.active : ""} is-leaf`}
       style={{ paddingLeft }}
       data-astro-prefetch
+      onClick={closeSidebarMenu}
     >
       {item.label}
     </a>
@@ -171,6 +175,7 @@ const SidebarGroup = React.memo(function SidebarGroup({
   currentPath,
   collapsedStates,
   onToggleCollapsed,
+  closeSidebarMenu,
 }: SidebarGroupProps) {
   return (
     <aside className={classNames}>
@@ -183,6 +188,7 @@ const SidebarGroup = React.memo(function SidebarGroup({
             currentPath={currentPath}
             collapsedStates={collapsedStates}
             onToggleCollapsed={onToggleCollapsed}
+            closeSidebarMenu={closeSidebarMenu}
           />
         ))}
       </nav>
@@ -194,24 +200,52 @@ function Breadcrumbs() {
   const currentPath = useCurrentPath();
 
   const crumbs = useMemo(() => {
-    const segments = currentPath.split("/").filter(Boolean);
-    const result = [];
-    let path = "";
+    const getVisibleSegments = (segments: string[], count: number) => {
+      const startIndex = Math.max(0, segments.length - count);
+      return {
+        startIndex,
+        segments: segments.slice(startIndex),
+      };
+    };
 
-    for (const segment of segments) {
-      path += `/${segment}`;
-      result.push({ text: segment, link: path });
-    }
+    const buildPaths = (segments: string[]) => {
+      const paths: string[] = [];
+      let currentPath = "";
 
-    return result;
+      for (const segment of segments) {
+        currentPath = currentPath ? `${currentPath}/${segment}` : `/${segment}`;
+        paths.push(currentPath);
+      }
+
+      return paths;
+    };
+
+    const pathSegments = currentPath.split("/").filter(Boolean);
+
+    const { startIndex, segments: visibleSegments } = getVisibleSegments(
+      pathSegments,
+      2,
+    );
+
+    const allPaths = buildPaths(pathSegments);
+
+    const visiblePaths = allPaths.slice(startIndex);
+
+    return visibleSegments.map((segment, index) => ({
+      text: segment,
+      link: visiblePaths[index],
+    }));
   }, [currentPath]);
 
   return (
     <span className={styles.breadcrumbs}>
-      {crumbs.map((crumb) => (
-        <a key={crumb.link} href={crumb.link} className={styles.breadcrumb}>
-          {crumb.text}
-        </a>
+      {crumbs.map((crumb, index) => (
+        <React.Fragment key={crumb.link}>
+          {index > 0 && <span className={styles.breadcrumb}>/</span>}
+          <a href={crumb.link} className={styles.breadcrumb}>
+            {crumb.text}
+          </a>
+        </React.Fragment>
       ))}
     </span>
   );
@@ -230,6 +264,10 @@ export function SidebarMenu({ sidebar: items }: Props) {
     return open ? styles.visible : styles.hidden;
   }, [isMobile, open]);
 
+  function closeSidebarMenu() {
+    setOpen(false);
+  }
+
   return (
     <div>
       {open && <div className={styles.mask} onClick={() => setOpen(false)} />}
@@ -245,6 +283,7 @@ export function SidebarMenu({ sidebar: items }: Props) {
         currentPath={currentPath}
         collapsedStates={collapsedStates}
         onToggleCollapsed={toggleCollapsed}
+        closeSidebarMenu={closeSidebarMenu}
       />
     </div>
   );
