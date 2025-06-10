@@ -9,19 +9,19 @@ const categories: Category[] = [
   {
     label: "Guides",
     link: "/guides/",
-    isCurrent: false,
   },
   {
     label: "Developer",
     link: "/developer/",
-    isCurrent: false,
   },
   {
     label: "Reference",
     link: "/reference/",
-    isCurrent: true,
   },
-];
+].map((c) => ({
+  ...c,
+  isCurrent: Astro.url.pathname.includes(c.link),
+}));
 ---
 
 <ul

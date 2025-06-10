@@ -17,12 +17,11 @@ const toc = (headings ?? []).filter(
   (heading) => heading.depth > 1 && heading.depth <= 6,
 );
 ---
-
-{sidebar?.length > 0 ? (
-  <div class="doc-container">
+<div class="doc-container">
+  {sidebar?.length > 0 ? (
     <div class="doc-aside">
       <div class="sidebar" transition:persist>
-        <Sidebar sidebar={sidebar} transition:persist/>
+        <Sidebar sidebar={sidebar} />
       </div>
       {toc.length > 0 ? (
         <div class="toc-container">
@@ -30,21 +29,13 @@ const toc = (headings ?? []).filter(
         </div>
       ) : null}
     </div>
-    <div class="content-container" transition:animate="fade">
-      <div class="markdown-body">
-        <slot />
-      </div>
-    </div>
+  ) : null}
+ <div class="content-container" transition:animate="fade">
+  <div class="markdown-body">
+    <slot />
   </div>
-) : (
-  <div class="doc-container-no-sidebar">
-    <div class="content-container" transition:animate="fade">
-      <div class="markdown-body">
-        <slot />
-      </div>
-    </div>
-  </div>
-)}
+</div>
+</div>
 
 <style>
   .doc-container {
