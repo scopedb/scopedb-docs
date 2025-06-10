@@ -11,7 +11,6 @@ import {
 import remarkDirective from "remark-directive";
 import remarkCalloutDirectives from "@microflash/remark-callout-directives";
 import devtoolsJson from "vite-plugin-devtools-json";
-import expressiveCode from "astro-expressive-code";
 import scopeql from "./shiki-scopeql-grammar.json";
 
 function viteCssModuleName() {
@@ -22,17 +21,7 @@ function viteCssModuleName() {
 // https://astro.build/config
 export default defineConfig({
   site: "https://docs.scopedb.io",
-  integrations: [
-    react(),
-    sitemap(),
-    expressiveCode({
-      themes: ["min-light"],
-      shiki: {
-        langs: [scopeql],
-      },
-    }),
-    mdx(),
-  ],
+  integrations: [react(), sitemap(), mdx()],
 
   vite: {
     plugins: [tailwindcss(), devtoolsJson()],
@@ -53,5 +42,9 @@ export default defineConfig({
       remarkCalloutDirectives,
     ],
     remarkRehype: { handlers: defListHastHandlers },
+    shikiConfig: {
+      theme: 'github-light',
+      langs: [scopeql],
+    }
   },
 });

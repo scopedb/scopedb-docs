@@ -103,7 +103,7 @@ SELECT
 +--------+--------+----+-----------+----+--------------+--------------+--------------+
 ```
 
-:::caution[Interval's unit]
+:::warn[Interval's unit]
 
 Interval is always accurate in nanoseconds. Thus, you cannot specify a string containing parts with days or greater (weeks, months, years, etc.), even though ISO 8601 allows them.
 
