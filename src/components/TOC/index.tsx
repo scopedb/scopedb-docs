@@ -26,7 +26,7 @@ interface LinkInfo {
   index: number;
 }
 
-type OffsetTarget = Window | Document | HTMLElement;
+type OffsetTarget = Window | Document | HTMLElement | Element;
 
 const SCROLL_THROTTLE_MS = 128;
 const TOP_BOUND = 12;
@@ -41,10 +41,13 @@ function getOffset(
   height: number;
 } {
   const { top: elTop, height } = el.getBoundingClientRect();
-  const scrollTargetTop =
-    scrollTarget instanceof HTMLElement
-      ? scrollTarget.getBoundingClientRect().top
-      : 0;
+  let scrollTargetTop = 0;
+  
+  if (scrollTarget instanceof HTMLElement || scrollTarget instanceof Element) {
+    scrollTargetTop = scrollTarget.getBoundingClientRect().top;
+  }
+  // For document, scrollTargetTop remains 0 (normal page scrolling)
+  
   return {
     top: elTop - scrollTargetTop,
     height,
@@ -81,6 +84,7 @@ function useTOCScroll(
 ) {
   const handleScroll = useCallback(() => {
     const links: LinkInfo[] = [];
+    // Use document as offset target since content now scrolls with the page
     const offsetTarget = document;
 
     collectedLinkHrefs.forEach((href, index) => {
@@ -122,6 +126,7 @@ function useTOCScroll(
   );
 
   useEffect(() => {
+    // Now that content scrolls with the page, listen to window scroll again
     window.addEventListener("scroll", throttledHandleScroll);
     return () => window.removeEventListener("scroll", throttledHandleScroll);
   }, [throttledHandleScroll]);
@@ -180,7 +185,7 @@ export function TOCItem({
         title={item.text}
         href={`#${item.slug}`}
         onClick={handleClick}
-        style={{ paddingLeft: `${(item.depth - 2) * 16}px` }}
+        style={{ marginLeft: `${(item.depth - 2) * 16}px` }}
       >
         {item.text}
       </a>

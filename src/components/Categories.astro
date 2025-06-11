@@ -32,7 +32,13 @@ const categories: Category[] = [
       <li>
         <a
           href={c.link}
-          class:list={{ " font-medium text-[var(--text-primary)]": c.isCurrent }}
+          class:list={[
+            "inline-block transition-all duration-300 hover:text-[var(--text-primary)]",
+            "border-b-2 pb-[12px] transition-colors",
+            c.isCurrent 
+              ? "font-medium text-[var(--text-primary)] border-current" 
+              : "border-transparent hover:border-[rgba(0,0,0,0.1)]",
+          ]}
         >
           <div>{c.label}</div>
         </a>
@@ -41,8 +47,3 @@ const categories: Category[] = [
   }
 </ul>
 
-<style>
-  li {
-    overflow-wrap: anywhere;
-  }
-</style>

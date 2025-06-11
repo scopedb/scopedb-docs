@@ -67,13 +67,14 @@
   align-items: center;
   gap: 12px;
   color: var(--font-primary, #000);
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
 }
 .tocListContainer {
   display: flex;
   flex-direction: row;
   gap: 12px;
+  margin-top: 16px;
 }
 .tocRail {
   width: 2px;
@@ -99,16 +100,27 @@
   margin: 0;
 }
 .tocItem {
-  color: var(--font-secondary, rgba(0, 0, 0, 0.60));
-  font-size: 14px;
+  color: var(--text-secondary, rgba(0, 0, 0, 0.60));
+  font-size: 12px;
   font-weight: 400;
   line-height: 14px;
 }
+
+.tocItem a {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  word-wrap: break-word;
+  /* Use text-indent to handle proper line wrapping with indentation */
+  text-indent: 0;
+  /* The margin-left will be applied via inline styles based on depth */
+}
+
 .tocItem:hover {
-  color: var(--font-primary, #000);
+  color: var(--text-primary, #000);
   font-weight: 500;
 }
 .tocItemActive {
-  color: var(--font-primary, #000);
+  color: var(--text-primary, #000);
   font-weight: 500;
 }
