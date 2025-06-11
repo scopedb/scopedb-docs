@@ -14,6 +14,7 @@ interface SidebarItemProps {
   collapsedStates: Record<string, boolean>;
   // eslint-disable-next-line no-unused-vars
   onToggleCollapsed: (key: string) => void;
+  closeSidebarMenu?: () => void;
 }
 
 interface SidebarGroupProps {
@@ -23,9 +24,13 @@ interface SidebarGroupProps {
   collapsedStates: Record<string, boolean>;
   // eslint-disable-next-line no-unused-vars
   onToggleCollapsed: (key: string) => void;
+  closeSidebarMenu?: () => void;
 }
 
+<<<<<<< HEAD
 // Hook: Track current URL path
+=======
+>>>>>>> upstream/main
 function useCurrentPath() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
@@ -112,6 +117,7 @@ const SidebarMenuItem = React.memo(function SidebarMenuItem({
   currentPath,
   collapsedStates,
   onToggleCollapsed,
+  closeSidebarMenu,
 }: SidebarItemProps) {
   const isGroup = Boolean(item.items?.length);
   const itemKey = item.link || item.label || `item-${depth}`;
@@ -149,6 +155,7 @@ const SidebarMenuItem = React.memo(function SidebarMenuItem({
                 currentPath={currentPath}
                 collapsedStates={collapsedStates}
                 onToggleCollapsed={onToggleCollapsed}
+                closeSidebarMenu={closeSidebarMenu}
               />
             ))}
           </div>
@@ -164,6 +171,7 @@ const SidebarMenuItem = React.memo(function SidebarMenuItem({
       className={`block min-h-[32px] leading-[32px] py-[4px] px-[8px] mb-[2px] font-normal text-[var(---text-secondary)] text-[13px] no-underline rounded-[12px] duration-200 break-all whitespace-normal ${isItemActive ? "bg-[rgba(0,0,0,0.04)] text-[var(--text-primary)] font-medium " : "hover:bg-[rgba(0,0,0,0.02)] hover:text-[var(--text-primary)]"}`}
       style={{ paddingLeft }}
       data-astro-prefetch
+      onClick={closeSidebarMenu}
     >
       {item.label}
     </a>
@@ -177,6 +185,7 @@ const SidebarGroup = React.memo(function SidebarGroup({
   currentPath,
   collapsedStates,
   onToggleCollapsed,
+  closeSidebarMenu,
 }: SidebarGroupProps) {
   return (
     <aside className={classNames}>
@@ -189,6 +198,7 @@ const SidebarGroup = React.memo(function SidebarGroup({
             currentPath={currentPath}
             collapsedStates={collapsedStates}
             onToggleCollapsed={onToggleCollapsed}
+            closeSidebarMenu={closeSidebarMenu}
           />
         ))}
       </nav>
@@ -201,19 +211,45 @@ function Breadcrumbs() {
   const currentPath = useCurrentPath();
 
   const crumbs = useMemo(() => {
-    const segments = currentPath.split("/").filter(Boolean);
-    const result = [];
-    let path = "";
+    const getVisibleSegments = (segments: string[], count: number) => {
+      const startIndex = Math.max(0, segments.length - count);
+      return {
+        startIndex,
+        segments: segments.slice(startIndex),
+      };
+    };
 
-    for (const segment of segments) {
-      path += `/${segment}`;
-      result.push({ text: segment, link: path });
-    }
+    const buildPaths = (segments: string[]) => {
+      const paths: string[] = [];
+      let currentPath = "";
 
-    return result;
+      for (const segment of segments) {
+        currentPath = currentPath ? `${currentPath}/${segment}` : `/${segment}`;
+        paths.push(currentPath);
+      }
+
+      return paths;
+    };
+
+    const pathSegments = currentPath.split("/").filter(Boolean);
+
+    const { startIndex, segments: visibleSegments } = getVisibleSegments(
+      pathSegments,
+      2,
+    );
+
+    const allPaths = buildPaths(pathSegments);
+
+    const visiblePaths = allPaths.slice(startIndex);
+
+    return visibleSegments.map((segment, index) => ({
+      text: segment,
+      link: visiblePaths[index],
+    }));
   }, [currentPath]);
 
   return (
+<<<<<<< HEAD
     <span className="pl-3 text-black/60 text-sm font-normal">
       {crumbs.map((crumb, index) => (
         <span key={crumb.link}>
@@ -224,6 +260,16 @@ function Breadcrumbs() {
             <span className="mx-1 text-gray-400"> / </span>
           )}
         </span>
+=======
+    <span className={styles.breadcrumbs}>
+      {crumbs.map((crumb, index) => (
+        <React.Fragment key={crumb.link}>
+          {index > 0 && <span className={styles.breadcrumb}>/</span>}
+          <a href={crumb.link} className={styles.breadcrumb}>
+            {crumb.text}
+          </a>
+        </React.Fragment>
+>>>>>>> upstream/main
       ))}
     </span>
   );
@@ -245,7 +291,13 @@ export function SidebarMenu({ sidebar: items }: Props) {
       : "opacity-0 invisible -translate-x-full w-0 h-0 transition-all duration-500 ease-in-out";
   }, [isMobile, open]);
 
+<<<<<<< HEAD
   const sidebarBaseClasses = "opacity-100 visible overflow-scroll sticky top-0 left-0 w-full max-w-[300px] overflow-x-hidden bg-white overflow-y-auto";
+=======
+  function closeSidebarMenu() {
+    setOpen(false);
+  }
+>>>>>>> upstream/main
 
   return (
     <div>
@@ -272,6 +324,7 @@ export function SidebarMenu({ sidebar: items }: Props) {
         currentPath={currentPath}
         collapsedStates={collapsedStates}
         onToggleCollapsed={toggleCollapsed}
+        closeSidebarMenu={closeSidebarMenu}
       />
     </div>
   );

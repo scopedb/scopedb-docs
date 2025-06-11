@@ -1,7 +1,9 @@
 ---
-import DocMain from "@/src/components/DocMain.astro";
+import DocEntry from "@/src/components/DocEntry.astro";
 import Layout from "@/src/layouts/Layout.astro";
 import { getCollection } from "astro:content";
+import {guidesSidebar} from "@/src/content/sidebar";
+import { resolveTitle } from "@/src/libs/title";
 
 export async function getStaticPaths() {
   const posts = await getCollection("guides");
@@ -18,11 +20,12 @@ export async function getStaticPaths() {
   ];
 }
 
+const sidebar = guidesSidebar;
 const { entry } = Astro.props;
 const { Content, headings } = await entry.render();
-const title = "Hello World";
+const title = resolveTitle(entry.data.title, headings);
 ---
 
 <Layout title={title}>
-  <DocMain headings={headings}><Content /></DocMain>
+  <DocEntry headings={headings} sidebar={sidebar}><Content /></DocEntry>
 </Layout>

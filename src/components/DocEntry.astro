@@ -1,0 +1,192 @@
+---
+import "@/src/styles/global.css";
+import "@/src/styles/callout.css";
+import type { MarkdownHeading } from "astro";
+import { TOC } from "@/src/components/TOC";
+import type { SidebarItem } from "@/src/libs/sidebar";
+import Sidebar from "@/src/components/Sidebar/Sidebar.astro";
+
+interface Props {
+  headings: MarkdownHeading[];
+  sidebar: SidebarItem[];
+}
+
+const { headings, sidebar } = Astro.props;
+
+const toc = (headings ?? []).filter(
+  (heading) => heading.depth > 1 && heading.depth <= 6,
+);
+---
+<div class="doc-container">
+  {sidebar?.length > 0 ? (
+    <div class="doc-aside">
+      <div class="sidebar" transition:persist>
+        <Sidebar sidebar={sidebar} />
+      </div>
+      {toc.length > 0 ? (
+        <div class="toc-container">
+          <TOC toc={toc} client:only="react" />
+        </div>
+      ) : null}
+    </div>
+  ) : null}
+  <div class="
+					prose prose-zinc
+					astro-code
+
+					max-w-[800px] mx-auto mt-[23px] mb-[100px]
+					text-[16px] leading-[1.4]
+					text-[rgba(0,0,0,0.8)]
+
+					prose-headings:font-medium prose-headings:leading-tight prose-headings:relative prose-headings:scroll-mt-[80px]
+					prose-h1:text-[32px] prose-h1:mt-[48px] prose-h1:mb-[24px] prose-h1:first:mt-0
+					prose-h2:text-[24px] prose-h2:mt-[40px] prose-h2:mb-[20px]
+					prose-h3:text-[20px] prose-h3:mt-[32px] prose-h3:mb-[16px]
+					prose-h4:text-[18px] prose-h4:mt-[24px] prose-h4:mb-[12px]
+					prose-h5:text-[16px] prose-h5:mt-[20px] prose-h5:mb-[8px]
+					prose-h6:text-[14px] prose-h6:mt-[16px] prose-h6:mb-[8px]
+
+					prose-h1:text-[#000000]
+					prose-h2:text-[#000000]
+					prose-h3:text-[#000000]
+					prose-h4:text-[#000000]
+					prose-h5:text-[#000000]
+					prose-h6:text-[#000000]
+
+					prose-p:my-[20px] prose-p:leading-[1.6]
+
+					prose-a:text-[#0879E0] prose-a:no-underline hover:prose-a:underline
+					prose-a:font-medium prose-a:transition-all
+
+					prose-strong:text-[#000]
+					prose-strong:font-semibold
+					prose-em:italic prose-em:text-inherit
+
+					prose-blockquote:border-l- prose-blockquote:border-[rgba(0,0,0,0.1)]
+					prose-blockquote:pl-[20px] prose-blockquote:italic
+					prose-blockquote:my-[32px] prose-blockquote:text-[rgba(0,0,0,0.6)]
+					prose-blockquote:leading-[1.6]
+					prose-blockquote:text-[14px]
+					prose-blockquote:font-normal
+
+					prose-ul:my-[16px] prose-ul:pl-[24px]
+					prose-ol:my-[16px] prose-ol:pl-[24px]
+					prose-li:my-[8px] prose-li:leading-[1.4]
+
+					prose-code:py-[2px] prose-code:rounded-[4px]
+					prose-code:font-mono
+					prose-code:text-[13px] prose-code:font-normal
+					prose-code:before:content-none prose-code:after:content-none
+
+					prose-pre:bg-[#1f2937] prose-pre:text-[#f9fafb] prose-pre:p-[20px]
+					prose-pre:rounded-[8px] prose-pre:overflow-x-auto prose-pre:my-[24px]
+					prose-pre:text-[14px] prose-pre:leading-[1.5]
+
+					prose-img:rounded-[8px] prose-img:my-[32px] prose-img:shadow-lg
+					prose-img:w-full prose-img:h-auto
+
+					prose-table:my-[32px] prose-table:w-full prose-table:border-collapse
+					prose-th:border prose-th:border-[rgba(0,0,0,0.1)] prose-th:p-[12px]
+					prose-th:bg-[rgba(0,0,0,0.02)] prose-th:font-semibold prose-th:text-left
+					prose-td:border prose-td:border-[rgba(0,0,0,0.1)] prose-td:p-[12px]
+
+					prose-hr:my-[48px] prose-hr:border-t prose-hr:border-[rgba(0,0,0,0.1)]
+					[&_.heading-anchor]:text-inherit [&_.heading-anchor]:no-underline
+					">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .doc-container {
+    display: grid;
+    grid-template-areas: "sidebar content toc";
+    grid-template-columns: minmax(0, 2fr) minmax(0, 6fr) minmax(0, 2fr);
+    width: 100%;
+  }
+  .doc-aside {
+    display: contents;
+  }
+  .sidebar {
+    grid-area: sidebar;
+    position: sticky;
+    top: 0;
+    padding: 0 16px;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .toc-container {
+    grid-area: toc;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: auto;
+  }
+  .content-container {
+    grid-area: content;
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+  }
+  .content-container:global(.astro-transition-fade) {
+    opacity: 0;
+  }
+
+  @media (max-width: 960px) {
+    .doc-container {
+      display: grid;
+      grid-template-areas:
+        "sidebar toc"
+        "sidebar content";
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 3fr);
+      grid-template-rows: auto 1fr;
+    }
+    .content-container {
+      position: unset;
+    }
+    .toc-container {
+      height: 32px;
+      overflow: hidden;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      opacity: 1;
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+  @media (max-width: 480px) {
+    .doc-container {
+      display: flex;
+      flex-direction: column;
+    }
+    .doc-aside {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      height: 32px;
+      inset: 0;
+      z-index: 100;
+      opacity: 1;
+      background: #fff;
+      padding: 8px 16px;
+    }
+    .toc-container {
+      position: unset;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .sidebar {
+      position: unset;
+      height: fit-content;
+      padding: 0;
+    }
+    .content-container {
+      position: unset;
+    }
+  }
+</style>

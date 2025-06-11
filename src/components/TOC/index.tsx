@@ -2,7 +2,7 @@ import React from "react";
 import type { MarkdownHeading } from "astro";
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { throttle } from "lodash-es";
-import { useMedia } from "@/src/libs/hooks";
+import { useMedia, useScrollLock } from "@/src/libs/hooks";
 import { AlignLeftIcon } from "lucide-react";
 
 import styles from "./index.module.css";
@@ -15,6 +15,8 @@ interface TocItemProps {
   item: MarkdownHeading;
   isActive: boolean;
   onClick: (href: string) => void;
+  isMobile?: boolean;
+  onClose?: () => void;
 }
 
 interface LinkInfo {
@@ -157,14 +159,19 @@ function useTOCInitialization(
   }, [toc, collectedLinkHrefs, activeHref, setActiveHref, setActiveLink]);
 }
 
-export function TOCItem({ item, isActive, onClick }: TocItemProps) {
-  const handleClick = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>) => {
-      e.preventDefault();
-      onClick(item.slug);
-    },
-    [item.slug, onClick],
-  );
+export function TOCItem({
+  item,
+  isActive,
+  onClick,
+  isMobile,
+  onClose,
+}: TocItemProps) {
+  const handleClick = useCallback(() => {
+    onClick(item.slug);
+    if (isMobile && onClose) {
+      onClose();
+    }
+  }, [item.slug, onClick, isMobile, onClose]);
 
   return (
     <li className={`${styles.tocItem} ${isActive ? styles.tocItemActive : ""}`}>
@@ -225,6 +232,18 @@ export function TOC({ toc }: TOCProps) {
     () => (ITEM_HEIGHT + ITEM_MARGIN) * (activeLink?.index ?? 0),
     [activeLink],
   );
+  const close = useCallback(() => {
+    setIsOpen(false);
+  }, [setIsOpen]);
+
+  function handleClickTocItem(href: string) {
+    if (isMobile) {
+      close?.();
+    }
+    updateActiveHref(href, true);
+  }
+
+  useScrollLock(isOpen);
 
   return (
     <div className={styles.toc}>
@@ -233,9 +252,7 @@ export function TOC({ toc }: TOCProps) {
       )}
       {isOpen && <div className={styles.tocMask} onClick={toggleOpen} />}
       <div
-        className={`${styles.tocWrapper} ${
-          isMobile ? (isOpen ? styles.open : styles.close) : ""
-        }`}
+        className={`${isMobile ? (isOpen ? styles.open : styles.close) : ""}`}
       >
         <div className={styles.tocTitle}>
           <AlignLeftIcon width={16} height={16} />
@@ -256,7 +273,9 @@ export function TOC({ toc }: TOCProps) {
                 key={item.slug}
                 item={item}
                 isActive={item.slug === activeHref}
-                onClick={(href) => updateActiveHref(href, true)}
+                onClick={handleClickTocItem}
+                isMobile={isMobile}
+                onClose={close}
               />
             ))}
           </ul>
