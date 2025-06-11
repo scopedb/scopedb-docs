@@ -2,15 +2,55 @@
 // DocsFooter component for documentation pages
 ---
 
-<footer class="w-full  mt-16">
-  <div class="w-full border-t border-[#f3f3f3] mb-6"></div>
+<footer class="w-full mt-16">
+  <div class="w-full border-t border-[#f3f3f3] mb-8"></div>
   
-  <div class="flex justify-start items-center gap-[4px] flex-wrap">
+  <!-- Links and Social Media - Left/Right Layout -->
+  <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-6">
+    <!-- Main Links Section - Left -->
+    <div class="flex flex-wrap gap-x-8 gap-y-4">
+      <a 
+        href="https://scopedb.com" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="!text-[var(--text-tertiary)] !no-underline transition-all duration-200 hover:!text-[var(--text-primary)] text-sm font-medium"
+      >
+        Visit ScopeDB
+      </a>
+      
+      <a 
+        href="https://discord.gg/scopedb" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="!text-[var(--text-tertiary)] !no-underline transition-all duration-200 hover:!text-[var(--text-primary)] text-sm font-medium"
+      >
+       Community
+      </a>
+      
+      <a 
+        href="mailto:feedback@scopedb.com"
+        class="!text-[var(--text-tertiary)] !no-underline transition-all duration-200 hover:!text-[var(--text-primary)] text-sm font-medium"
+      >
+        Feedback
+      </a>
+      
+      <a 
+        href="https://blog.scopedb.com" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="!text-[var(--text-tertiary)] !no-underline transition-all duration-200 hover:!text-[var(--text-primary)] text-sm font-medium"
+      >
+        Blog
+      </a>
+    </div>
+    
+    <!-- Social Media Icons Section - Right -->
+    <div class="flex justify-start sm:justify-end items-center gap-[4px] flex-wrap">
     <a 
       href="https://twitter.com/scopedb" 
       target="_blank" 
       rel="noopener noreferrer" 
-      class="social-link flex items-center justify-center w-10 h-10 rounded-lg !text-[var(--text-tertiary)] !no-underline transition-all duration-200  hover:!text-[var(--text-prrimary)] group" 
+      class="social-link flex items-center justify-center w-10 h-10 rounded-lg !text-[var(--text-tertiary)] !no-underline transition-all duration-200  hover:!text-[var(--text-primary)] group" 
       aria-label="Follow us on X (Twitter)"
     >
       <!-- X (Twitter) Icon -->
@@ -23,7 +63,7 @@
       href="https://github.com/scopedb" 
       target="_blank" 
       rel="noopener noreferrer" 
-      class="social-link flex items-center justify-center w-10 h-10 rounded-lg !text-[var(--text-tertiary)] !no-underline transition-all duration-200  hover:!text-[var(--text-prrimary)] group" 
+      class="social-link flex items-center justify-center w-10 h-10 rounded-lg !text-[var(--text-tertiary)] !no-underline transition-all duration-200  hover:!text-[var(--text-primary)] group" 
       aria-label="Star us on GitHub"
     >
       <!-- GitHub Icon -->
@@ -36,7 +76,7 @@
       href="https://discord.gg/scopedb" 
       target="_blank" 
       rel="noopener noreferrer" 
-      class="social-link flex items-center justify-center w-10 h-10 rounded-lg !text-[var(--text-tertiary)] !no-underline transition-all duration-200  hover:!text-[var(--text-prrimary)] group" 
+      class="social-link flex items-center justify-center w-10 h-10 rounded-lg !text-[var(--text-tertiary)] !no-underline transition-all duration-200  hover:!text-[var(--text-primary)] group" 
       aria-label="Join our Discord"
     >
       <!-- Discord Icon -->
@@ -47,7 +87,7 @@
     
     <a 
       href="mailto:contact@scopedb.com" 
-      class="social-link flex items-center justify-center w-10 h-10 rounded-lg !text-[var(--text-tertiary)] !no-underline transition-all duration-200  hover:!text-[var(--text-prrimary)] group" 
+      class="social-link flex items-center justify-center w-10 h-10 rounded-lg !text-[var(--text-tertiary)] !no-underline transition-all duration-200  hover:!text-[var(--text-primary)] group" 
       aria-label="Contact us via email"
     >
       <!-- Email Icon -->
@@ -56,4 +96,6 @@
       </svg>
     </a>
   </div>
+  
+</div>
 </footer>
