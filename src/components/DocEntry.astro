@@ -9,9 +9,10 @@ import Sidebar from "@/src/components/Sidebar/Sidebar.astro";
 interface Props {
   headings: MarkdownHeading[];
   sidebar: SidebarItem[];
+  category: string;
 }
 
-const { headings, sidebar } = Astro.props;
+const { headings, sidebar,category } = Astro.props;
 
 const toc = (headings ?? []).filter(
   (heading) => heading.depth > 1 && heading.depth <= 6,
@@ -20,7 +21,7 @@ const toc = (headings ?? []).filter(
 <div class="doc-container">
   {sidebar?.length > 0 ? (
     <div class="doc-aside ">
-      <div class="sidebar  mt-[32px]" transition:persist>
+      <div class="sidebar  mt-[32px]" transition:persist={category}>
         <Sidebar sidebar={sidebar} />
       </div>
       {toc.length > 0 ? (
