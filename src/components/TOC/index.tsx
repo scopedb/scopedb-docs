@@ -46,7 +46,6 @@ function getOffset(
   if (scrollTarget instanceof HTMLElement || scrollTarget instanceof Element) {
     scrollTargetTop = scrollTarget.getBoundingClientRect().top;
   }
-  // For document, scrollTargetTop remains 0 (normal page scrolling)
   
   return {
     top: elTop - scrollTargetTop,
@@ -55,7 +54,12 @@ function getOffset(
 }
 
 function useTOCState(toc: MarkdownHeading[]) {
-  const [activeHref, setActiveHref] = useState<string | null>(null);
+  const [activeHref, setActiveHref] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+    const hash = window.location.hash.replaceAll("#", "");
+    return hash || toc[0]?.slug || null;
+  });
+  
   const [activeLink, setActiveLink] = useState<LinkInfo | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useMedia("(max-width:960px)");
@@ -83,8 +87,9 @@ function useTOCScroll(
   setActiveLink: (link: LinkInfo | null) => void,
 ) {
   const handleScroll = useCallback(() => {
+    if (typeof window === "undefined") return;
+    
     const links: LinkInfo[] = [];
-    // Use document as offset target since content now scrolls with the page
     const offsetTarget = document;
 
     collectedLinkHrefs.forEach((href, index) => {
@@ -126,7 +131,6 @@ function useTOCScroll(
   );
 
   useEffect(() => {
-    // Now that content scrolls with the page, listen to window scroll again
     window.addEventListener("scroll", throttledHandleScroll);
     return () => window.removeEventListener("scroll", throttledHandleScroll);
   }, [throttledHandleScroll]);
@@ -142,6 +146,8 @@ function useTOCInitialization(
   setActiveLink: (link: LinkInfo | null) => void,
 ) {
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    
     if (toc.length > 0 && !activeHref) {
       const firstHref = toc[0].slug;
       setActiveHref(firstHref);
@@ -164,7 +170,7 @@ function useTOCInitialization(
   }, [toc, collectedLinkHrefs, activeHref, setActiveHref, setActiveLink]);
 }
 
-export function TOCItem({
+export const TOCItem = React.memo(function TOCItem({
   item,
   isActive,
   onClick,
@@ -191,7 +197,7 @@ export function TOCItem({
       </a>
     </li>
   );
-}
+});
 
 export function TOC({ toc }: TOCProps) {
   const {
@@ -218,6 +224,8 @@ export function TOC({ toc }: TOCProps) {
 
   const updateActiveHref = useCallback(
     (href: string, shouldScroll = false) => {
+      if (typeof window === "undefined") return;
+      
       const linkEl = document.getElementById(href);
       if (!linkEl) return;
 
@@ -237,6 +245,7 @@ export function TOC({ toc }: TOCProps) {
     () => (ITEM_HEIGHT + ITEM_MARGIN) * (activeLink?.index ?? 0),
     [activeLink],
   );
+  
   const close = useCallback(() => {
     setIsOpen(false);
   }, [setIsOpen]);

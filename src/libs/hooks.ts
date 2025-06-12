@@ -1,42 +1,65 @@
 import { useEffect, useState, useRef } from "react";
 
-const matchMedia = (query: string) => {
-  const watcher = window.matchMedia(query);
-  return {
-    watcher,
-    matches: watcher.matches,
-  };
-};
-
 export function useMedia(query: string): boolean {
-  const [matched, setMatched] = useState(() => matchMedia(query).matches);
+  const [matched, setMatched] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia(query).matches;
+  });
+
   useEffect(() => {
-    const { watcher } = matchMedia(query);
-    const onChange = () => setMatched(!!watcher.matches);
-    watcher.addEventListener("change", onChange);
-    return () => watcher.removeEventListener("change", onChange);
+    if (typeof window === "undefined") return;
+
+    const mediaQueryList = window.matchMedia(query);
+    const onChange = (event: MediaQueryListEvent) => {
+      setMatched(event.matches);
+    };
+
+    // Safari <14 doesn't support addEventListener on MediaQueryList
+    if (mediaQueryList.addEventListener) {
+      mediaQueryList.addEventListener("change", onChange);
+    } else {
+      mediaQueryList.addListener(onChange);
+    }
+
+    // Set initial value in case it changed before effect runs
+    setMatched(mediaQueryList.matches);
+
+    return () => {
+      if (mediaQueryList.removeEventListener) {
+        mediaQueryList.removeEventListener("change", onChange);
+      } else {
+        mediaQueryList.removeListener(onChange);
+      }
+    };
   }, [query]);
+
   return matched;
 }
 
 export function useScrollLock(lock: boolean): void {
-  const previousOverflowRef = useRef("");
+  const previousOverflowRef = useRef<string | null>(null);
+
   useEffect(() => {
-    if (!lock) {
-      return;
-    }
+    if (typeof document === "undefined") return;
 
-    /* istanbul ignore next */
-    if (typeof document === "undefined") {
-      return;
+    if (lock) {
+      previousOverflowRef.current = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+    } else {
+      // Reset only if we had previously set it
+      if (
+        previousOverflowRef.current !== null &&
+        document.body.style.overflow === "hidden"
+      ) {
+        document.body.style.overflow = previousOverflowRef.current;
+      }
     }
-
-    previousOverflowRef.current = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
 
     return () => {
-      // Do not reset if other scripts modify style.
-      if (document.body.style.overflow === "hidden") {
+      if (
+        previousOverflowRef.current !== null &&
+        document.body.style.overflow === "hidden"
+      ) {
         document.body.style.overflow = previousOverflowRef.current;
       }
     };

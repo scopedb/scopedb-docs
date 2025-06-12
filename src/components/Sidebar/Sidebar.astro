@@ -9,4 +9,4 @@ interface Props {
 const { sidebar } = Astro.props;
 ---
 
-<SidebarMenu sidebar={sidebar} client:only="react" />
+<SidebarMenu sidebar={sidebar} client:load/>

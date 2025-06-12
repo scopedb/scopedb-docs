@@ -27,19 +27,18 @@ interface SidebarGroupProps {
 
 // Hook: Track current URL path
 function useCurrentPath() {
-  const [currentPath, setCurrentPath] = useState(window.location.pathname);
+  const [currentPath, setCurrentPath] = useState(() => {
+    if (typeof window === "undefined") return "/";
+    return window.location.pathname;
+  });
 
   useEffect(() => {
-    const handleRouteChange = () => {
-      setCurrentPath(window.location.pathname);
-    };
-
-    window.addEventListener("popstate", handleRouteChange);
-    document.addEventListener("astro:page-load", handleRouteChange);
-
+    const update = () => setCurrentPath(window.location.pathname);
+    window.addEventListener("popstate", update);
+    document.addEventListener("astro:page-load", update);
     return () => {
-      window.removeEventListener("popstate", handleRouteChange);
-      document.removeEventListener("astro:page-load", handleRouteChange);
+      window.removeEventListener("popstate", update);
+      document.removeEventListener("astro:page-load", update);
     };
   }, []);
 
@@ -240,27 +239,28 @@ export function SidebarMenu({ sidebar: items }: Props) {
 
   const mobileClassName = useMemo(() => {
     if (!isMobile) return "";
-    return open 
-      ? "opacity-100 visible bg-white w-[70%] h-full fixed inset-0 z-[1000] translate-x-0 transition-all duration-500 ease-in-out" 
+    return open
+      ? "opacity-100 visible bg-white w-[70%] h-full fixed inset-0 z-[1000] translate-x-0 transition-all duration-500 ease-in-out"
       : "opacity-0 invisible -translate-x-full w-0 h-0 transition-all duration-500 ease-in-out";
   }, [isMobile, open]);
 
-  const sidebarBaseClasses = "opacity-100 visible overflow-scroll sticky top-0 left-0 w-full max-w-[300px] overflow-x-hidden bg-white overflow-y-auto";
+  const sidebarBaseClasses =
+    "opacity-100 visible overflow-scroll sticky top-0 left-0 w-full max-w-[300px] overflow-x-hidden bg-white overflow-y-auto";
 
   return (
     <div>
       {open && (
-        <div 
-          className="absolute inset-0 bg-gray-400/50 backdrop-blur-sm transition-opacity duration-500" 
-          onClick={() => setOpen(false)} 
+        <div
+          className="absolute inset-0 bg-gray-400/50 backdrop-blur-sm transition-opacity duration-500"
+          onClick={() => setOpen(false)}
         />
       )}
       {isMobile && (
         <div className="flex flex-row">
-          <ListMinusIcon 
-            onClick={() => setOpen(true)} 
-            width={16} 
-            height={16} 
+          <ListMinusIcon
+            onClick={() => setOpen(true)}
+            width={16}
+            height={16}
             className="cursor-pointer"
           />
           <Breadcrumbs />
