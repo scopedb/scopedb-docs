@@ -161,7 +161,7 @@ const SidebarMenuItem = React.memo(function SidebarMenuItem({
   return (
     <a
       href={item.link}
-      className={`block min-h-[32px] leading-[32px] py-[4px] px-[8px] mb-[2px] font-normal text-[var(---text-secondary)] text-[13px] no-underline rounded-[12px] duration-200 break-all whitespace-normal ${isItemActive ? "bg-[rgba(0,0,0,0.04)] text-[var(--text-primary)] font-medium " : "hover:bg-[rgba(0,0,0,0.02)] hover:text-[var(--text-primary)]"}`}
+      className={`block min-h-[32px] leading-[32px] py-[4px] px-[8px] mb-[2px] font-normal text-[var(---text-secondary)] text-[14px] no-underline rounded-[12px] duration-200 break-all whitespace-normal ${isItemActive ? "bg-[rgba(0,0,0,0.04)] text-[var(--text-primary)] font-medium " : "hover:bg-[rgba(0,0,0,0.02)] hover:text-[var(--text-primary)]"}`}
       style={{ paddingLeft }}
       data-astro-prefetch
     >

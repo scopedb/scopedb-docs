@@ -17,7 +17,7 @@
     flex-direction: column;
     gap: 12px;
     padding-top: 40px;
-    padding-left: 50px;
+    padding-left: 24px;
   }
 }
 
@@ -66,8 +66,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  color: var(--font-primary, #000);
-  font-size: 12px;
+  color: var(--text-primary, #000);
+  font-size: 13px;
   font-weight: 500;
 }
 .tocListContainer {
@@ -78,7 +78,7 @@
 }
 .tocRail {
   width: 2px;
-  background: #eee;
+  background: rgba(0, 0, 0, 0.02);
   position: relative;
 }
 .tocRailBar {
@@ -94,14 +94,14 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 .tocItem {
   color: var(--text-secondary, rgba(0, 0, 0, 0.60));
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 14px;
 }

@@ -39,7 +39,7 @@ const toc = (headings ?? []).filter(
 						w-full
 						max-w-none
 						px-[24px] md:px-[32px] lg:px-[48px]
-            astro-code github-light
+            
 						prose-headings:font-medium prose-headings:leading-tight prose-headings:relative prose-headings:scroll-mt-[80px]
 						prose-h1:text-[32px] prose-h1:mt-[48px] prose-h1:mb-[24px] prose-h1:first:mt-0
 						prose-h2:text-[24px] prose-h2:mt-[40px] prose-h2:mb-[20px]
@@ -80,9 +80,10 @@ const toc = (headings ?? []).filter(
 						prose-code:text-[13px] prose-code:font-normal
 						prose-code:before:content-none prose-code:after:content-none
 
-						prose-pre:bg-[#1f2937] prose-pre:text-[#f9fafb] prose-pre:p-[20px]
-						prose-pre:rounded-[8px] prose-pre:overflow-x-auto prose-pre:my-[24px]
-						prose-pre:text-[14px] prose-pre:leading-[1.5]
+						prose-pre:bg-[#ffffff] prose-pre:text-[#f9fafb] prose-pre:p-[20px]
+						prose-pre:rounded-[12px] prose-pre:overflow-x-auto prose-pre:my-[24px]
+						prose-pre:text-[14px] prose-pre:leading-[1.4]
+            prose-pre:border prose-pre:border-[rgba(0,0,0,0.1)]
 
 						prose-img:rounded-[8px] prose-img:my-[32px] prose-img:shadow-lg
 						prose-img:w-full prose-img:h-auto
@@ -218,6 +219,7 @@ const toc = (headings ?? []).filter(
     .content-container {
       /* Natural scrolling on mobile too */
     }
+    
     
     .toc-container {
       position: fixed;

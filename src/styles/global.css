@@ -5,7 +5,7 @@
     --text-primary: rgb(0, 0, 0);
     --text-secondary: rgba(0, 0, 0, 0.6);
     --text-tertiary: rgba(0, 0, 0, 0.3);
-    --text-brand: rgb(8, 118, 221);
+    --text-brand: #0876dd;
     --button-primary-bg: rgb(24, 24, 24);
     --button-primary-bg-hover: rgb(40, 40, 40);
     --button-primary-border-hover: rgb(20, 20, 20);
