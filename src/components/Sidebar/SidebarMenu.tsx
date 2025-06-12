@@ -5,6 +5,7 @@ import { ChevronDown, ChevronRight, ListMinusIcon } from "lucide-react";
 
 interface Props {
   sidebar: SidebarItem[];
+  currentPath: string;
 }
 
 interface SidebarItemProps {
@@ -25,20 +26,20 @@ interface SidebarGroupProps {
   onToggleCollapsed: (key: string) => void;
 }
 
-// Hook: Track current URL path
-function useCurrentPath() {
-  const [currentPath, setCurrentPath] = useState(() => {
-    if (typeof window === "undefined") return "/";
-    return window.location.pathname;
-  });
+function useCurrentPath(initPathname: string) {
+  const [currentPath, setCurrentPath] = useState(initPathname);
 
   useEffect(() => {
-    const update = () => setCurrentPath(window.location.pathname);
-    window.addEventListener("popstate", update);
-    document.addEventListener("astro:page-load", update);
+    const handleRouteChange = () => {
+      setCurrentPath(window.location.pathname);
+    };
+
+    window.addEventListener("popstate", handleRouteChange);
+    document.addEventListener("astro:page-load", handleRouteChange);
+
     return () => {
-      window.removeEventListener("popstate", update);
-      document.removeEventListener("astro:page-load", update);
+      window.removeEventListener("popstate", handleRouteChange);
+      document.removeEventListener("astro:page-load", handleRouteChange);
     };
   }, []);
 
@@ -49,7 +50,9 @@ function useCurrentPath() {
 function useCollapsedStates(initialItems: SidebarItem[]) {
   const [collapsedStates, setCollapsedStates] = useState<
     Record<string, boolean>
-  >(() => {
+  >({});
+
+  useEffect(() => {
     const initialState: Record<string, boolean> = {};
     const processItems = (items: SidebarItem[], depth = 0) => {
       items.forEach((item) => {
@@ -63,8 +66,8 @@ function useCollapsedStates(initialItems: SidebarItem[]) {
       });
     };
     processItems(initialItems);
-    return initialState;
-  });
+    setCollapsedStates(initialState);
+  }, [initialItems]);
 
   const toggleCollapsed = useCallback((key: string) => {
     setCollapsedStates((prev) => {
@@ -140,9 +143,9 @@ const SidebarMenuItem = React.memo(function SidebarMenuItem({
         </button>
         {!collapsed && item.items && item.items.length > 0 && (
           <div>
-            {item.items.map((child, idx) => (
+            {item.items.map((child) => (
               <SidebarMenuItem
-                key={child.link || child.label || idx}
+                key={`${child.link}-${child.label}`}
                 item={child}
                 depth={depth + 1}
                 currentPath={currentPath}
@@ -196,8 +199,8 @@ const SidebarGroup = React.memo(function SidebarGroup({
 });
 
 // Component: Mobile breadcrumb navigation
-function Breadcrumbs() {
-  const currentPath = useCurrentPath();
+function Breadcrumbs(props: { currentPath: string }) {
+  const { currentPath } = props;
 
   const crumbs = useMemo(() => {
     const segments = currentPath.split("/").filter(Boolean);
@@ -229,27 +232,30 @@ function Breadcrumbs() {
 }
 
 // Main: Responsive sidebar menu
-export function SidebarMenu({ sidebar: items }: Props) {
+export function SidebarMenu(props: Props) {
+  const { sidebar: items, currentPath: initPathname } = props;
   const isMobile = useMedia("(max-width: 480px)");
   const [open, setOpen] = useState(false);
-  const currentPath = useCurrentPath();
   const { collapsedStates, toggleCollapsed } = useCollapsedStates(items);
+  const currentPath = useCurrentPath(initPathname);
 
   useScrollLock(open);
 
+  const sidebarBaseClasses =
+    "overflow-scroll sticky top-0 left-0 w-full max-w-[300px] overflow-x-hidden bg-white overflow-y-auto";
+
   const mobileClassName = useMemo(() => {
     if (!isMobile) return "";
-    return open
-      ? "opacity-100 visible bg-white w-[70%] h-full fixed inset-0 z-[1000] translate-x-0 transition-all duration-500 ease-in-out"
-      : "opacity-0 invisible -translate-x-full w-0 h-0 transition-all duration-500 ease-in-out";
+    return isMobile
+      ? open
+        ? "opacity-100 visible bg-white w-[70%] h-full fixed inset-0 z-[1000] translate-x-0 transition-all duration-500 ease-in-out"
+        : "opacity-0 invisible -translate-x-full w-0 h-0 transition-all duration-500 ease-in-out"
+      : "";
   }, [isMobile, open]);
-
-  const sidebarBaseClasses =
-    "opacity-100 visible overflow-scroll sticky top-0 left-0 w-full max-w-[300px] overflow-x-hidden bg-white overflow-y-auto";
 
   return (
     <div>
-      {open && (
+      {isMobile && open && (
         <div
           className="absolute inset-0 bg-gray-400/50 backdrop-blur-sm transition-opacity duration-500"
           onClick={() => setOpen(false)}
@@ -263,7 +269,7 @@ export function SidebarMenu({ sidebar: items }: Props) {
             height={16}
             className="cursor-pointer"
           />
-          <Breadcrumbs />
+          <Breadcrumbs currentPath={currentPath} />
         </div>
       )}
       <SidebarGroup

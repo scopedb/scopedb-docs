@@ -42,11 +42,11 @@ function getOffset(
 } {
   const { top: elTop, height } = el.getBoundingClientRect();
   let scrollTargetTop = 0;
-  
+
   if (scrollTarget instanceof HTMLElement || scrollTarget instanceof Element) {
     scrollTargetTop = scrollTarget.getBoundingClientRect().top;
   }
-  
+
   return {
     top: elTop - scrollTargetTop,
     height,
@@ -54,18 +54,22 @@ function getOffset(
 }
 
 function useTOCState(toc: MarkdownHeading[]) {
-  const [activeHref, setActiveHref] = useState<string | null>(() => {
-    if (typeof window === "undefined") return null;
-    const hash = window.location.hash.replaceAll("#", "");
-    return hash || toc[0]?.slug || null;
-  });
-  
+  const [activeHref, setActiveHref] = useState<string | null>(null);
   const [activeLink, setActiveLink] = useState<LinkInfo | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useMedia("(max-width:960px)");
   const tocListRef = useRef<HTMLUListElement>(null);
 
   const collectedLinkHrefs = useMemo(() => toc.map((t) => t.slug), [toc]);
+
+  useEffect(() => {
+    const hash = window.location.hash.replaceAll("#", "");
+    if (hash) {
+      setActiveHref(hash);
+    } else if (toc[0]?.slug) {
+      setActiveHref(toc[0].slug);
+    }
+  }, [toc]);
 
   return {
     activeHref,
@@ -87,8 +91,6 @@ function useTOCScroll(
   setActiveLink: (link: LinkInfo | null) => void,
 ) {
   const handleScroll = useCallback(() => {
-    if (typeof window === "undefined") return;
-    
     const links: LinkInfo[] = [];
     const offsetTarget = document;
 
@@ -131,8 +133,13 @@ function useTOCScroll(
   );
 
   useEffect(() => {
+    const cleanup = () => {
+      throttledHandleScroll.cancel();
+      window.removeEventListener("scroll", throttledHandleScroll);
+    };
+
     window.addEventListener("scroll", throttledHandleScroll);
-    return () => window.removeEventListener("scroll", throttledHandleScroll);
+    return cleanup;
   }, [throttledHandleScroll]);
 
   return throttledHandleScroll;
@@ -146,27 +153,40 @@ function useTOCInitialization(
   setActiveLink: (link: LinkInfo | null) => void,
 ) {
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    
-    if (toc.length > 0 && !activeHref) {
-      const firstHref = toc[0].slug;
-      setActiveHref(firstHref);
-      const firstLink = document.getElementById(firstHref);
-      if (firstLink) {
-        const { top, height } = getOffset(firstLink, document);
-        setActiveLink({
-          top,
-          height,
-          href: firstHref,
-          index: 0,
-        });
+    const initialize = () => {
+      const hash = window.location.hash.replaceAll("#", "");
+      if (hash && collectedLinkHrefs.includes(hash)) {
+        setActiveHref(hash);
+        const linkEl = document.getElementById(hash);
+        if (linkEl) {
+          const { top, height } = getOffset(linkEl, document);
+          setActiveLink({
+            top,
+            height,
+            href: hash,
+            index: collectedLinkHrefs.indexOf(hash),
+          });
+        }
+        return;
       }
-    }
 
-    const hash = window.location.hash.replaceAll("#", "");
-    if (hash && collectedLinkHrefs.includes(hash)) {
-      setActiveHref(hash);
-    }
+      if (toc.length > 0 && !activeHref) {
+        const firstHref = toc[0].slug;
+        setActiveHref(firstHref);
+        const firstLink = document.getElementById(firstHref);
+        if (firstLink) {
+          const { top, height } = getOffset(firstLink, document);
+          setActiveLink({
+            top,
+            height,
+            href: firstHref,
+            index: 0,
+          });
+        }
+      }
+    };
+
+    initialize();
   }, [toc, collectedLinkHrefs, activeHref, setActiveHref, setActiveLink]);
 }
 
@@ -224,8 +244,6 @@ export function TOC({ toc }: TOCProps) {
 
   const updateActiveHref = useCallback(
     (href: string, shouldScroll = false) => {
-      if (typeof window === "undefined") return;
-      
       const linkEl = document.getElementById(href);
       if (!linkEl) return;
 
@@ -245,7 +263,6 @@ export function TOC({ toc }: TOCProps) {
     () => (ITEM_HEIGHT + ITEM_MARGIN) * (activeLink?.index ?? 0),
     [activeLink],
   );
-  
   const close = useCallback(() => {
     setIsOpen(false);
   }, [setIsOpen]);

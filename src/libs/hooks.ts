@@ -1,14 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 
 export function useMedia(query: string): boolean {
-  const [matched, setMatched] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia(query).matches;
-  });
+  const [matched, setMatched] = useState<boolean|null>(null);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
     const mediaQueryList = window.matchMedia(query);
     const onChange = (event: MediaQueryListEvent) => {
       setMatched(event.matches);
@@ -33,15 +28,13 @@ export function useMedia(query: string): boolean {
     };
   }, [query]);
 
-  return matched;
+  return matched??false;
 }
 
 export function useScrollLock(lock: boolean): void {
   const previousOverflowRef = useRef<string | null>(null);
 
   useEffect(() => {
-    if (typeof document === "undefined") return;
-
     if (lock) {
       previousOverflowRef.current = document.body.style.overflow;
       document.body.style.overflow = "hidden";
