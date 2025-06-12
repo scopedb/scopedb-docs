@@ -26,6 +26,6 @@ const { Content, headings } = await entry.render();
 const title = resolveTitle(entry.data.title, headings);
 ---
 
-<Layout title={title}>
+<Layout title={title} sidebar={sidebar}>
   <DocEntry headings={headings} sidebar={sidebar} category="developer"><Content /></DocEntry>
 </Layout>

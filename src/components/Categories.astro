@@ -1,4 +1,13 @@
 ---
+import MobileNav from './MobileNav';
+import type { SidebarItem } from '@/src/libs/sidebar';
+
+interface Props {
+  sidebar?: SidebarItem[];
+}
+
+const { sidebar } = Astro.props;
+
 interface Category {
   label: string;
   link: string;
@@ -24,8 +33,9 @@ const categories: Category[] = [
 }));
 ---
 
+<!-- Desktop navigation -->
 <ul
-  class="flex gap-[32px] text-[14px] leading-[30px] pt-[12px] text-[var(--text-secondary)] text-center"
+  class="hidden lg:flex gap-[32px] text-[14px] leading-[30px] pt-[12px] text-[var(--text-secondary)] text-center"
 >
   {
     categories.map((c) => (
@@ -46,4 +56,12 @@ const categories: Category[] = [
     ))
   }
 </ul>
+
+<!-- Mobile navigation -->
+<MobileNav 
+  categories={categories} 
+  sidebar={sidebar} 
+  currentPath={Astro.url.pathname}
+  client:only="react"
+/>
 

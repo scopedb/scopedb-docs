@@ -39,7 +39,7 @@ const toc = (headings ?? []).filter(
 						text-[rgba(0,0,0,0.8)]
 						w-full
 						max-w-none
-						px-[24px] md:px-[32px] lg:px-[48px]
+						px-[16px] sm:px-[24px] md:px-[32px] lg:px-[48px]
             
 						prose-headings:font-medium prose-headings:leading-tight prose-headings:relative prose-headings:scroll-mt-[80px]
 						prose-h1:text-[32px] prose-h1:mt-[48px] prose-h1:mb-[24px] prose-h1:first:mt-0
@@ -199,38 +199,28 @@ const toc = (headings ?? []).filter(
   }
 
   /* Mobile responsive adjustments */
-  @media (max-width: 960px) {
+  @media (max-width: 1023px) {
     .doc-container {
       grid-template-areas: "content";
       grid-template-columns: 1fr;
       min-height: auto;
+      max-width: 100%;
+      padding: 0;
     }
     
     .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 70%;
-      height: 100vh;
-      z-index: 50;
-      transform: translateX(-100%);
-      transition: transform 0.3s ease-in-out;
+      display: none;
     }
     
     .content-container {
-      /* Natural scrolling on mobile too */
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
     }
     
-    
     .toc-container {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 70%;
-      height: 100vh;
-      z-index: 50;
-      transform: translateX(100%);
-      transition: transform 0.3s ease-in-out;
+      display: none;
     }
   }
 </style>

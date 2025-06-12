@@ -3,9 +3,14 @@ import "@/src/styles/global.css";
 import Footer from "@/src/components/Footer.astro";
 import Header from "@/src/components/Header.astro";
 import { ClientRouter } from "astro:transitions";
+import type { SidebarItem } from '@/src/libs/sidebar';
 
+interface Props {
+  title: string;
+  sidebar?: SidebarItem[];
+}
 
-const { title } = Astro.props;
+const { title, sidebar } = Astro.props;
 ---
 
 <!doctype html>
@@ -24,7 +29,7 @@ const { title } = Astro.props;
   </head>
   <body class="min-h-screen flex flex-col">
     <header>
-      <Header />
+      <Header sidebar={sidebar} />
     </header>
     <main class="pt-[140px]">
       <slot />
