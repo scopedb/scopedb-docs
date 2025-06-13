@@ -4,11 +4,13 @@ import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { throttle } from "lodash-es";
 import { useMedia, useScrollLock } from "@/src/libs/hooks";
 import { AlignLeftIcon } from "lucide-react";
+import RelatedContent, { type RelatedContentItem } from "../RelatedContent";
 
 import styles from "./index.module.css";
 
 interface TOCProps {
   toc: MarkdownHeading[];
+  relatedContents?: RelatedContentItem[];
 }
 
 interface TocItemProps {
@@ -219,7 +221,7 @@ export const TOCItem = React.memo(function TOCItem({
   );
 });
 
-export function TOC({ toc }: TOCProps) {
+export function TOC({ toc, relatedContents }: TOCProps) {
   const {
     activeHref,
     setActiveHref,
@@ -282,6 +284,8 @@ export function TOC({ toc }: TOCProps) {
         <AlignLeftIcon onClick={toggleOpen} width={16} height={16} />
       )}
       {isOpen && <div className={styles.tocMask} onClick={toggleOpen} />}
+
+      <RelatedContent relatedContents={relatedContents} />
       <div
         className={`${isMobile ? (isOpen ? styles.open : styles.close) : ""}`}
       >
