@@ -42,12 +42,11 @@ function getOffset(
 } {
   const { top: elTop, height } = el.getBoundingClientRect();
   let scrollTargetTop = 0;
-  
+
   if (scrollTarget instanceof HTMLElement || scrollTarget instanceof Element) {
     scrollTargetTop = scrollTarget.getBoundingClientRect().top;
   }
-  // For document, scrollTargetTop remains 0 (normal page scrolling)
-  
+
   return {
     top: elTop - scrollTargetTop,
     height,
@@ -62,6 +61,15 @@ function useTOCState(toc: MarkdownHeading[]) {
   const tocListRef = useRef<HTMLUListElement>(null);
 
   const collectedLinkHrefs = useMemo(() => toc.map((t) => t.slug), [toc]);
+
+  useEffect(() => {
+    const hash = window.location.hash.replaceAll("#", "");
+    if (hash) {
+      setActiveHref(hash);
+    } else if (toc[0]?.slug) {
+      setActiveHref(toc[0].slug);
+    }
+  }, [toc]);
 
   return {
     activeHref,
@@ -84,7 +92,6 @@ function useTOCScroll(
 ) {
   const handleScroll = useCallback(() => {
     const links: LinkInfo[] = [];
-    // Use document as offset target since content now scrolls with the page
     const offsetTarget = document;
 
     collectedLinkHrefs.forEach((href, index) => {
@@ -126,9 +133,13 @@ function useTOCScroll(
   );
 
   useEffect(() => {
-    // Now that content scrolls with the page, listen to window scroll again
+    const cleanup = () => {
+      throttledHandleScroll.cancel();
+      window.removeEventListener("scroll", throttledHandleScroll);
+    };
+
     window.addEventListener("scroll", throttledHandleScroll);
-    return () => window.removeEventListener("scroll", throttledHandleScroll);
+    return cleanup;
   }, [throttledHandleScroll]);
 
   return throttledHandleScroll;
@@ -142,29 +153,44 @@ function useTOCInitialization(
   setActiveLink: (link: LinkInfo | null) => void,
 ) {
   useEffect(() => {
-    if (toc.length > 0 && !activeHref) {
-      const firstHref = toc[0].slug;
-      setActiveHref(firstHref);
-      const firstLink = document.getElementById(firstHref);
-      if (firstLink) {
-        const { top, height } = getOffset(firstLink, document);
-        setActiveLink({
-          top,
-          height,
-          href: firstHref,
-          index: 0,
-        });
+    const initialize = () => {
+      const hash = window.location.hash.replaceAll("#", "");
+      if (hash && collectedLinkHrefs.includes(hash)) {
+        setActiveHref(hash);
+        const linkEl = document.getElementById(hash);
+        if (linkEl) {
+          const { top, height } = getOffset(linkEl, document);
+          setActiveLink({
+            top,
+            height,
+            href: hash,
+            index: collectedLinkHrefs.indexOf(hash),
+          });
+        }
+        return;
       }
-    }
 
-    const hash = window.location.hash.replaceAll("#", "");
-    if (hash && collectedLinkHrefs.includes(hash)) {
-      setActiveHref(hash);
-    }
+      if (toc.length > 0 && !activeHref) {
+        const firstHref = toc[0].slug;
+        setActiveHref(firstHref);
+        const firstLink = document.getElementById(firstHref);
+        if (firstLink) {
+          const { top, height } = getOffset(firstLink, document);
+          setActiveLink({
+            top,
+            height,
+            href: firstHref,
+            index: 0,
+          });
+        }
+      }
+    };
+
+    initialize();
   }, [toc, collectedLinkHrefs, activeHref, setActiveHref, setActiveLink]);
 }
 
-export function TOCItem({
+export const TOCItem = React.memo(function TOCItem({
   item,
   isActive,
   onClick,
@@ -191,7 +217,7 @@ export function TOCItem({
       </a>
     </li>
   );
-}
+});
 
 export function TOC({ toc }: TOCProps) {
   const {
