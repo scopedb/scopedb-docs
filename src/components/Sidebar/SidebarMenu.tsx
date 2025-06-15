@@ -182,7 +182,7 @@ const SidebarGroup = React.memo(function SidebarGroup({
 }: SidebarGroupProps) {
   return (
     <aside className={classNames}>
-      <nav className="space-y-[4px] p-[0px]">
+      <nav className="space-y-[4px] p-[0px] pb-[24px]">
         {items.map((item, index) => (
           <SidebarMenuItem
             key={`${item.link}${index}`}
@@ -242,7 +242,7 @@ export function SidebarMenu(props: Props) {
   useScrollLock(open);
 
   const sidebarBaseClasses =
-    "overflow-scroll sticky top-0 left-0 w-full max-w-[300px] overflow-x-hidden bg-white overflow-y-auto";
+    "overflow-scroll sticky top-0 left-0 w-full max-w-[300px] overflow-x-hidden bg-white overflow-y-auto pb-6";
 
   const mobileClassName = useMemo(() => {
     if (!isMobile) return "";
