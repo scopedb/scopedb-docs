@@ -10,9 +10,10 @@ interface Props {
   headings: MarkdownHeading[];
   sidebar: SidebarItem[];
   category: string;
+  relatedContents?: RelatedContentItem[];
 }
 
-const { headings, sidebar,category } = Astro.props;
+const { headings, sidebar, category, relatedContents } = Astro.props;
 
 const toc = (headings ?? []).filter(
   (heading) => heading.depth > 1 && heading.depth <= 6,
@@ -26,7 +27,7 @@ const toc = (headings ?? []).filter(
       </div>
       {toc.length > 0 ? (
         <div class="toc-container">
-          <TOC toc={toc} client:load />
+            <TOC toc={toc} client:load relatedContents={relatedContents} />
         </div>
       ) : null}
     </div>

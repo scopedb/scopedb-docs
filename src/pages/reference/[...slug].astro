@@ -28,7 +28,12 @@ const title = resolveTitle(entry.data.title, headings);
 ---
 
 <Layout title={title} sidebar={sidebar}>
-  <DocEntry headings={headings} sidebar={sidebar} category="reference">
+  <DocEntry
+    headings={headings}
+    sidebar={sidebar}
+    category="reference"
+    relatedContents={entry.data.relatedContents}
+  >
     <Content />
     <DocsFooter />
   </DocEntry>
