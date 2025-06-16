@@ -2,50 +2,13 @@
 import Layout from "@/src/layouts/Layout.astro";
 ---
 
-<Layout title="404 - Page Not Found">
-  <div class="page-container">
-    <div class="title">Not Found</div>
-    <p class="desc">The page you're trying to access does not exist.</p>
-    <button class="btn">
-      <a href="/">Take me back</a>
-    </button>
+<Layout title="Page Not Found">
+  <div class="text-center p-[40px]">
+    <h1 class="text-4xl font-bold text-gray-900 mb-4">
+      Page Not Found
+    </h1>
+    <p class="text-lg text-gray-600">
+      We could not find what you were looking for.
+    </p>
   </div>
 </Layout>
-
-<style>
-  .page-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 35px;
-    padding: 16px;
-  }
-  .title {
-    color: #000000;
-    text-align: center;
-    font-size: 40px;
-    font-weight: 500;
-  }
-  .desc {
-    width: 418px;
-    height: 73px;
-    flex-shrink: 0;
-    color: #000000;
-    text-align: center;
-    font-size: 24px;
-    font-weight: 500;
-  }
-  .btn {
-    height: 36px;
-    flex-shrink: 0;
-    border-radius: 10px;
-    background: #0879e0;
-    color: #ffffff;
-    text-align: center;
-    font-size: 14px;
-    font-weight: 400;
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-</style>
