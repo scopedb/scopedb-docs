@@ -2,7 +2,7 @@
 import DocEntry from "@/src/components/DocEntry.astro";
 import Layout from "@/src/layouts/Layout.astro";
 import { getCollection } from "astro:content";
-import {developerSidebar} from "@/src/content/sidebar";
+import { developerSidebar } from "@/src/content/sidebar";
 import { resolveTitle } from "@/src/libs/title";
 
 export async function getStaticPaths() {
@@ -27,5 +27,10 @@ const title = resolveTitle(entry.data.title, headings);
 ---
 
 <Layout title={title} sidebar={sidebar}>
-  <DocEntry headings={headings} sidebar={sidebar} category="developer"><Content /></DocEntry>
+  <DocEntry
+    title={title}
+    headings={headings}
+    sidebar={sidebar}
+    category="developer"><Content /></DocEntry
+  >
 </Layout>

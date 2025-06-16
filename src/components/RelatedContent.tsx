@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export interface RelatedContentItem {
   title: string;
@@ -9,7 +9,9 @@ export interface RelatedContentProps {
   relatedContents?: RelatedContentItem[];
 }
 
-export default function RelatedContent({ relatedContents }: RelatedContentProps) {
+export default function RelatedContent({
+  relatedContents,
+}: RelatedContentProps) {
   if (!relatedContents || relatedContents.length === 0) {
     return null;
   }

@@ -1,6 +1,6 @@
 ---
-import MobileNav from './MobileNav';
-import type { SidebarItem } from '@/src/libs/sidebar';
+import MobileNav from "./MobileNav";
+import type { SidebarItem } from "@/src/libs/sidebar";
 
 interface Props {
   sidebar?: SidebarItem[];
@@ -45,8 +45,8 @@ const categories: Category[] = [
           class:list={[
             "inline-block transition-all duration-300 hover:text-[var(--text-primary)]",
             "border-b-2 pb-[12px] transition-colors",
-            c.isCurrent 
-              ? "font-medium text-[var(--text-primary)] border-current" 
+            c.isCurrent
+              ? "font-medium text-[var(--text-primary)] border-current"
               : "border-transparent hover:border-[rgba(0,0,0,0.1)]",
           ]}
         >
@@ -58,10 +58,9 @@ const categories: Category[] = [
 </ul>
 
 <!-- Mobile navigation -->
-<MobileNav 
-  categories={categories} 
-  sidebar={sidebar} 
+<MobileNav
+  categories={categories}
+  sidebar={sidebar}
   currentPath={Astro.url.pathname}
   client:only="react"
 />
-

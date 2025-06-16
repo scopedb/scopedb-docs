@@ -43,8 +43,8 @@ export default defineConfig({
     ],
     remarkRehype: { handlers: defListHastHandlers },
     shikiConfig: {
-      theme: 'github-light',
+      theme: "github-light",
       langs: [scopeql],
-    }
+    },
   },
 });

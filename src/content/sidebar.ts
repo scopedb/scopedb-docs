@@ -5,14 +5,14 @@ export const guidesSidebar = [
     label: "Overview",
     link: "/guides",
   },
-]
+];
 
 export const developerSidebar = [
   {
     label: "Overview",
     link: "/developer",
   },
-]
+];
 
 export const referenceSidebar = [
   {

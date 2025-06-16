@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 
 export function useMedia(query: string): boolean {
-  const [matched, setMatched] = useState<boolean|null>(null);
+  const [matched, setMatched] = useState<boolean | null>(null);
 
   useEffect(() => {
     const mediaQueryList = window.matchMedia(query);
@@ -28,7 +28,7 @@ export function useMedia(query: string): boolean {
     };
   }, [query]);
 
-  return matched??false;
+  return matched ?? false;
 }
 
 export function useScrollLock(lock: boolean): void {

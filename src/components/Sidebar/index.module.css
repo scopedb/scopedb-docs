@@ -1,136 +1,139 @@
 .sidebar {
-    opacity: 1;
-    visibility: visible;
-    overscroll-behavior: contain;
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 100%;
-    max-width: 300px;
-    overflow-x: hidden;
-    background: #fff;
-    overflow-y: auto;
+  opacity: 1;
+  visibility: visible;
+  overscroll-behavior: contain;
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-width: 300px;
+  overflow-x: hidden;
+  background: #fff;
+  overflow-y: auto;
 }
 
 .mask {
-    position: fixed;
-    inset: 0;
-    background: rgba(217, 217, 217, 0.5);
-    backdrop-filter: blur(5px);
-    transition: opacity 0.5s;
-    z-index: 999;
+  position: fixed;
+  inset: 0;
+  background: rgba(217, 217, 217, 0.5);
+  backdrop-filter: blur(5px);
+  transition: opacity 0.5s;
+  z-index: 999;
 }
 
 .visible {
-    opacity: 1;
-    visibility: visible;
-    background-color: #fff;
-    width: 70%;
-    height: 100vh;
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    transform: translateX(0);
-    transition: opacity 0.5s,
+  opacity: 1;
+  visibility: visible;
+  background-color: #fff;
+  width: 70%;
+  height: 100vh;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  transform: translateX(0);
+  transition:
+    opacity 0.5s,
     transform 0.25s ease-in-out;
 }
 
 .hidden {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(-100%);
-    width: 0;
-    height: 0;
-    transition: opacity 0.5s,
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-100%);
+  width: 0;
+  height: 0;
+  transition:
+    opacity 0.5s,
     transform 0.25s ease-in-out;
 }
 
 .groupItem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    border: none;
-    background: none;
-    cursor: pointer;
-    color: inherit;
-    text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+  text-align: left;
 }
 
 .groupLabel {
-    flex: 1;
+  flex: 1;
 }
 
 .groupArrow {
-    display: flex;
-    align-items: center;
-    margin-left: 8px;
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
 }
 
 .singleItem {
-    display: block;
-    min-height: 32px;
-    line-height: 32px;
-    font-weight: 400;
-    color: #000;
-    text-decoration: none;
-    border-radius: 8px;
-    background: none;
-    transition: background 0.2s;
-    word-break: break-all;
-    white-space: normal;
-    padding-right: 12px;
+  display: block;
+  min-height: 32px;
+  line-height: 32px;
+  font-weight: 400;
+  color: #000;
+  text-decoration: none;
+  border-radius: 8px;
+  background: none;
+  transition: background 0.2s;
+  word-break: break-all;
+  white-space: normal;
+  padding-right: 12px;
 }
 
 .singleItem a {
-    width: 100%;
-    white-space: normal;
-    overflow: visible;
-    text-overflow: unset;
-    display: block;
+  width: 100%;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  display: block;
 }
 
-.singleItem.active, .is-leaf.active {
-    background: rgba(0, 0, 0, 0.05);
-    font-weight: 600;
+.singleItem.active,
+.is-leaf.active {
+  background: rgba(0, 0, 0, 0.05);
+  font-weight: 600;
 }
 
 .itemHover:hover {
-    background: rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .collapsed {
-    display: none;
+  display: none;
 }
 
 .active {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .active.isLeaf {
-    border-radius: 8px;
-    background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .itemHover:hover {
-    border-radius: 8px;
-    background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .menuActions {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .breadcrumbs {
-    padding-left: 12px;
-    color: rgba(0, 0, 0, 0.6);
-    font-size: 14px;
-    font-weight: 400;
+  padding-left: 12px;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .breadcrumbs .crumb:not(:last-child)::after {
-    content: " / ";
-    margin: 0 4px;
-    color: #999;
+  content: " / ";
+  margin: 0 4px;
+  color: #999;
 }
