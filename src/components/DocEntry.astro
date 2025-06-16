@@ -7,6 +7,7 @@ import type { SidebarItem } from "@/src/libs/sidebar";
 import Sidebar from "@/src/components/Sidebar/Sidebar.astro";
 import { type RelatedContentItem } from "@/src/components/RelatedContent";
 import { inRange } from "lodash-es";
+import DocsFooter from "@/src/components/DocsFooter.astro";
 
 interface Props {
   title: string;
@@ -99,6 +100,7 @@ const toc =
     >
       <h1 class="text-[32px] font-medium mb-[24px]">{title}</h1>
       <slot />
+      <DocsFooter />
     </div>
   </div>
 </div>

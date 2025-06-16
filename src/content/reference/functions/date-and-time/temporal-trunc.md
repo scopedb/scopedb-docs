@@ -1,5 +1,5 @@
 ---
-title: temporal-trunc
+title: trunc
 ---
 
 # trunc

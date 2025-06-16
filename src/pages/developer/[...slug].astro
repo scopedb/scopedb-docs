@@ -31,6 +31,9 @@ const title = resolveTitle(entry.data.title, headings);
     title={title}
     headings={headings}
     sidebar={sidebar}
-    category="developer"><Content /></DocEntry
+    category="guides"
+    relatedContents={entry.data.relatedContents}
   >
+    <Content />
+  </DocEntry>
 </Layout>
