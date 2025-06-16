@@ -1,6 +1,6 @@
 import React from "react";
 import { DocSearch } from "@docsearch/react";
-import "./index.module.css";
+import "@/src/styles/search.css";
 
 export default function Search() {
   return (
