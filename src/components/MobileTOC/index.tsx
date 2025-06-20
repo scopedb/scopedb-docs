@@ -3,9 +3,9 @@ import type { MarkdownHeading } from "astro";
 import { useRef, useCallback } from "react";
 
 import { AlignLeftIcon } from "lucide-react";
-import RelatedContent, { type RelatedContentItem } from "../RelatedContent";
+import RelatedContent, { type RelatedContentItem } from "@/src/components/RelatedContent";
 
-import styles from "./MobileTOC.module.css";
+import styles from "./index.module.css";
 
 interface MobileTOCProps {
   toc: MarkdownHeading[];
@@ -25,7 +25,7 @@ function useMobileTOCState() {
   };
 }
 
-export const MobileTOCItem = React.memo(function MobileTOCItem({
+const MobileTOCItem = React.memo(function MobileTOCItem({
   item,
   onClick,
 }: TocItemProps) {
