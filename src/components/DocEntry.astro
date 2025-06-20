@@ -3,6 +3,7 @@ import "@/src/styles/global.css";
 import "@/src/styles/callout.css";
 import type { MarkdownHeading } from "astro";
 import { TOC } from "@/src/components/TOC";
+import { MobileTOC } from "@/src/components/MobileTOC";
 import type { SidebarItem } from "@/src/libs/sidebar";
 import Sidebar from "@/src/components/Sidebar/Sidebar.astro";
 import { type RelatedContentItem } from "@/src/components/RelatedContent";
@@ -29,7 +30,7 @@ const toc =
   {
     sidebar?.length > 0 ? (
       <div class="doc-aside ">
-        <div class="sidebar  mt-[32px]" transition:persist={category}>
+        <div class="sidebar mt-[32px]" transition:persist={category}>
           <Sidebar sidebar={sidebar} />
         </div>
         {toc.length > 0 ? (
@@ -41,6 +42,13 @@ const toc =
     ) : null
   }
   <div class="content-container">
+    {
+      toc.length > 0 ? (
+        <div class="mobile-toc">
+          <MobileTOC toc={toc} client:load relatedContents={relatedContents} />
+        </div>
+      ) : null
+    }
     <div
       class="prose
 						mx-auto mt-[32px] mb-[100px]
@@ -49,7 +57,7 @@ const toc =
 						w-full
 						max-w-none
 						px-[16px] sm:px-[24px] md:px-[32px] lg:px-[48px]
-            
+
 						prose-headings:font-medium prose-headings:leading-tight prose-headings:relative prose-headings:scroll-mt-[80px]
 						prose-h1:text-[32px] prose-h1:mt-[48px] prose-h1:mb-[24px] prose-h1:first:mt-0
 						prose-h2:text-[24px] prose-h2:mt-[40px] prose-h2:mb-[20px]
@@ -204,6 +212,10 @@ const toc =
     }
   }
 
+  .mobile-toc {
+    display: none;
+  }
+
   /* Mobile responsive adjustments */
   @media (max-width: 1023px) {
     .doc-container {
@@ -227,6 +239,10 @@ const toc =
 
     .toc-container {
       display: none;
+    }
+
+    .mobile-toc {
+      display: block;
     }
   }
 </style>

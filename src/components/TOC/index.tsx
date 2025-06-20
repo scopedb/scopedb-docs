@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { throttle } from "lodash-es";
 import { useMedia, useScrollLock } from "@/src/libs/hooks";
 import { AlignLeftIcon } from "lucide-react";
-import RelatedContent, { type RelatedContentItem } from "../RelatedContent";
+import RelatedContent, { type RelatedContentItem } from "@/src/components/RelatedContent";
 
 import styles from "./index.module.css";
 
@@ -192,7 +192,7 @@ function useTOCInitialization(
   }, [toc, collectedLinkHrefs, activeHref, setActiveHref, setActiveLink]);
 }
 
-export const TOCItem = React.memo(function TOCItem({
+const TOCItem = React.memo(function TOCItem({
   item,
   isActive,
   onClick,

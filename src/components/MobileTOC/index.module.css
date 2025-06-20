@@ -1,0 +1,60 @@
+.mobileToc {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+.tocTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-primary, #000);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.tocListContainer {
+  margin-top: 16px;
+}
+
+.tocList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  list-style: none;
+  padding: 0 0 0 12px;
+  margin: 0;
+}
+
+.tocItem {
+  color: var(--text-secondary, rgba(0, 0, 0, 0.6));
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.tocItem a {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  word-wrap: break-word;
+  text-indent: 0;
+}
+
+.tocItem:hover {
+  color: var(--text-primary, #000);
+  font-weight: 500;
+}
+
+.tocItemActive {
+  color: var(--text-primary, #000);
+  font-weight: 500;
+}
+
+@media (min-width: 1024px) {
+  .mobileToc {
+    display: none !important;
+  }
+}
