@@ -285,7 +285,6 @@ export function TOC({ toc, relatedContents }: TOCProps) {
       )}
       {isOpen && <div className={styles.tocMask} onClick={toggleOpen} />}
 
-      <RelatedContent relatedContents={relatedContents} />
       <div
         className={`${isMobile ? (isOpen ? styles.open : styles.close) : ""}`}
       >
@@ -296,9 +295,8 @@ export function TOC({ toc, relatedContents }: TOCProps) {
         <div className={styles.tocListContainer}>
           <div className={styles.tocRail}>
             <div
-              className={`${styles.tocRailBar} ${
-                activeLink ? styles.tocRailBarActive : ""
-              }`}
+              className={
+                `${styles.tocRailBar} ${activeLink ? styles.tocRailBarActive : ""}`}
               style={{ top: `${tocBarTop}px` }}
             />
           </div>
@@ -316,6 +314,14 @@ export function TOC({ toc, relatedContents }: TOCProps) {
           </ul>
         </div>
       </div>
+
+      {
+        relatedContents && relatedContents.length > 0 && (
+          <div className="pt-[12px]">
+            <RelatedContent relatedContents={relatedContents} />
+          </div>
+        )
+      }
     </div>
   );
 }

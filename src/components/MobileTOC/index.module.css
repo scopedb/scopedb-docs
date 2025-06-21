@@ -2,7 +2,19 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin: 0 12px;
+}
+
+.tocSection {
   padding: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+
+.relatedSection {
+  padding: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
 }
 
 .tocTitle {
@@ -12,6 +24,7 @@
   color: var(--text-primary, #000);
   font-size: 13px;
   font-weight: 500;
+  width: 100%;
 }
 
 .tocListContainer {
