@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 
 export interface RelatedContentItem {
   title: string;
@@ -44,7 +44,7 @@ export default function RelatedContent({
         </svg>
       </span>
       <span className="font-medium" style={{ fontSize: "14px" }}>
-        Related
+        Related content
       </span>
       {couldCollapse && (
         <span className="ml-auto">

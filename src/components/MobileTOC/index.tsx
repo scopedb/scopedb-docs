@@ -72,12 +72,6 @@ export function MobileTOC({ toc, relatedContents }: MobileTOCProps) {
 
   return (
     <div className={styles.mobileToc}>
-      {relatedContents && relatedContents.length > 0 && (
-        <div className={styles.relatedSection}>
-          <RelatedContent relatedContents={relatedContents} couldCollapse={true} />
-        </div>
-      )}
-
       <div className={styles.tocSection}>
         <div className={styles.tocTitle} onClick={toggleTocCollapsed} style={{ cursor: 'pointer' }}>
           <AlignLeftIcon width={16} height={16} />
@@ -115,6 +109,12 @@ export function MobileTOC({ toc, relatedContents }: MobileTOCProps) {
           </div>
         )}
       </div>
+
+      {relatedContents && relatedContents.length > 0 && (
+        <div className={styles.relatedSection}>
+          <RelatedContent relatedContents={relatedContents} couldCollapse={true} />
+        </div>
+      )}
     </div>
   );
 }
