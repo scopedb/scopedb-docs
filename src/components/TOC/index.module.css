@@ -10,9 +10,6 @@
 @media (min-width: 960px) {
   .toc {
     position: sticky;
-    top: 80px;
-    height: 100vh;
-    overflow: auto;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -98,8 +95,7 @@
   justify-content: center;
   gap: 10px;
   list-style: none;
-  padding: 0;
-  margin: 0;
+  padding-bottom: 32px;
 }
 .tocItem {
   color: var(--text-secondary, rgba(0, 0, 0, 0.6));

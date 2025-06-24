@@ -4,7 +4,9 @@ import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { throttle } from "lodash-es";
 import { useMedia, useScrollLock } from "@/src/libs/hooks";
 import { AlignLeftIcon } from "lucide-react";
-import RelatedContent, { type RelatedContentItem } from "@/src/components/RelatedContent";
+import RelatedContent, {
+  type RelatedContentItem,
+} from "@/src/components/RelatedContent";
 
 import styles from "./index.module.css";
 
@@ -33,7 +35,7 @@ type OffsetTarget = Window | Document | HTMLElement | Element;
 const SCROLL_THROTTLE_MS = 128;
 const TOP_BOUND = 12;
 const ITEM_HEIGHT = 14;
-const ITEM_MARGIN = 12;
+const ITEM_MARGIN = 10;
 
 function getOffset(
   el: HTMLElement,
@@ -265,6 +267,12 @@ export function TOC({ toc, relatedContents }: TOCProps) {
     () => (ITEM_HEIGHT + ITEM_MARGIN) * (activeLink?.index ?? 0),
     [activeLink],
   );
+
+  const railHeight = useMemo(
+    () => (ITEM_HEIGHT + ITEM_MARGIN) * toc.length - ITEM_MARGIN,
+    [toc.length],
+  );
+
   const close = useCallback(() => {
     setIsOpen(false);
   }, [setIsOpen]);
@@ -293,10 +301,9 @@ export function TOC({ toc, relatedContents }: TOCProps) {
           <span>On this page</span>
         </div>
         <div className={styles.tocListContainer}>
-          <div className={styles.tocRail}>
+          <div className={styles.tocRail} style={{ height: `${railHeight}px` }}>
             <div
-              className={
-                `${styles.tocRailBar} ${activeLink ? styles.tocRailBarActive : ""}`}
+              className={`${styles.tocRailBar} ${activeLink ? styles.tocRailBarActive : ""}`}
               style={{ top: `${tocBarTop}px` }}
             />
           </div>
@@ -315,13 +322,11 @@ export function TOC({ toc, relatedContents }: TOCProps) {
         </div>
       </div>
 
-      {
-        relatedContents && relatedContents.length > 0 && (
-          <div className="pt-[12px]">
-            <RelatedContent relatedContents={relatedContents} />
-          </div>
-        )
-      }
+      {relatedContents && relatedContents.length > 0 && (
+        <div className="pt-[12px]">
+          <RelatedContent relatedContents={relatedContents} />
+        </div>
+      )}
     </div>
   );
 }
