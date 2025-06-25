@@ -2,12 +2,11 @@ import React from "react";
 import type { MarkdownHeading } from "astro";
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { throttle } from "lodash-es";
-import { useMedia, useScrollLock } from "@/src/libs/hooks";
+import { useScrollLock } from "@/src/libs/hooks";
 import { AlignLeftIcon } from "lucide-react";
 import RelatedContent, {
   type RelatedContentItem,
 } from "@/src/components/RelatedContent";
-
 import styles from "./index.module.css";
 
 interface TOCProps {
@@ -15,12 +14,10 @@ interface TOCProps {
   relatedContents?: RelatedContentItem[];
 }
 
-interface TocItemProps {
+interface TOCItemProps {
   item: MarkdownHeading;
   isActive: boolean;
   onClick: (href: string) => void;
-  isMobile?: boolean;
-  onClose?: () => void;
 }
 
 interface LinkInfo {
@@ -57,13 +54,53 @@ function getOffset(
   };
 }
 
+function renderActiveLink(
+  collectedLinkHrefs: string[],
+  activeHref: string | null,
+  setActiveHref: (href: string) => void,
+  setActiveLink: (link: LinkInfo | null) => void,
+) {
+  const links: LinkInfo[] = [];
+  const offsetTarget = document;
+
+  collectedLinkHrefs.forEach((href, index) => {
+    const linkEl = document.getElementById(href);
+    if (linkEl && offsetTarget) {
+      const { top, height } = getOffset(linkEl, offsetTarget);
+      links.push({ top, height, href, index });
+    }
+  });
+
+  links.sort((a, b) => a.top - b.top);
+
+  const activeLink = links.reduce((prevLink: LinkInfo | null, link) => {
+    if (link.top + link.height < 0) {
+      return prevLink;
+    }
+
+    if (link.top <= TOP_BOUND) {
+      if (!prevLink) return link;
+      if (link.top > prevLink.top) return link;
+      if (link.top === prevLink.top && link.href === activeHref) return link;
+      return prevLink;
+    }
+
+    if (!prevLink) return link;
+    if (link.top < prevLink.top) return link;
+    return prevLink;
+  }, null);
+
+  if (activeLink?.href) {
+    setActiveHref(activeLink.href);
+    setActiveLink(activeLink);
+  }
+}
+
 function useTOCState(toc: MarkdownHeading[]) {
   const [activeHref, setActiveHref] = useState<string | null>(null);
   const [activeLink, setActiveLink] = useState<LinkInfo | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const isMobile = useMedia("(max-width:960px)");
-  const tocListRef = useRef<HTMLUListElement>(null);
 
+  const tocListRef = useRef<HTMLUListElement>(null);
   const collectedLinkHrefs = useMemo(() => toc.map((t) => t.slug), [toc]);
 
   useEffect(() => {
@@ -80,9 +117,6 @@ function useTOCState(toc: MarkdownHeading[]) {
     setActiveHref,
     activeLink,
     setActiveLink,
-    isOpen,
-    setIsOpen,
-    isMobile,
     tocListRef,
     collectedLinkHrefs,
   };
@@ -95,40 +129,7 @@ function useTOCScroll(
   setActiveLink: (link: LinkInfo | null) => void,
 ) {
   const handleScroll = useCallback(() => {
-    const links: LinkInfo[] = [];
-    const offsetTarget = document;
-
-    collectedLinkHrefs.forEach((href, index) => {
-      const linkEl = document.getElementById(href);
-      if (linkEl && offsetTarget) {
-        const { top, height } = getOffset(linkEl, offsetTarget);
-        links.push({ top, height, href, index });
-      }
-    });
-
-    links.sort((a, b) => a.top - b.top);
-
-    const activeLink = links.reduce((prevLink: LinkInfo | null, link) => {
-      if (link.top + link.height < 0) {
-        return prevLink;
-      }
-
-      if (link.top <= TOP_BOUND) {
-        if (!prevLink) return link;
-        if (link.top > prevLink.top) return link;
-        if (link.top === prevLink.top && link.href === activeHref) return link;
-        return prevLink;
-      }
-
-      if (!prevLink) return link;
-      if (link.top < prevLink.top) return link;
-      return prevLink;
-    }, null);
-
-    if (activeLink?.href) {
-      setActiveHref(activeLink.href);
-      setActiveLink(activeLink);
-    }
+    renderActiveLink(collectedLinkHrefs, activeHref, setActiveHref, setActiveLink);
   }, [collectedLinkHrefs, activeHref, setActiveHref, setActiveLink]);
 
   const throttledHandleScroll = useMemo(
@@ -150,63 +151,22 @@ function useTOCScroll(
 }
 
 function useTOCInitialization(
-  toc: MarkdownHeading[],
   collectedLinkHrefs: string[],
   activeHref: string | null,
   setActiveHref: (href: string) => void,
   setActiveLink: (link: LinkInfo | null) => void,
 ) {
   useEffect(() => {
-    const initialize = () => {
-      const hash = window.location.hash.replaceAll("#", "");
-      if (hash && collectedLinkHrefs.includes(hash)) {
-        setActiveHref(hash);
-        const linkEl = document.getElementById(hash);
-        if (linkEl) {
-          const { top, height } = getOffset(linkEl, document);
-          setActiveLink({
-            top,
-            height,
-            href: hash,
-            index: collectedLinkHrefs.indexOf(hash),
-          });
-        }
-        return;
-      }
-
-      if (toc.length > 0 && !activeHref) {
-        const firstHref = toc[0].slug;
-        setActiveHref(firstHref);
-        const firstLink = document.getElementById(firstHref);
-        if (firstLink) {
-          const { top, height } = getOffset(firstLink, document);
-          setActiveLink({
-            top,
-            height,
-            href: firstHref,
-            index: 0,
-          });
-        }
-      }
-    };
-
-    initialize();
-  }, [toc, collectedLinkHrefs, activeHref, setActiveHref, setActiveLink]);
+    renderActiveLink(collectedLinkHrefs, activeHref, setActiveHref, setActiveLink);
+  }, [collectedLinkHrefs, activeHref, setActiveHref, setActiveLink]);
 }
 
 const TOCItem = React.memo(function TOCItem({
   item,
   isActive,
   onClick,
-  isMobile,
-  onClose,
-}: TocItemProps) {
-  const handleClick = useCallback(() => {
-    onClick(item.slug);
-    if (isMobile && onClose) {
-      onClose();
-    }
-  }, [item.slug, onClick, isMobile, onClose]);
+}: TOCItemProps) {
+  const handleClick = useCallback(() => { onClick(item.slug) }, [item.slug, onClick]);
 
   return (
     <li className={`${styles.tocItem} ${isActive ? styles.tocItemActive : ""}`}>
@@ -229,15 +189,11 @@ export function TOC({ toc, relatedContents }: TOCProps) {
     setActiveHref,
     activeLink,
     setActiveLink,
-    isOpen,
-    setIsOpen,
-    isMobile,
     tocListRef,
     collectedLinkHrefs,
   } = useTOCState(toc);
 
   useTOCInitialization(
-    toc,
     collectedLinkHrefs,
     activeHref,
     setActiveHref,
@@ -259,10 +215,6 @@ export function TOC({ toc, relatedContents }: TOCProps) {
     [setActiveHref],
   );
 
-  const toggleOpen = useCallback(() => {
-    setIsOpen((prev) => !prev);
-  }, [setIsOpen]);
-
   const tocBarTop = useMemo(
     () => (ITEM_HEIGHT + ITEM_MARGIN) * (activeLink?.index ?? 0),
     [activeLink],
@@ -273,53 +225,33 @@ export function TOC({ toc, relatedContents }: TOCProps) {
     [toc.length],
   );
 
-  const close = useCallback(() => {
-    setIsOpen(false);
-  }, [setIsOpen]);
-
-  function handleClickTocItem(href: string) {
-    if (isMobile) {
-      close?.();
-    }
+  function handleClickTOCItem(href: string) {
     updateActiveHref(href, true);
   }
 
-  useScrollLock(isOpen);
-
   return (
     <div className={styles.toc}>
-      {isMobile && (
-        <AlignLeftIcon onClick={toggleOpen} width={16} height={16} />
-      )}
-      {isOpen && <div className={styles.tocMask} onClick={toggleOpen} />}
-
-      <div
-        className={`${isMobile ? (isOpen ? styles.open : styles.close) : ""}`}
-      >
-        <div className={styles.tocTitle}>
-          <AlignLeftIcon width={16} height={16} />
-          <span>On this page</span>
+      <div className={styles.tocTitle}>
+        <AlignLeftIcon width={16} height={16} />
+        <span>On this page</span>
+      </div>
+      <div className={styles.tocListContainer}>
+        <div className={styles.tocRail} style={{ height: `${railHeight}px` }}>
+          <div
+            className={`${styles.tocRailBar} ${activeLink ? styles.tocRailBarActive : ""}`}
+            style={{ top: `${tocBarTop}px` }}
+          />
         </div>
-        <div className={styles.tocListContainer}>
-          <div className={styles.tocRail} style={{ height: `${railHeight}px` }}>
-            <div
-              className={`${styles.tocRailBar} ${activeLink ? styles.tocRailBarActive : ""}`}
-              style={{ top: `${tocBarTop}px` }}
+        <ul className={styles.tocList} ref={tocListRef}>
+          {toc.map((item) => (
+            <TOCItem
+              key={item.slug}
+              item={item}
+              isActive={item.slug === activeHref}
+              onClick={handleClickTOCItem}
             />
-          </div>
-          <ul className={styles.tocList} ref={tocListRef}>
-            {toc.map((item) => (
-              <TOCItem
-                key={item.slug}
-                item={item}
-                isActive={item.slug === activeHref}
-                onClick={handleClickTocItem}
-                isMobile={isMobile}
-                onClose={close}
-              />
-            ))}
-          </ul>
-        </div>
+          ))}
+        </ul>
       </div>
 
       {relatedContents && relatedContents.length > 0 && (
