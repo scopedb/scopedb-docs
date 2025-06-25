@@ -199,19 +199,6 @@ export function TOC({ toc, relatedContents }: TOCProps) {
 
   useTOCScroll(collectedLinkHrefs, activeHref, setActiveHref, setActiveLink);
 
-  const updateActiveHref = useCallback(
-    (href: string, shouldScroll = false) => {
-      const linkEl = document.getElementById(href);
-      if (!linkEl) return;
-
-      setActiveHref(href);
-      if (shouldScroll) {
-        linkEl.scrollIntoView({ behavior: "smooth" });
-      }
-    },
-    [setActiveHref],
-  );
-
   const tocBarTop = useMemo(
     () => (ITEM_HEIGHT + ITEM_MARGIN) * (activeLink?.index ?? 0),
     [activeLink],
@@ -222,9 +209,12 @@ export function TOC({ toc, relatedContents }: TOCProps) {
     [toc.length],
   );
 
-  function handleClickTOCItem(href: string) {
-    updateActiveHref(href, true);
-  }
+  const handleClickTOCItem = useCallback((slug: string) => {
+    const linkEl = document.getElementById(slug);
+    if (linkEl) {
+      linkEl.scrollIntoView();
+    }
+  }, []);
 
   return (
     <div className={styles.toc}>
