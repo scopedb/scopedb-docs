@@ -2,11 +2,8 @@ import React from "react";
 import type { MarkdownHeading } from "astro";
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { throttle } from "lodash-es";
-import { useScrollLock } from "@/src/libs/hooks";
-import { AlignLeftIcon } from "lucide-react";
-import RelatedContent, {
-  type RelatedContentItem,
-} from "@/src/components/RelatedContent";
+import IconAlignLeft from "icons:react/lucide/align-left";
+import RelatedContent, { type RelatedContentItem } from "@/src/components/RelatedContent";
 import styles from "./index.module.css";
 
 interface TOCProps {
@@ -232,7 +229,7 @@ export function TOC({ toc, relatedContents }: TOCProps) {
   return (
     <div className={styles.toc}>
       <div className={styles.tocTitle}>
-        <AlignLeftIcon width={16} height={16} />
+        <IconAlignLeft width={16} height={16} />
         <span>On this page</span>
       </div>
       <div className={styles.tocListContainer}>

@@ -2,7 +2,7 @@ import React from "react";
 import type { MarkdownHeading } from "astro";
 import { useRef, useCallback, useState } from "react";
 
-import { AlignLeftIcon } from "lucide-react";
+import IconAlignLeft from "icons:react/lucide/align-left";
 import RelatedContent, { type RelatedContentItem } from "@/src/components/RelatedContent";
 
 import styles from "./index.module.css";
@@ -74,7 +74,7 @@ export function MobileTOC({ toc, relatedContents }: MobileTOCProps) {
     <div className={styles.mobileToc}>
       <div className={styles.tocSection}>
         <div className={styles.tocTitle} onClick={toggleTocCollapsed} style={{ cursor: 'pointer' }}>
-          <AlignLeftIcon width={16} height={16} />
+          <IconAlignLeft width={16} height={16} />
           <span>On this page</span>
           <span className="ml-auto">
             <svg

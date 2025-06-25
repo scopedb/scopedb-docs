@@ -1,7 +1,10 @@
 import type { SidebarItem } from "@/src/libs/sidebar";
 import React, { useMemo, useState, useCallback, useEffect } from "react";
 import { useMedia, useScrollLock } from "@/src/libs/hooks";
-import { ChevronDown, ChevronRight, ListMinusIcon } from "lucide-react";
+
+import IconChevronDown from "icons:react/lucide/chevron-down";
+import IconChevronRight from "icons:react/lucide/chevron-right";
+import IconListMinus from "icons:react/lucide/list-minus";
 
 interface Props {
   sidebar: SidebarItem[];
@@ -46,7 +49,6 @@ function useCurrentPath(initPathname: string) {
   return currentPath;
 }
 
-// Hook: Manage collapsed states
 function useCollapsedStates(initialItems: SidebarItem[]) {
   const [collapsedStates, setCollapsedStates] = useState<
     Record<string, boolean>
@@ -135,9 +137,9 @@ const SidebarMenuItem = React.memo(function SidebarMenuItem({
           <span className="flex-1">{item.label}</span>
           <span className="flex items-center ml-[4px]">
             {collapsed ? (
-              <ChevronRight width={16} height={16} />
+              <IconChevronRight width={16} height={16} />
             ) : (
-              <ChevronDown width={16} height={16} />
+              <IconChevronDown width={16} height={16} />
             )}
           </span>
         </button>
@@ -263,7 +265,7 @@ export function SidebarMenu(props: Props) {
       )}
       {isMobile && (
         <div className="flex flex-row">
-          <ListMinusIcon
+          <IconListMinus
             onClick={() => setOpen(true)}
             width={16}
             height={16}
