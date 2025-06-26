@@ -7,10 +7,9 @@ import type { SidebarItem } from "@/src/libs/sidebar";
 
 interface Props {
   title: string;
-  sidebar?: SidebarItem[];
 }
 
-const { title, sidebar } = Astro.props;
+const { title } = Astro.props;
 ---
 
 <!doctype html>
@@ -31,11 +30,8 @@ const { title, sidebar } = Astro.props;
     <title>{title}</title>
     <ClientRouter />
   </head>
-  <body class="min-h-screen flex flex-col">
-    <header>
-      <Header sidebar={sidebar} />
-    </header>
-    <main class="pt-[140px]">
+  <body>
+    <main>
       <slot />
     </main>
   </body>

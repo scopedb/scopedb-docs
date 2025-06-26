@@ -1,6 +1,7 @@
 ---
 import Layout from "@/src/layouts/Layout.astro";
 import Footer from "@/src/components/Footer.astro";
+import Header from "@/src/components/Header.astro";
 
 interface FeaturedItem {
   category: string;
@@ -40,64 +41,35 @@ const basics: BasicItem[] = [];
 ---
 
 <Layout title="ScopeDB Documentation">
-  <div
-    class="max-w-[1440px] mx-auto py-[16px] px-[12px] md:px-[24px] mt-[60px] mb-[160px]"
-  >
-    <div>
+  <div class="flex flex-col min-h-screen">
+    <header class="flex-auto">
+      <Header />
+    </header>
+
+    <div class="flex-auto max-w-[1440px] py-[16px] px-[12px] md:px-[24px] mt-[128px]">
       <div>
-        <div
-          class="text-[var(--text-primary)] leading-tight text-[50px] font-medium"
-        >
+        <div class="text-[var(--text-primary)] leading-tight text-[50px] font-medium">
           ScopeDB<br />Documentation
         </div>
-        <div
-          class="text-[var(--text-secondary)] max-w-[500px] text-[20px] font-normal pt-[16px]"
-        >
-          Get an overview of ScopeDB's features, integrations, and how to use
-          them.
+        <div class="text-[var(--text-secondary)] max-w-[500px] text-[20px] font-normal pt-[16px]">
+          Get an overview of ScopeDB's features, integrations, and how to use them.
         </div>
       </div>
-    </div>
-    <div>
       <div>
-        <div
-          class="text-[var(--text-secondary)] text-[16px] font-normal pt-[60px]"
-        >
-          Featured Resources
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-          {
-            featured.map((item) => (
-              <a
-                class="bg-white border border-[rgba(0,0,0,0.1)] rounded-[16px] p-[16px] flex flex-col gap-[4px] no-underline transition-all duration-300  hover:shadow-lg"
-                href={item.link}
-              >
-                <div class="text-[var(--text-tertiary)] text-[12px] font-normal uppercase tracking-wider">
-                  {item.category}
-                </div>
-                <div class="text-[var(--text-primary)] font-semibold text-[20px] eading-tight">
-                  {item.title}
-                </div>
-                <div class="text-[var(--text-tertiary)]  text-[14px] leading-relaxed">
-                  {item.description}
-                </div>
-              </a>
-            ))
-          }
-        </div>
-      </div>
-      {
-        basics.length > 0 && (
-          <div>
-            <div class="text-[var(--text-primary)] text-[16px] font-normal pt-[16px]">
-              ScopeDB basics
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-              {basics.map((item) => (
+        <div>
+          <div class="text-[var(--text-secondary)] text-[16px] font-normal pt-[60px]">
+            Featured Resources
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+            {
+              featured.map((item) => (
                 <a
-                  class="bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-300 rounded-xl p-6 flex flex-col gap-3 no-underline transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-1 hover:from-slate-100 hover:to-slate-200 min-h-[140px]"
+                  class="bg-white border border-[rgba(0,0,0,0.1)] rounded-[16px] p-[16px] flex flex-col gap-[4px] no-underline transition-all duration-300  hover:shadow-lg"
                   href={item.link}
                 >
+                  <div class="text-[var(--text-tertiary)] text-[12px] font-normal uppercase tracking-wider">
+                    {item.category}
+                  </div>
                   <div class="text-[var(--text-primary)] font-semibold text-[20px] eading-tight">
                     {item.title}
                   </div>
@@ -105,12 +77,39 @@ const basics: BasicItem[] = [];
                     {item.description}
                   </div>
                 </a>
-              ))}
-            </div>
+              ))
+            }
           </div>
-        )
-      }
+        </div>
+        {
+          basics.length > 0 && (
+            <div>
+              <div class="text-[var(--text-primary)] text-[16px] font-normal pt-[16px]">
+                ScopeDB basics
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                {basics.map((item) => (
+                  <a
+                    class="bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-300 rounded-xl p-6 flex flex-col gap-3 no-underline transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-1 hover:from-slate-100 hover:to-slate-200 min-h-[140px]"
+                    href={item.link}
+                  >
+                    <div class="text-[var(--text-primary)] font-semibold text-[20px] eading-tight">
+                      {item.title}
+                    </div>
+                    <div class="text-[var(--text-tertiary)]  text-[14px] leading-relaxed">
+                      {item.description}
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )
+        }
+      </div>
     </div>
-    <Footer />
+
+    <div class="flex-auto max-w-[1440px] px-[12px] md:px-[24px]">
+      <Footer />
+    </div>
   </div>
 </Layout>

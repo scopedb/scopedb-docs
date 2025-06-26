@@ -9,6 +9,7 @@ import Sidebar from "@/src/components/Sidebar/Sidebar.astro";
 import { type RelatedContentItem } from "@/src/components/RelatedContent";
 import { inRange } from "lodash-es";
 import Footer from "@/src/components/Footer.astro";
+import Header from "@/src/components/Header.astro";
 
 interface Props {
   title: string;
@@ -26,31 +27,36 @@ const toc =
     : [];
 ---
 
-<div class="doc-container">
-  {
-    sidebar?.length > 0 ? (
-      <div class="doc-aside ">
-        <div class="sidebar mt-[32px]" transition:persist={category}>
-          <Sidebar sidebar={sidebar} />
-        </div>
-        {toc.length > 0 ? (
-          <div class="toc-container">
-            <TOC toc={toc} client:load relatedContents={relatedContents} />
-          </div>
-        ) : null}
-      </div>
-    ) : null
-  }
-  <div class="content-container">
+<header class="flex-auto">
+  <Header sidebar={sidebar} />
+</header>
+
+<div class="pt-[140px]">
+  <div class="doc-container">
     {
-      toc.length > 0 ? (
-        <div class="mobile-toc">
-          <MobileTOC toc={toc} client:load relatedContents={relatedContents} />
+      sidebar?.length > 0 ? (
+        <div class="doc-aside ">
+          <div class="sidebar mt-[32px]" transition:persist={category}>
+            <Sidebar sidebar={sidebar} />
+          </div>
+          {toc.length > 0 ? (
+            <div class="toc-container">
+              <TOC toc={toc} client:load relatedContents={relatedContents} />
+            </div>
+          ) : null}
         </div>
       ) : null
     }
-    <div
-      class="w-full max-w-none
+    <div class="content-container">
+      {
+        toc.length > 0 ? (
+          <div class="mobile-toc">
+            <MobileTOC toc={toc} client:load relatedContents={relatedContents} />
+          </div>
+        ) : null
+      }
+      <div
+        class="w-full max-w-none
             mx-auto mt-[32px] mb-[100px]
 						px-[16px] sm:px-[24px] md:px-[32px] lg:px-[48px]
             text-[16px] text-[rgba(0,0,0,0.8)] leading-[1.4]
@@ -105,10 +111,11 @@ const toc =
 						prose-th:bg-[rgba(0,0,0,0.02)] prose-th:font-semibold prose-th:text-left
 						prose-td:border prose-td:border-[rgba(0,0,0,0.1)] prose-td:p-[12px]
 						prose-hr:my-[48px] prose-hr:border-t prose-hr:border-[rgba(0,0,0,0.1)]"
-    >
-      <h1 class="text-[32px] font-medium mb-[24px]">{title}</h1>
-      <slot />
-      <Footer />
+      >
+        <h1 class="text-[32px] font-medium mb-[24px]">{title}</h1>
+        <slot />
+        <Footer />
+      </div>
     </div>
   </div>
 </div>
