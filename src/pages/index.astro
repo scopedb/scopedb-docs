@@ -41,7 +41,7 @@ const basics: BasicItem[] = [];
 
 <Layout title="ScopeDB Documentation">
   <div
-    class="max-w-[1440px] mx-auto py-[16px] px-[12px] md:px-[24px] mt-[60px] mb-[160px]"
+    class="max-w-[1440px] mx-auto py-[16px] px-[12px] md:px-[24px] mt-[60px] min-h-[calc(100vh-220px)]"
   >
     <div>
       <div>
@@ -111,6 +111,8 @@ const basics: BasicItem[] = [];
         )
       }
     </div>
-    <Footer />
+    <div class="sticky top-full">
+      <Footer />
+    </div>
   </div>
 </Layout>
