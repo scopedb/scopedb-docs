@@ -3,21 +3,21 @@ import type { SidebarItem } from "@/src/libs/sidebar";
 export const guidesSidebar = [
   {
     label: "Overview",
-    link: "/guides",
+    link: "/guides/",
   },
 ];
 
 export const developerSidebar = [
   {
     label: "Overview",
-    link: "/developer",
+    link: "/developer/",
   },
 ];
 
 export const referenceSidebar = [
   {
     label: "Overview",
-    link: "/reference",
+    link: "/reference/",
   },
   {
     label: "Data types",

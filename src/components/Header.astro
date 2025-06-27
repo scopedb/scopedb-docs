@@ -25,12 +25,12 @@ const { sidebar } = Astro.props;
     align-items: center;
     justify-content: flex-end;
   }
-  
+
   @media (max-width: 1024px) {
     .search-mobile > :global([astro-island]) {
       justify-content: center;
     }
-    
+
     .search-mobile :global(.DocSearch-Button) {
       margin: 0;
       width: 36px;
@@ -40,17 +40,17 @@ const { sidebar } = Astro.props;
       padding: 6px;
       border-radius: 8px;
     }
-    
+
     .search-mobile :global(.DocSearch-Button-Placeholder),
     .search-mobile :global(.DocSearch-Button-Keys) {
       display: none;
     }
-    
+
     .search-mobile :global(.DocSearch-Button-Container) {
       justify-content: center;
       width: 100%;
     }
-    
+
     .search-mobile :global(.DocSearch-Search-Icon) {
       margin: 0;
     }
@@ -58,13 +58,15 @@ const { sidebar } = Astro.props;
 </style>
 
 <div
-  class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-[rgba(0,0,0,0.03)] min-h-[56px] lg:min-h-[98px]"
+  class="fixed top-0 left-0 right-0 z-50 bg-white min-h-[56px] lg:min-h-[98px]"
 >
-  <div class="max-w-[1440px] mx-auto pt-[14px] px-[12px] md:px-[24px]">
+  <div class="mx-auto pt-[14px]">
     <div
-      class="flex pb-[14px] items-center justify-between border-b border-[rgba(0,0,0,0.03)]"
+      class="flex pb-[14px] items-center justify-between border-b border-[rgba(0,0,0,0.05)]"
     >
-      <div class="title-wrapper flex items-center gap-[24px]">
+      <div
+        class="title-wrapper flex items-center gap-[24px] px-[12px] md:px-[24px]"
+      >
         <a href="/" class="flex items-center gap-[12px]">
           <img src="/logo.svg" alt="ScopeDB Logo" class="h-[28px] w-[28px]" />
           <div class="text-[20px] text-[#000000] font-medium">ScopeDB</div>
@@ -81,12 +83,16 @@ const { sidebar } = Astro.props;
         <div class="hidden sm:block text-[14px]">
           <div><a href="https://www.scopedb.io/contact">Book a demo</a></div>
         </div>
-        <div class="w-[36px] lg:w-[200px] h-[36px] flex items-center justify-end search-container search-mobile">
+        <div
+          class="w-[36px] lg:w-[200px] h-[36px] flex items-center justify-end search-container search-mobile"
+        >
           <Search client:only="react" />
         </div>
       </div>
     </div>
 
-    <Categories sidebar={sidebar} />
+    <div class="px-[12px] md:px-[24px] border-b border-[rgba(0,0,0,0.05)]">
+      <Categories sidebar={sidebar} />
+    </div>
   </div>
 </div>
