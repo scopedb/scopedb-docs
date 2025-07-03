@@ -2,8 +2,6 @@
 title: array_concat, ||
 ---
 
-# array_concat, ||
-
 Returns a concatenation of two arrays.
 
 The `||` operator provides alternative syntax for ARRAY_CONCAT and can concatenate more than two arrays.

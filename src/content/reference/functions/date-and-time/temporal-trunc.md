@@ -2,8 +2,6 @@
 title: trunc
 ---
 
-# trunc
-
 Truncates a timestamp value to the specified precision. For example, truncating a timestamp down to the hour returns the timestamp corresponding to start of the hour of the original timestamp's hour.
 
 ## Syntax
