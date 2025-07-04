@@ -17,7 +17,7 @@ export default function Document({
     return (
         <div className="grid grid-cols-10 gap-[16px]">
             <div className="col-span-2 hidden lg:block">
-                <div className="sticky top-[140px]">
+                <div className="sticky top-[120px]">
                     <Sidebar prefix="doc" className="h-[calc(100vh-140px)] overflow-y-auto" />
                 </div>
             </div>

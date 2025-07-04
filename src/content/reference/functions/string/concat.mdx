@@ -1,5 +1,5 @@
 ---
-title: concat, ||
+title: "|| (concat)"
 ---
 
 Concatenates two strings.
@@ -9,7 +9,6 @@ The `||` operator provides alternative syntax for CONCAT and can concatenate mor
 ## Syntax
 
 ```scopeql
-concat( <expr> , <expr> )
 <expr> || <expr> [ || <expr> ... ]
 ```
 
@@ -26,18 +25,18 @@ The data type of the returned value is string. If any input value is NULL, retur
 ## Examples
 
 ```scopeql
-SELECT concat('George Washington ', 'Carver');
+SELECT 'George Washington ' || 'Carver';
 ```
 
 ```
-+----------------------------------------+
-| concat('George Washington ', 'Carver') |
-+----------------------------------------+
-| George Washington Carver               |
-+----------------------------------------+
++----------------------------------+
+| 'George Washington ' || 'Carver' |
++----------------------------------+
+| George Washington Carver         |
++----------------------------------+
 ```
 
-Use the `||` concatenation operator instead of the function:
+The concatenation operator can be fluently chained to concatenate multiple strings:
 
 ```scopeql
 SELECT 'This ' || 'is ' || 'another ' || 'concatenation ' || 'technique.';

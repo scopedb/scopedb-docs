@@ -1,5 +1,4 @@
 ---
-sidebar_label: General DDL
 title: Data Definition Language (DDL) statements
 ---
 
@@ -27,7 +26,7 @@ DROP DATABASE [ IF EXISTS ] <name>
 
 ## CREATE SCHEMA
 
-Creates a new schema in the current database
+Creates a new schema in the system.
 
 ### Syntax
 
@@ -37,7 +36,7 @@ CREATE SCHEMA [ IF NOT EXISTS ] <name>
 
 ## DROP SCHEMA
 
-Removes a schema from the current database.
+Removes a schema from the system.
 
 ### Syntax
 
@@ -47,16 +46,14 @@ DROP SCHEMA [ IF EXISTS ] <name>
 
 ## CREATE TABLE
 
-Creates a new table in the current schema.
+Creates a new table in the system.
 
 ### Syntax
 
 ```scopeql
 CREATE TABLE [ IF NOT EXISTS ] <table_name> (
     [
-        <col_name> <col_type>
-        [ NULL | NOT NULL ]
-        [ COMMENT '<string_literal>' ]
+        <col_name> <col_type> [ COMMENT '<string_literal>' ]
     ],*
 )
 [ COMMENT = '<string_literal>' ]
@@ -68,7 +65,9 @@ WITH (
 ### Examples
 
 ```scopeql
-CREATE TABLE t1 (a int)
+CREATE TABLE t1 (x int);
+
+CREATE TABLE t2 (y int)
 with (
     'storage.type' = 's3',
     'storage.endpoint' = 'http://127.0.0.1:9000/',
@@ -81,7 +80,7 @@ with (
 
 ## DROP TABLE
 
-Removes a table from the current schema.
+Removes a table from the system.
 
 ### Syntax
 
@@ -91,7 +90,9 @@ DROP TABLE [ IF EXISTS ] <name>
 
 ## CREATE VIEW
 
-Creates a new view in the current schema. A view is a virtual table based on the result set of a query. Views can help simplify complex queries and provide an abstraction layer over the underlying tables.
+Creates a new view in the system.
+
+A view is a virtual table based on the result set of a query. Views can help simplify complex queries and provide an abstraction layer over the underlying tables.
 
 ### Syntax
 
@@ -104,15 +105,19 @@ AS <query>
 ### Parameters
 
 #### `[ OR REPLACE ]`
+
 Optional clause that allows you to replace an existing view if it already exists.
 
 #### `<name>`
+
 The name of the view to create.
 
 #### `COMMENT`
+
 Optional comment to describe the purpose of the view.
 
 #### `<query>`
+
 The SELECT query that defines the view's contents.
 
 ### Examples
@@ -136,17 +141,16 @@ INSERT INTO user_events;
 
 -- Create a view that keeps only the latest record for each user
 CREATE VIEW latest_user_status AS
-FROM user_events
-DISTINCT ON user_id
-BY event_time DESC;
+  FROM user_events
+  DISTINCT ON user_id
+  BY event_time DESC;
 
 -- Create or replace a view with a comment
-CREATE OR REPLACE VIEW highest_user_scores
-AS
-FROM user_events
-DISTINCT ON user_id
-BY score DESC
-COMMENT = 'Users highest achieved scores';
+CREATE OR REPLACE VIEW highest_user_scores AS
+  FROM user_events
+  DISTINCT ON user_id
+  BY score DESC
+  COMMENT = 'Users highest achieved scores';
 ```
 
 ### Usage Notes
@@ -159,17 +163,18 @@ COMMENT = 'Users highest achieved scores';
 
 ## DROP VIEW
 
-Removes a view from the current schema.
+Removes a view from the system.
 
 ### Syntax
 
 ```scopeql
-DROP VIEW <name>
+DROP VIEW [ IF EXISTS ] <name>
 ```
 
 ### Parameters
 
 #### `<name>`
+
 The name of the view to drop.
 
 ### Examples
@@ -179,7 +184,7 @@ The name of the view to drop.
 DROP VIEW latest_user_status;
 
 -- Drop a view if it exists
-DROP VIEW highest_user_scores;
+DROP VIEW IF EXISTS highest_user_scores;
 ```
 
 ## SHOW TABLES
@@ -189,8 +194,14 @@ Lists the tables for which you have access privileges.
 ### Syntax
 
 ```scopeql
-SHOW TABLES
+SHOW TABLES [ IN <schema_name> ]
 ```
+
+### Parameters
+
+#### `<schema_name>`
+
+Optional name of the schema to list tables from. If not specified, all tables in any schema are listed.
 
 ## DESCRIBE TABLE
 
@@ -209,26 +220,36 @@ Creates a new index on a table to improve query performance.
 ### Syntax
 
 ```scopeql
-CREATE <index_type> INDEX <name> ON <table_name> (<index_expression>)
-
-<index_type>:
-    smart
-    | search
+CREATE <index_type> INDEX [ IF NOT EXISTS ] [ <name> ] ON <table_name> (<index_expressions>)
 ```
 
 ### Parameters
 
-- `<index_type>`: The type of index to create:
-  - `SMART`: A general-purpose index that improves performance of queries involving the indexed expression
-  - `SEARCH`: A specialized index that optimizes performance of text search operations using the `search` function
+#### `<index_type>`
 
-- `<name>`: The name of the index (must be unique within the table)
+The type of index to create:
 
-- `<table_name>`: The name of the table to create the index on
+* `EQUALITY`: An index that optimizes performance of equality comparisons on the indexed expressions
+* `RANGE`: An index that optimizes performance of range queries on the indexed expressions
+* `SEARCH`: An index that optimizes performance of text search operations using the `search` function
+* `OBJECT`: An index that optimizes performance of queries on object keys
+* `MATERIALIZED`: An index that stores the results of a query for faster access, useful for complex expressions or semi-structured data path access
 
-- `<index_expression>`:
-  * For SMART indexes: Any valid expression that returns a deterministic value
-  * For SEARCH indexes: Must be a string column that will be used with the `search` function
+#### `<name>`
+
+The name of the index.
+
+This is optional; if not provided, a default name will be generated based on the table and expression.
+
+The index name must be unique within the table.
+
+#### `<table_name>`
+
+The name of the table on which to create the index.
+
+#### `<index_expressions>`
+
+A comma-separated list of expressions to index.
 
 ### Examples
 
@@ -239,38 +260,41 @@ CREATE TABLE logs (
     time timestamp,
     message string,
     level string,
-    var variant,
+    var object,
 );
 
--- SMART index on a column
-CREATE SMART INDEX idx_log_id ON logs (id);
+-- EQUALITY index on a column
+CREATE EQUALITY INDEX ON logs (id);
 
--- SMART index on a timestamp expression
-CREATE SMART INDEX idx_log_hour ON logs (trunc(time, unit => 'hour'));
+-- EQUALITY index on a timestamp expression
+CREATE EQUALITY INDEX ON logs (trunc(time, unit => 'hour'));
 
--- SMART index on a computed expression
-CREATE SMART INDEX idx_log_var_type ON logs (var['type']::string);
+-- RANGE index on a computed expression
+CREATE RANGE INDEX ON logs (var['type']::string);
 
 -- SEARCH index for text searching in log messages
-CREATE SEARCH INDEX idx_log_message ON logs (message);
+CREATE SEARCH INDEX ON logs (message);
 ```
 
 ### When to Use Each Index Type
 
-1. Use `SMART` indexes when:
-   - You frequently filter on specific columns or expressions
-   - You need to optimize queries that use range conditions or equality comparisons
-   - You want to improve performance of queries involving computed expressions(e.g. path access on variant columns like `var['type']::string`)
+1. Use `EQUALITY` or `RANGE` indexes when:
+   - You frequently filter on specific columns or expressions.
+   - You need to optimize queries that use range conditions or equality comparisons.
 
 2. Use `SEARCH` indexes when:
-   - You need to perform text search operations using the `search` function
-   - You want to optimize queries that look for specific text patterns in string columns
+   - You need to perform text search operations using the `search` function.
+   - You want to optimize queries that look for specific text patterns in string columns.
+
+3. Use `MATERIALIZED` indexes when:
+   - You have complex expressions or semi-structured data paths that are expensive to compute.
+   - You want to pre-compute and store results for faster access.
 
 ### Notes
 
-- Indexes improve query performance but require additional storage space
-- Creating too many indexes can slow down write operations and increase query latency
-- The query optimizer automatically determines when to use available indexes
+- Indexes improve query performance but require additional storage space.
+- Creating too many indexes can slow down write operations, and may increase query latency.
+- The query optimizer automatically determines when to use available indexes.
 
 ## DROP INDEX
 
@@ -279,20 +303,24 @@ Removes an index from a table.
 ### Syntax
 
 ```scopeql
-DROP INDEX <name> ON <table_name>
+DROP INDEX [ IF EXISTS ] <name> ON <table_name>
 ```
 
 ### Parameters
 
-- `<name>`: The name of the index to drop
-- `<table_name>`: The name of the table containing the index
+#### `<name>`
+
+The name of the index to drop.
+
+#### `<table_name>`
+
+The name of the table containing the index.
 
 ### Examples
 
 ```scopeql
--- Drop indexes created in the previous examples
 DROP INDEX idx_log_id ON logs;
-DROP INDEX idx_log_message ON logs;
+DROP INDEX IF EXISTS idx_log_message ON logs;
 ```
 
 ## CREATE NODEGROUP
@@ -322,7 +350,7 @@ Creates a new job.
 ### Syntax
 
 ```scopeql
-CREATE JOB <name>
+CREATE [ OR REPLACE ] JOB <name>
 SCHEDULE = '<cronexpr>'
 NODEGROUP = '<comma-separated-nodegroups>'
 AS
@@ -335,7 +363,9 @@ AS
 CREATE JOB archive_table_t
 SCHEDULE = '4 2 * * * Asia/Shanghai'
 NODEGROUP = 'background'
-AS DELETE FROM t;
+AS
+  DELETE FROM t
+  WHERE created_at < NOW() - INTERVAL 'PT720h';
 ```
 
 ## DROP JOB
@@ -360,7 +390,9 @@ SHOW JOBS
 
 ## OPTIMIZE TABLE
 
-Optimizing a table. Do compaction or purge historical data to save storage space and enhance query performance.
+Optimizing a table.
+
+Execute compaction or purge historical data to save storage space and enhance query performance.
 
 ### Syntax
 

@@ -2,21 +2,28 @@
 title: Data types reference
 ---
 
-ScopeDB currently supports the following data types.
+ScopeDB is strongly typed, and each value has a specific data type. The data type of a value determines how it can be used in queries and what operations can be performed on it.
 
-| Type      | Description                                  |
-|-----------|----------------------------------------------|
-| int       | 64-bit integer                               |
-| uint      | 64-bit unsigned integer                      |
-| float     | 64-bit IEEE 754 floating point number        |
-| string    | UTF-8 encoded string                         |
-| interval  | duration stored as 64-bit nanoseconds        |
-| timestamp | UNIX epoch stored as 64-bit nanoseconds      |
-| boolean   | `true` or `false`                            |
-| variant   | semi-structured data; analogy to JSON values |
+## List of data types
 
-For more information about ScopeQL data types, see the following topics:
+| Type      | Description                                |
+| --------- | ------------------------------------------ |
+| int       | 64-bit integer                             |
+| uint      | 64-bit unsigned integer                    |
+| float     | 64-bit IEEE 754 floating point number [^1] |
+| string    | UTF-8 encoded string                       |
+| binary    | binary data (byte array)                   |
+| interval  | duration stored as 64-bit nanoseconds      |
+| timestamp | UNIX epoch stored as 64-bit nanoseconds    |
+| boolean   | `true` or `false`                          |
+| array     | semi-structured array                      |
+| object    | semi-structured key-value pairs            |
+| any       | value in any type                          |
+
+For more information about ScopeDB data types, see the following topics:
 
 * [Date and time data types](/reference/data-types/datetime)
-* [Variant data type](/reference/data-types/variant)
+* [Semi-structured data type](/reference/data-types/semi-structured)
 * [Data type conversion](/reference/data-types/conversion)
+
+[^1]: ScopeDB's `float` has a total order. This is in contradiction with the IEEE standard. See [comparison operators](/reference/commands/query-operators/comparison) for more details.

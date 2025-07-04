@@ -1,0 +1,143 @@
+---
+title: Semi-structured data type
+relatedContents:
+    - title: Semi-structured data functions
+      url: /reference/functions/semi-structured-data
+---
+
+The semi-structured data type can contain a value of any other data type.
+
+## Inserting semi-structured data
+
+To insert semi-structured data directly, use `SELECT ... INSERT INTO ...`. The following example shows how to insert JSON-formatted data into a semi-structured value:
+
+```scopeql
+CREATE TABLE semi_structured_insert (v any);
+SELECT parse_json('{"key1": "value1", "key2": "value2"}') INSERT INTO semi_structured_insert;
+FROM semi_structured_insert;
+```
+
+```
++-----------------------------------+
+| v                                 |
++-----------------------------------+
+| {"key1":'value1',"key2":'value2'} |
++-----------------------------------+
+```
+
+Alternatively, you can use the semi-structured literal syntax:
+
+```scopeql
+DELETE FROM semi_structured_insert;
+SELECT {"key3": 'value3', "key4": 'value4'} INSERT INTO semi_structured_insert;
+FROM semi_structured_insert;
+```
+
+```
++-----------------------------------+
+| v                                 |
++-----------------------------------+
+| {"key3":'value3',"key4":'value4'} |
++-----------------------------------+
+```
+
+<Callout type="note" title="Syntax of semi-structured literal">
+
+The syntax or semi-structured literal is similar to [RFC 8295 JSON format](https://datatracker.ietf.org/doc/html/rfc8259), with additions that values can be any ScopeDB data type:
+
+* Integers are 64-bit, not limited to RFC 7493 The I-JSON Message Format.
+* Timestamps, intervals, booleans, and binary are supported.
+
+</Callout>
+
+## Using semi-structured values
+
+To convert a value to or from the semi-structured data types (array, object, any), you can explicitly cast using the CAST function or the `::` operator (e.g. `<expr>::any`). For details, see [data type conversion](/reference/data-types/conversion).
+
+To understand the semi-structured data, consider the following example:
+
+```scopeql
+CREATE TABLE vartab (n int, v any);
+VALUES
+    (1, 'null'),
+    (2, null),
+    (3, 'true'),
+    (4, '-17'),
+    (5, '123.12'),
+    (6, '1.912e2'),
+    (7, '"Om ara pa ca na dhih"  '),
+    (8, '[-1, 12, 289, 2188, false]'),
+    (9, '{ "x" : "abc", "y" : false, "z": 10} ')
+SELECT $0 AS n, parse_json($1) AS v
+INSERT INTO vartab;
+```
+
+Query the data with their value type:
+
+```scopeql
+FROM vartab
+SELECT n, v, typeof(v)
+ORDER BY n;
+```
+
+```
++---+------------------------------+-----------+
+| n | v                            | typeof(v) |
++---+------------------------------+-----------+
+| 1 | NULL                         | null      |
+| 2 | NULL                         | null      |
+| 3 | true                         | boolean   |
+| 4 | -17                          | int       |
+| 5 | 123.12                       | float     |
+| 6 | 191.2                        | float     |
+| 7 | "Om ara pa ca na dhih"       | string    |
+| 8 | [-1,12,289,2188,false]       | array     |
+| 9 | {"x":"abc","y":false,"z":10} | object    |
++---+------------------------------+-----------+
+```
+
+You can extract a field from an object, or an element from an array, using the `[]` operator. For example:
+
+```scopeql
+FROM vartab
+SELECT n, v['x'] AS x, v[1] AS a1,
+WHERE x IS NOT NULL OR a1 IS NOT NULL
+ORDER BY n;
+```
+
+```
++---+-------+------+
+| n | x     | a1   |
++---+-------+------+
+| 8 | []    | 12   |
+| 9 | "abc" | NULL |
++---+-------+------+
+```
+
+Semi-structured data has a total ordering, which means you can use the `ORDER BY` clause to sort the data.
+
+```scopeql
+FROM vartab ORDER BY v DESC NULLS FIRST;
+```
+
+```
++---+------------------------------+
+| n | v                            |
++---+------------------------------+
+| 1 | NULL                         |
+| 2 | NULL                         |
+| 9 | {"x":"abc","y":false,"z":10} |
+| 8 | [-1,12,289,2188,false]       |
+| 3 | true                         |
+| 7 | "Om ara pa ca na dhih"       |
+| 6 | 191.2                        |
+| 5 | 123.12                       |
+| 4 | -17                          |
++---+------------------------------+
+```
+
+The order of data types used in ANY type data comparison is as follows:
+
+```
+Object > Array > Interval > Timestamp > Boolean > String > Binary > Float > Unsigned Int > Int
+```

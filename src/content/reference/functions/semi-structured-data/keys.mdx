@@ -1,5 +1,5 @@
 ---
-title: object_keys
+title: keys
 ---
 
 Returns an array containing the list of keys in the top-most level of the input object.
@@ -7,14 +7,14 @@ Returns an array containing the list of keys in the top-most level of the input 
 ## Syntax
 
 ```scopeql
-object_keys( <object> )
+keys( <object> )
 ```
 
 ## Arguments
 
 ### `<object>`
 
-The value for which you want the keys. The input value must be A variant that contains a value of type OBJECT.
+The value for which you want the keys. The input value must be an object.
 
 ## Returns
 
@@ -22,10 +22,10 @@ The function returns an ARRAY containing the keys.
 
 ## Examples
 
-Retrieve the keys from a variant:
+Retrieve the keys from an object:
 
 ```scopeql
-SELECT object_keys({"a": 1, "b": 2, "c": 3}) as keys;
+SELECT keys({"a": 1, "b": 2, "c": 3}) as keys;
 ```
 
 ```
@@ -39,13 +39,13 @@ SELECT object_keys({"a": 1, "b": 2, "c": 3}) as keys;
 Only the top-most level keys are returned:
 
 ```scopeql
-SELECT object_keys (parse_json ('{"level_1_A": {"level_2": "two"},"level_1_B": "one"}')) AS keys;
+SELECT keys(parse_json ('{"level_1_A": {"level_2": "two"},"level_1_B": "one"}')::object) AS keys;
 ```
 
 ```
 +---------------------------+
 | keys                      |
 +---------------------------+
-| ['level_1_A','level_1_B'] |
+| ["level_1_A","level_1_B"] |
 +---------------------------+
 ```

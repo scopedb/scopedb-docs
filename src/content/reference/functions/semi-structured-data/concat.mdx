@@ -1,5 +1,5 @@
 ---
-title: array_concat, ||
+title: "|| (concat)"
 ---
 
 Returns a concatenation of two arrays.
@@ -9,7 +9,7 @@ The `||` operator provides alternative syntax for ARRAY_CONCAT and can concatena
 ## Syntax
 
 ```scopeql
-array_concat( <array1> , <array2> )
+<array1> || <array2>
 ```
 
 ## Arguments
@@ -31,21 +31,6 @@ If any input value is NULL, returns NULL.
 ## Examples
 
 This example shows how to use `array_concat`:
-
-```scopeql
-VALUES ([1, 2], [3, 4])
-SELECT array_concat([1, 2], [3, 4]);
-```
-
-```
-+------------------------------+
-| array_concat([1, 2], [3, 4]) |
-+------------------------------+
-| [1,2,3,4]                    |
-+------------------------------+
-```
-
-Use the `||` concatenation operator instead of the function:
 
 ```scopeql
 SELECT [1, 2, 3] || [] || ["other", "solutions"];

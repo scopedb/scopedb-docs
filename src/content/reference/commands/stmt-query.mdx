@@ -1,15 +1,16 @@
 ---
-sidebar_label: Query syntax
 title: Query syntax
 ---
 
-ScopeDB supports querying using a pipelined relational query language in the following basic syntax:
+ScopeDB supports querying using a pipelined relational query language (ScopeQL) in the following basic syntax:
 
 ```
-[ FROM ... [ SAMPLE ... ] | VALUES ... ]
-SELECT ...
+[ FROM ... [ SAMPLE ... PERCENT ] | VALUES ... ]
+[ SELECT ... ]
 [ WHERE ... ]
-[ [ GOURP BY ... ] AGGREGATE ... ]
+[ DISTINCT ON ... BY ... ]
+[ [ GROUP BY ... ] [ WITHIN GROUP ORDER BY ... ] WINDOW ... ]
+[ [ GROUP BY ... ] [ WITHIN GROUP ORDER BY ... ] AGGREGATE ... ]
 [ ORDER BY ... ]
 [ LIMIT ... ]
 ```
@@ -159,7 +160,7 @@ FROM public.ftable1 AS t1 SELECT t1.wholesale_cost;
 This example queries a sample of 10% of the data in the table:
 
 ```scopeql
-FROM sales SAMPLE 10 PERCENT;
+FROM ftable1 SAMPLE 10 PERCENT;
 ```
 
 ## VALUES

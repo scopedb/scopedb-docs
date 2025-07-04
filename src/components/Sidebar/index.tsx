@@ -87,6 +87,7 @@ export default function Sidebar({ prefix, className }: { prefix: string, classNa
         theme={{
             components: {
                 Menu: {
+                    subMenuItemBg: 'transparent',
                     activeBarBorderWidth: 0,
                 },
             },

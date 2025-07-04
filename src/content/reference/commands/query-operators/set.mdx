@@ -1,5 +1,4 @@
 ---
-sidebar_label: Set operators
 title: Set operators
 ---
 
@@ -37,7 +36,7 @@ FROM t1 UNION ALL FROM t2;
 Output:
 
 ```
-relation type mismatched on union all: expected [String], found [Int]
+union all type mismatch: cannot unify string and int at column #0
 ```
 
 Now use explicit casting to convert the inputs to a compatible type:

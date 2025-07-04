@@ -1,0 +1,55 @@
+---
+title: to_json
+---
+
+Converts a semi-structured value to a string containing the JSON representation of the value.
+
+## Syntax
+
+```scopeql
+to_json( <expr> )
+```
+
+## Arguments
+
+### `<expr>`
+
+An expression of semi-structured type (ARRAY, OBJECT, ANY).
+
+## Returns
+
+Returns a value of type STRING.
+
+If the input is NULL, the function returns NULL.
+
+## Examples
+
+Handling NULL values with TO_JSON:
+
+```scopeql
+SELECT to_json(NULL), to_json(parse_json('null'));
+```
+
+```
++---------------+-----------------------------+
+| to_json(NULL) | to_json(parse_json('null')) |
++---------------+-----------------------------+
+| null          | null                        |
++---------------+-----------------------------+
+```
+
+Comparing parse_json and TO_JSON:
+
+```scopeql
+SELECT to_json(parse_json('{"b":1,"a":2}')) as value,
+       to_json(parse_json('{"b":1,"a":2}')) = '{"b":1,"a":2}' as misordered,
+       to_json(parse_json('{"b":1,"a":2}')) = '{"a":2,"b":1}' as ordered;
+```
+
+```
++---------------+------------+---------+
+| value         | misordered | ordered |
++---------------+------------+---------+
+| {"a":2,"b":1} | false      | true    |
++---------------+------------+---------+
+```

@@ -17,7 +17,7 @@ export default function Header() {
         <div className="flex pb-[14px] px-[14px] items-center justify-between border-b border-[rgba(0,0,0,0.05)]">
           <div className="title-wrapper flex items-center gap-[24px] px-[12px] md:px-[24px]" >
             <Link href="/" className="flex items-center gap-[12px]">
-              <Image src="/logo-banner.svg" alt="ScopeDB Logo" className="h-[36px] w-[128px]" />
+              <Image src="/logo-banner.svg" alt="ScopeDB Logo" height={36} width={128} />
               <span className="ml-[14px] text-[12px] font-extrabold tracking-[.72px] text-primary">
                 DOCUMENTATION
               </span>

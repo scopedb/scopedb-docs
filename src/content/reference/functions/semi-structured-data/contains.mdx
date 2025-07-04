@@ -1,0 +1,50 @@
+---
+title: contains
+---
+
+Returns TRUE if the specified value is found in the specified array.
+
+## Syntax
+
+```scopeql
+contains( <array> , <value_expr> )
+```
+
+## Arguments
+
+### `<array>`
+
+The array to search.
+
+### `<value_expr>`
+
+Value to find in `<array>`. The value can be any type.
+
+## Returns
+
+This function returns a value of boolean type or NULL:
+
+* The function returns TRUE if `<value_expr>` is present in `<array>`.
+* The function returns FALSE if `<value_expr>` is not present in `<array>`.
+* The function returns NULL if either `<value_expr>` or `<array>` is NULL.
+
+## Examples
+
+The following queries use the CONTAINS function in a SELECT list:
+
+```scopeql
+SELECT
+    contains(['hello', 'hi'], 'hello'::any) AS r1,
+    contains(['hola', 'bonjour'], 'hello'::any) AS r2,
+    contains(['hola', 'bonjour'], NULL) AS r3,
+    contains(['hola', NULL], NULL) AS r4,
+    contains(NULL, 'hello'::any) AS r5;
+```
+
+```
++------+-------+-------+------+------+
+| r1   | r2    | r3    | r4   | r5   |
++------+-------+-------+------+------+
+| true | false | false | true | NULL |
++------+-------+-------+------+------+
+```

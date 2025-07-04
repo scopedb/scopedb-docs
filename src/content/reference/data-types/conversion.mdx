@@ -42,7 +42,6 @@ Coercion occurs when a function (or operator) requires a data type that is diffe
 Currently, the following implicit casts are supported:
 
 * Cast NULL to any data type.
-* Cast between int and uint if the value is within the range of both types.
 
 ## Casting and precedence
 
@@ -98,5 +97,5 @@ Currently, the following explicit casts are supported:
 * Between int and timestamp (timestamp internally stores UNIX epoch in nanoseconds in 64-bit integer).
 * Between int and interval (interval internally stores nanoseconds in 64-bit integer).
 * Between string and any numeric types, boolean, timestamp, or interval.
-* Between variant and any data type.
+* Between value in ANY type and any data type. If the value of ANY type is not compatible with the target data type, it will be converted to NULL.
 * From NULL to any data type.

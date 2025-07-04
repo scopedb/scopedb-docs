@@ -1,5 +1,4 @@
 ---
-sidebar_label: General DML
 title: Data Manipulation Language (DML) statements
 ---
 
@@ -26,9 +25,20 @@ VALUES (1), (2), (3) INSERT INTO t1;
 FROM t1 WHERE a > 1 SELECT a + 1 AS b INSERT INTO t2;
 ```
 
+Insertions can fill missing columns. Suppose table `a` has schema `(id int, msg string, new_id int)`.
+
+* `VALUES (1, 'hello', 101) INSERT INTO a` succeeds.
+* `VALUES (1, 'hello') INSERT INTO a` succeeds, with `new_id` filled with `NULL`.
+* `VALUES (1, 'hello', 101) INSERT INTO a (id, msg, new_id)` succeeds.
+* `VALUES (1, 'hello', 101) INSERT INTO a (new_id, msg, id)` succeeds.
+* `VALUES (1, 'hello', 101) INSERT INTO a (id, msg)` fails because insert has more expressions than target columns.
+* `VALUES (1, 'hello') INSERT INTO a (id, msg, new_id)` fails because insert has more target columns than expressions.
+* `VALUES (1, 'hello', 101, 102) INSERT INTO a` fails because insert has more expressions than target columns.
+* Duplicate columns or columns not in the table schema within the specified column list will cause failure.
+
 ## DELETE
 
-Remove rows from a table. You can use a WHERE clause to specify which rows should be removed.
+Remove rows from a table. You can use a `WHERE` clause to specify which rows should be removed.
 
 ### Examples
 

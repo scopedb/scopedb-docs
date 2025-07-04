@@ -1,5 +1,4 @@
 ---
-sidebar_label: Arithmetic
 title: Arithmetic operators
 ---
 
@@ -9,16 +8,17 @@ The input expressions must be numeric (integer or floating point), except in the
 
 * The binary operator `+` and `-` can be applied for datetime calculations:
     * `<timestamp>+<interval>` returns a `<timestamp>`
+    * `<interval>+<interval>` returns a `<interval>`
     * `<timestamp>-<interval>` returns a `<timestamp>`
     * `<timestamp>-<timestamp>` returns a `<interval>`
 
 ## List of arithmetic operators
 
-| Operator    | Syntax  | Description                                                                            |
-|-------------|---------|----------------------------------------------------------------------------------------|
-| `-` (unary) | `-a`    | Negates the input numeric expression.                                                  |
-| `+`         | `a + b` | Adds two numeric expressions (`a` and `b`).                                            |
-| `-`         | `a - b` | Subtracts one numeric expression (`b`) from another (`a`).                             |
-| `*`         | `a * b` | Multiplies two numeric expressions (`a` and `b`).                                      |
-| `/`         | `a / b` | Divides one numeric expression (`a`) by another (`b`). Divide by `0` returns infinity. |
-| `%`         | `a % b` | Computes the modulo of numeric expression `a` by `b`.                                  |
+| Operator | Arity  | Syntax  | Description                                                                            |
+| -------- | ------ | ------- | -------------------------------------------------------------------------------------- |
+| `-`      | unary  | `-a`    | Negates the input numeric expression.                                                  |
+| `+`      | binary | `a + b` | Adds two numeric expressions (`a` and `b`).                                            |
+| `-`      | binary | `a - b` | Subtracts one numeric expression (`b`) from another (`a`).                             |
+| `*`      | binary | `a * b` | Multiplies two numeric expressions (`a` and `b`).                                      |
+| `/`      | binary | `a / b` | Divides one numeric expression (`a`) by another (`b`). Divide by `0` returns infinity. |
+| `%`      | binary | `a % b` | Computes the modulo of numeric expression `a` by `b`.                                  |

@@ -18,19 +18,19 @@ function FeaturedItems() {
     {
       category: "Reference",
       title: "Data Types",
-      description: "Learn about ScopeQL data types",
+      description: "Learn about ScopeDB data types",
       link: "/reference/data-types",
     },
     {
       category: "Reference",
       title: "Functions",
-      description: "Learn about ScopeQL functions",
+      description: "Learn about ScopeDB functions",
       link: "/reference/functions",
     },
     {
       category: "Reference",
       title: "Query Syntax",
-      description: "Learn about ScopeQL query syntax",
+      description: "Learn about ScopeDB query syntax",
       link: "/reference/commands/stmt-query",
     },
   ];

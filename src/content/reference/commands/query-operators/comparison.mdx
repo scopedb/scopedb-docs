@@ -1,9 +1,26 @@
 ---
-sidebar_label: Comparison
 title: Comparison operators
 ---
 
 Comparison operators are used to test the equality of two input expressions. They are typically used in the `WHERE` clause of a query.
+
+Any value can be compared with another value of the same type. The comparison logics are as follows:
+
+* For boolean values, `true` is greater than `false`.
+* For integer and unsigned integer values, the comparison is natural.
+* For floating point values, the comparison is natural, with extra caveats:
+  * `NaN` is sorted as greater than all other values and equal to itself, in contradiction with the IEEE standard.
+  * `+0` is equal to `-0`.
+* For string values, the comparison is lexicographical.
+* For binary values, the comparison is lexicographical on the byte representation.
+* For timestamp value, the comparison is natural.
+* For interval values, the comparison is natural.
+* For array values, the comparison is lexicographical on an element-wise basis.
+* For object values, the comparison is lexicographical on the key-value pairs, sorted by keys.
+* For any values, if the types of the two values are same, the comparison follows the rules above. If the types are different, the comparison follows the following type order:
+    * Object > Array > Interval > Timestamp > Boolean > String > Binary > Float > Unsigned Int > Int
+    * For example, an integer is always less than a string, and a string is always less than an object.
+* Any comparison with `NULL` returns `NULL`.
 
 ## List of comparison operators
 

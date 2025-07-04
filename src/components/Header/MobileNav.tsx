@@ -165,7 +165,7 @@ export default function MobileNav() {
                     {/* Header */}
                     <div className="flex items-center justify-between px-[12px] py-[14px] border-b border-[rgba(0,0,0,0.06)] bg-[#fff]">
                         <div id="mobile-nav-logo" className="flex items-center gap-3">
-                            <Image src="/logo-banner.svg" alt="ScopeDB Logo" className="h-[36px] w-[128px]" />
+                            <Image src="/logo-banner.svg" alt="ScopeDB Logo" height={36} width={128} />
                         </div>
                         <button
                             onClick={() => setIsOpen(false)}

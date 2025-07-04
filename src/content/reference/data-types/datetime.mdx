@@ -1,16 +1,15 @@
 ---
 title: Date and time data types
+relatedContents:
+    - title: Date and time functions
+      url: /reference/functions/date-and-time
 ---
 
-ScopeDB supports data types for managing timestamps.
+ScopeDB supports timestamp and interval for manipulating date and time.
 
-## Data types
+## Timestamp
 
-ScopeDB supports timestamp and interval for manipulating times.
-
-### timestamp
-
-timestamp internally stores UNIX epoch in nanoseconds in 64-bit integer. Thus, the minimum and maximum value of timestamp are:
+Timestamp internally stores UNIX epoch in nanoseconds in 64-bit integer. Thus, the minimum and maximum value of timestamp are:
 
 ```scopeql
 SELECT
@@ -44,9 +43,9 @@ SELECT
 +-------------------------+-------------------------+----------------------+----------------------+
 ```
 
-### interval
+## Interval
 
-interval internally stores nanoseconds in 64-bit integer. Thus, the minimum and maximum value of interval are:
+Interval internally stores nanoseconds in 64-bit integer. Thus, the minimum and maximum value of interval are:
 
 ```scopeql
 SELECT
@@ -108,7 +107,3 @@ SELECT
 Interval is always accurate in nanoseconds. Thus, you cannot specify a string containing parts with days or greater (weeks, months, years, etc.), even though ISO 8601 allows them.
 
 </Callout>
-
-## Related content
-
-See also [date and time functions](/reference/functions/date-and-time).
