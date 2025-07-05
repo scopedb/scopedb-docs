@@ -4,15 +4,15 @@ export interface SidebarItem {
     items?: SidebarItem[];
 }
 
-const guidesSidebar: SidebarItem[] = [
+export const guidesSidebar: SidebarItem[] = [
     { label: "Overview", link: "/guides" },
 ];
 
-const developerSidebar: SidebarItem[] = [
+export const developerSidebar: SidebarItem[] = [
     { label: "Overview", link: "/developer" },
 ];
 
-const referenceSidebar: SidebarItem[] = [
+export const referenceSidebar: SidebarItem[] = [
     { label: "Overview", link: "/reference" },
     {
         label: "Data types", items: [
@@ -126,22 +126,30 @@ const referenceSidebar: SidebarItem[] = [
     },
 ];
 
-const sidebars = {
-    "guides": guidesSidebar,
-    "developer": developerSidebar,
-    "reference": referenceSidebar,
+export const categories = {
+    guides: {
+        label: "Guides",
+        link: "/guides",
+        sidebar: guidesSidebar,
+    },
+    developer: {
+        label: "Developer",
+        link: "/developer",
+        sidebar: developerSidebar,
+    },
+    reference: {
+        label: "Reference",
+        link: "/reference",
+        sidebar: referenceSidebar,
+    },
 }
 
 export function getSidebar(path: string): SidebarItem[] | undefined {
-    if (path.startsWith("/guides")) {
-        return sidebars["guides"]
-    } else if (path.startsWith("/developer")) {
-        return sidebars["developer"]
-    } else if (path.startsWith("/reference")) {
-        return sidebars["reference"]
-    } else {
-        return undefined
+    for (const category of Object.values(categories)) {
+        if (path.startsWith(category.link)) {
+            return category.sidebar
+        }
     }
-}
 
-export default sidebars
+    return undefined
+}

@@ -33,7 +33,7 @@ export default function RootLayout({
           <header>
             <Header />
           </header>
-          <main className="pt-[108px] md:pt-[120px]">
+          <main className="pt-[108px] md:pt-[120px] max-w-[1440px] mx-auto">
             {children}
           </main>
         </AntdRegistry>

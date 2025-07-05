@@ -1,35 +1,35 @@
 "use client"
 
-import { usePathname } from "next/navigation";
-import { Category } from ".";
+import { usePathname } from "next/navigation"
 import clsx from "clsx";
+import { categories } from "@/sidebars";
 
 export default function Categories() {
     const pathname = usePathname();
 
-    const categories = []
-    for (const c of Object.values(Category)) {
-        categories.push({
-            label: c.charAt(0).toUpperCase() + c.slice(1),
-            link: `/${c}`,
-            isCurrent: pathname?.startsWith(`/${c}`),
+    const cs = []
+    for (const c of Object.values(categories)) {
+        cs.push({
+            label: c.label,
+            link: c.link,
+            isCurrent: pathname?.startsWith(c.link),
         });
     }
 
     return (<ul className="flex gap-[32px] text-[14px] leading-[30px] pt-[12px] text-[var(--text-secondary)] text-center">
-        {categories.map((c) => (
+        {cs.map((c) => (
             <li key={c.label}>
                 <a
                     href={c.link}
                     className={clsx([
-                        "inline-block transition-all duration-300 hover:text-[var(--text-primary)]",
-                        "border-b-2 pb-[12px] transition-colors",
+                        "inline-block hover:text-[var(--text-primary)]",
+                        "border-b-2 pb-[12px]",
                         c.isCurrent
                             ? "font-medium text-[var(--text-primary)] border-current"
                             : "border-transparent hover:border-[rgba(0,0,0,0.1)]",
                     ])}
                 >
-                    <div>{c.label}</div>
+                    {c.label}
                 </a>
             </li>
         ))}

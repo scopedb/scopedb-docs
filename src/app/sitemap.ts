@@ -1,4 +1,4 @@
-import sidebars, { SidebarItem } from '@/sidebars'
+import { categories, SidebarItem } from '@/sidebars'
 import type { MetadataRoute } from 'next'
 
 interface SitemapItem {
@@ -10,8 +10,8 @@ interface SitemapItem {
 
 export default function sitemap(): MetadataRoute.Sitemap {
     const items: SitemapItem[] = []
-    for (const sidebar of Object.values(sidebars)) {
-        collectSidebarItems(sidebar, items)
+    for (const category of Object.values(categories)) {
+        collectSidebarItems(category.sidebar, items)
     }
 
     return [

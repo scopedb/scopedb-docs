@@ -108,7 +108,7 @@ function BasicItems() {
 export default function Home() {
   return (
     <>
-      <div className="max-w-[1440px] mx-auto py-[16px] px-[12px] md:px-[24px] mt-[60px] min-h-[calc(100vh-220px)]">
+      <div className="py-[16px] px-[12px] md:px-[24px] mt-[60px] min-h-[calc(100vh-220px)]">
         <div className="text-[var(--text-primary)] leading-tight text-[50px] font-medium">
           ScopeDB<br />Documentation
         </div>

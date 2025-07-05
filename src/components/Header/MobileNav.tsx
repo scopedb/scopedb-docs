@@ -1,23 +1,22 @@
 "use client"
 
-import { getSidebar, SidebarItem } from "@/sidebars";
-import clsx from "clsx";
-import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
-import { LuMenu, LuX } from "react-icons/lu";
-import { Category } from ".";
-import Sidebar from "@/components/Sidebar";
-import Image from "next/image";
+import { categories, getSidebar, SidebarItem } from "@/sidebars"
+import clsx from "clsx"
+import { usePathname } from "next/navigation"
+import { useState, useEffect } from "react"
+import { LuMenu, LuX } from "react-icons/lu"
+import Sidebar from "@/components/Sidebar"
+import Image from "next/image"
 
 export default function MobileNav() {
     const currentPath = usePathname()
 
-    const categories: { label: string; link: string; isCurrent: boolean }[] = []
-    for (const c of Object.values(Category)) {
-        categories.push({
-            label: c.charAt(0).toUpperCase() + c.slice(1),
-            link: `/${c}`,
-            isCurrent: currentPath?.startsWith(`/${c}`),
+    const cs: { label: string; link: string; isCurrent: boolean }[] = []
+    for (const c of Object.values(categories)) {
+        cs.push({
+            label: c.label,
+            link: c.link,
+            isCurrent: currentPath?.startsWith(c.link),
         });
     }
 
@@ -29,7 +28,7 @@ export default function MobileNav() {
         const breadcrumbs: string[] = [];
 
         // Add current category
-        const currentCategory = categories.find((c) => c.isCurrent);
+        const currentCategory = cs.find((c) => c.isCurrent);
         if (currentCategory) {
             breadcrumbs.push(currentCategory.label);
         }
@@ -184,16 +183,16 @@ export default function MobileNav() {
                                 Categories
                             </h3>
                             <div className="space-y-1">
-                                {categories.map((category) => (
-                                    <a key={category.link} href={category.link} onClick={() => setIsOpen(false)} className={
+                                {cs.map((c) => (
+                                    <a key={c.link} href={c.link} onClick={() => setIsOpen(false)} className={
                                         clsx(
                                             "flex items-center py-2.5 px-3 text-sm rounded-lg transition-colors duration-200",
-                                            category.isCurrent
+                                            c.isCurrent
                                                 ? "bg-[rgba(0,0,0,0.04)] text-[var(--text-primary)] font-medium"
                                                 : "text-[var(--text-secondary)] hover:bg-[rgba(0,0,0,0.02)] hover:text-[var(--text-primary)]"
                                         )}
                                     >
-                                        <span className="flex-1">{category.label}</span>
+                                        <span className="flex-1">{c.label}</span>
                                     </a>
                                 ))}
                             </div>
