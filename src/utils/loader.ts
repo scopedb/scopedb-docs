@@ -10,18 +10,18 @@ async function doLoadContent(category: string, slug: string | string[] | null | 
 
     if (Array.isArray(slug)) {
         const base = slug.join('/');
-        candidates.push(`${base}.md`);
         candidates.push(`${base}.mdx`);
-        candidates.push(`${base}/index.md`);
         candidates.push(`${base}/index.mdx`);
+        candidates.push(`${base}.md`);
+        candidates.push(`${base}/index.md`);
     } else if (slug) {
-        candidates.push(`${slug}.md`);
         candidates.push(`${slug}.mdx`);
-        candidates.push(`${slug}/index.md`);
         candidates.push(`${slug}/index.mdx`);
+        candidates.push(`${slug}.md`);
+        candidates.push(`${slug}/index.md`);
     } else {
-        candidates.push('index.md');
         candidates.push('index.mdx');
+        candidates.push('index.md');
     }
 
     for (const candidate of candidates) {

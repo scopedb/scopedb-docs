@@ -9,9 +9,7 @@ export async function generateMetadata({ params }: {
     return await loadContentMetadata("developer", slug, { title: "Developer" })
 }
 
-export default async function Developer({
-    params,
-}: {
+export default async function Developer({ params }: {
     params: Promise<{ slug: string }>
 }) {
     const { slug } = await params

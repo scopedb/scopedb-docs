@@ -9,9 +9,7 @@ export async function generateMetadata({ params }: {
     return await loadContentMetadata("guides", slug, { title: "Guides" })
 }
 
-export default async function Guides({
-    params,
-}: {
+export default async function Guides({ params }: {
     params: Promise<{ slug: string }>
 }) {
     const { slug } = await params
