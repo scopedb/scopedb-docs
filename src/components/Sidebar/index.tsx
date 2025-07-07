@@ -123,7 +123,7 @@ export default function Sidebar({ prefix, className }: { prefix: string, classNa
             defaultSelectedKeys={selectedKeys}
             openKeys={stateOpenKeys}
             onOpenChange={onOpenChange}
-            className={`sidebar-container ${className || ''}`}
+            className={className}
         />
     </ConfigProvider>
 }
