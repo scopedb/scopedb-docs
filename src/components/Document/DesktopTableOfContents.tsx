@@ -2,7 +2,7 @@ import { RelatedContent } from "@/types/frontmatter";
 import { MarkdownHeading } from "@astrojs/markdown-remark";
 import clsx from "clsx";
 import { LuAlignLeft, LuLink } from "react-icons/lu";
-import { Anchor } from "antd";
+import { Anchor, ConfigProvider } from "antd";
 
 export default function DesktopTableOfContents({
     headings,
@@ -27,7 +27,28 @@ export default function DesktopTableOfContents({
                             On this page
                         </span>
                     </div>
-                    <Anchor items={items} offsetTop={128} />
+                    <ConfigProvider
+                        theme={{
+                            components: {
+                                Anchor: {
+                                    linkPaddingBlock: 4,
+                                    linkPaddingInlineStart: 12,
+                                    colorText: 'var(--text-secondary)',
+                                    colorPrimary: 'var(--text-primary)',
+                                    fontSize: 14,
+                                    fontSizeSM: 13,
+                                    lineHeight: 1.4,
+                                    colorBorder: 'rgba(0, 0, 0, 0.08)',
+                                    lineWidthBold: 2,
+                                    borderRadius: 4,
+                                    marginXXS: 2,
+                                    paddingXXS: 4,
+                                },
+                            },
+                        }}
+                    >
+                        <Anchor items={items} offsetTop={128} />
+                    </ConfigProvider>
                 </div>
             )}
 
@@ -39,14 +60,14 @@ export default function DesktopTableOfContents({
                             Related contents
                         </span>
                     </div>
-                    <ul className="list-none pl-[16px]">
+                    <ul className="list-none">
                         {relatedContents.map((content) => (
                             <li key={content.url} className="my-[2px]">
                                 <a
                                     href={content.url}
                                     className={clsx(
-                                        "text-[14px] text-[var(--text-primary)]",
-                                        "hover:text-[var(--text-brand)]",
+                                        "text-[14px] text-[var(--text-secondary)]",
+                                        "hover:text-[var(--text-primary)]",
                                     )}
                                 >
                                     {content.title}
