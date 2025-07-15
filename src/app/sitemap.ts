@@ -29,7 +29,7 @@ function collectSidebarItems(items: SidebarItem[], sitemapItems: SitemapItem[]) 
     for (const item of items) {
         if (item.link) {
             sitemapItems.push({
-                url: `https://docs.scopedb.io${item.link}`,
+                url: new URL(item.link, 'https://docs.scopedb.io').toString(),
                 lastModified: new Date(),
                 changeFrequency: 'weekly',
                 priority: 0.8,
