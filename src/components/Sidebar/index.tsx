@@ -90,27 +90,20 @@ export default function Sidebar({ prefix, className }: { prefix: string, classNa
                     itemBg: 'transparent',
                     subMenuItemBg: 'transparent',
                     activeBarBorderWidth: 0,
-                    
                     itemColor: 'var(--text-secondary)',
                     itemHoverColor: 'var(--text-primary)',
                     itemSelectedColor: 'var(--text-primary)',
                     itemSelectedBg: 'rgba(0,0,0,0.06)',
                     itemHoverBg: 'rgba(0,0,0,0.04)',
                     itemActiveBg: 'rgba(0,0,0,0.04)',
-                    subMenuItemSelectedColor: 'var(--text-primary)', 
-               
+                    subMenuItemSelectedColor: 'var(--text-primary)',
                     itemPaddingInline: 12,
                     itemMarginInline: 12,
                     itemMarginBlock: 0,
-                    
-                    
                     fontSize: 14,
                     fontWeightStrong: 500,
-                    
                     itemBorderRadius: 10,
-                    
                     subMenuItemBorderRadius: 10,
-                    
                     motionDurationSlow: '0.2s',
                 },
             },
