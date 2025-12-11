@@ -88,6 +88,24 @@ Removes a table from the system.
 DROP TABLE [ IF EXISTS ] <name>
 ```
 
+## ALTER TABLE
+
+Modifies an existing table in the system.
+
+### Syntax
+
+```scopeql
+ALTER TABLE <table_name>
+  RENAME TO <new_table_name>
+
+ALTER TABLE <table_name>
+  ADD [ COLUMN ] <col_name> <col_type>
+    [ COMMENT = '<string_literal>' ]
+
+ALTER TABLE <table_name>
+  DROP [ COLUMN ] <col_name>
+```
+
 ## CREATE VIEW
 
 Creates a new view in the system.
@@ -321,81 +339,4 @@ The name of the table containing the index.
 ```scopeql
 DROP INDEX idx_log_id ON logs;
 DROP INDEX IF EXISTS idx_log_message ON logs;
-```
-
-## CREATE NODEGROUP
-
-Creates a new nodegroup.
-
-### Syntax
-
-```scopeql
-CREATE NODEGROUP <name>
-```
-
-## DROP NODEGROUP
-
-Removes a nodegroup.
-
-### Syntax
-
-```scopeql
-DROP NODEGROUP <name>
-```
-
-## CREATE JOB
-
-Creates a new job.
-
-### Syntax
-
-```scopeql
-CREATE [ OR REPLACE ] JOB <name>
-SCHEDULE = '<cronexpr>'
-NODEGROUP = '<comma-separated-nodegroups>'
-AS
-  <statement>
-```
-
-### Examples
-
-```scopeql
-CREATE JOB archive_table_t
-SCHEDULE = '4 2 * * * Asia/Shanghai'
-NODEGROUP = 'background'
-AS
-  DELETE FROM t
-  WHERE created_at < NOW() - INTERVAL 'PT720h';
-```
-
-## DROP JOB
-
-Removes a job.
-
-### Syntax
-
-```scopeql
-DROP JOB <name>
-```
-
-## SHOW JOBS
-
-Lists the jobs for which you have access privileges.
-
-### Syntax
-
-```scopeql
-SHOW JOBS
-```
-
-## OPTIMIZE TABLE
-
-Optimizing a table.
-
-Execute compaction or purge historical data to save storage space and enhance query performance.
-
-### Syntax
-
-```scopeql
-OPTIMIZE TABLE <name>
 ```
