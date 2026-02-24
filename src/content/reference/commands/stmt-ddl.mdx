@@ -281,11 +281,11 @@ CREATE TABLE logs (
     var object,
 );
 
--- EQUALITY index on a column
-CREATE EQUALITY INDEX ON logs (id);
+-- POINT index on a column
+CREATE POINT INDEX ON logs (id);
 
--- EQUALITY index on a timestamp expression
-CREATE EQUALITY INDEX ON logs (trunc(time, unit => 'hour'));
+-- POINT index on a timestamp expression
+CREATE POINT INDEX ON logs (trunc(time, unit => 'hour'));
 
 -- RANGE index on a computed expression
 CREATE RANGE INDEX ON logs (var['type']::string);
@@ -296,7 +296,7 @@ CREATE SEARCH INDEX ON logs (message);
 
 ### When to Use Each Index Type
 
-1. Use `EQUALITY` or `RANGE` indexes when:
+1. Use `POINT` or `RANGE` indexes when:
    - You frequently filter on specific columns or expressions.
    - You need to optimize queries that use range conditions or equality comparisons.
 

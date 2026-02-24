@@ -48,5 +48,5 @@
         "wrangler": "^4.24.3",
         "yaml": "^2.8.0"
     },
-    "packageManager": "pnpm@10.12.1"
+    "packageManager": "pnpm@10.30.2"
 }
