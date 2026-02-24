@@ -247,10 +247,9 @@ CREATE <index_type> INDEX [ IF NOT EXISTS ] [ <name> ] ON <table_name> (<index_e
 
 The type of index to create:
 
-* `EQUALITY`: An index that optimizes performance of equality comparisons on the indexed expressions
+* `POINT`: An index that optimizes performance of predicate forms based on `=`, `IS` and `contains(...)`
 * `RANGE`: An index that optimizes performance of range queries on the indexed expressions
 * `SEARCH`: An index that optimizes performance of text search operations using the `search` function
-* `OBJECT`: An index that optimizes performance of queries on object keys
 * `MATERIALIZED`: An index that stores the results of a query for faster access, useful for complex expressions or semi-structured data path access
 
 #### `<name>`
