@@ -4,6 +4,14 @@ title: INSERT
 
 Updates a table by inserting one or more rows into the table. The values inserted into each column in the table can be explicitly-specified or the results of a query.
 
+## Syntax
+
+```scopeql
+<query> INSERT INTO <table_name> [ ( <col_name> [, ...] ) ]
+```
+
+The input query provides the rows to insert. Use the optional column list to map query output columns to target table columns by name.
+
 ## Examples
 
 Inserts with constants:
