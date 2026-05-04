@@ -1,0 +1,27 @@
+---
+title: repeat
+---
+
+Repeats a string.
+
+## Syntax
+
+```scopeql
+repeat( <expr>, n => <count> )
+```
+
+## Arguments
+
+`<expr>` is a string expression.
+
+`n` is a non-negative integer repeat count.
+
+## Returns
+
+Returns a string.
+
+## Examples
+
+```scopeql
+SELECT repeat('ha', n => 3);
+```

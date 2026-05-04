@@ -1,0 +1,28 @@
+---
+title: DROP INDEX
+---
+
+Removes an index from a table.
+
+## Syntax
+
+```scopeql
+DROP INDEX [ IF EXISTS ] <name> ON <table_name>
+```
+
+## Parameters
+
+### `<name>`
+
+The name of the index to drop.
+
+### `<table_name>`
+
+The name of the table containing the index.
+
+## Examples
+
+```scopeql
+DROP INDEX idx_log_id ON logs;
+DROP INDEX IF EXISTS idx_log_message ON logs;
+```

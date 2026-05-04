@@ -1,0 +1,30 @@
+---
+title: lpad, rpad
+---
+
+Pads a string to a target character length.
+
+## Syntax
+
+```scopeql
+lpad( <expr>, width => <length> [, pad => <pad_string> ] )
+rpad( <expr>, width => <length> [, pad => <pad_string> ] )
+```
+
+## Arguments
+
+`<expr>` is a string expression.
+
+`width` is the target character length.
+
+`pad` is the string used for padding. If omitted, ScopeDB pads with spaces.
+
+## Returns
+
+Returns a string. If the input is longer than `width`, the result is truncated to `width` characters.
+
+## Examples
+
+```scopeql
+SELECT lpad('42', width => 5, pad => '0'), rpad('db', width => 5, pad => '.');
+```

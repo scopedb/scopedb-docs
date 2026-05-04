@@ -1,0 +1,25 @@
+---
+title: dedup
+---
+
+Removes duplicate values from an array.
+
+## Syntax
+
+```scopeql
+dedup( <array_expr> )
+```
+
+## Arguments
+
+`<array_expr>` must be an array.
+
+## Returns
+
+Returns an array. The first occurrence of each value is kept.
+
+## Examples
+
+```scopeql
+SELECT dedup([1, 2, 2, 3, 1]);
+```

@@ -1,0 +1,35 @@
+---
+title: INSERT
+---
+
+Updates a table by inserting one or more rows into the table. The values inserted into each column in the table can be explicitly-specified or the results of a query.
+
+## Examples
+
+Inserts with constants:
+
+```scopeql
+CREATE TABLE t (a int);
+VALUES (1), (2), (3) INSERT INTO t;
+```
+
+Inserts from the results of a query:
+
+```scopeql
+CREATE TABLE t1 (a int);
+CREATE TABLE t2 (a int);
+
+VALUES (1), (2), (3) INSERT INTO t1;
+FROM t1 WHERE a > 1 SELECT a + 1 AS b INSERT INTO t2;
+```
+
+Insertions can fill missing columns. Suppose table `a` has schema `(id int, msg string, new_id int)`.
+
+* `VALUES (1, 'hello', 101) INSERT INTO a` succeeds.
+* `VALUES (1, 'hello') INSERT INTO a` succeeds, with `new_id` filled with `NULL`.
+* `VALUES (1, 'hello', 101) INSERT INTO a (id, msg, new_id)` succeeds.
+* `VALUES (1, 'hello', 101) INSERT INTO a (new_id, msg, id)` succeeds.
+* `VALUES (1, 'hello', 101) INSERT INTO a (id, msg)` fails because insert has more expressions than target columns.
+* `VALUES (1, 'hello') INSERT INTO a (id, msg, new_id)` fails because insert has more target columns than expressions.
+* `VALUES (1, 'hello', 101, 102) INSERT INTO a` fails because insert has more expressions than target columns.
+* Duplicate columns or columns not in the table schema within the specified column list will cause failure.

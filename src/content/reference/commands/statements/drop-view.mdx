@@ -1,0 +1,27 @@
+---
+title: DROP VIEW
+---
+
+Removes a view from the system.
+
+## Syntax
+
+```scopeql
+DROP VIEW [ IF EXISTS ] <name>
+```
+
+## Parameters
+
+### `<name>`
+
+The name of the view to drop.
+
+## Examples
+
+```scopeql
+-- Drop a view
+DROP VIEW latest_user_status;
+
+-- Drop a view if it exists
+DROP VIEW IF EXISTS highest_user_scores;
+```

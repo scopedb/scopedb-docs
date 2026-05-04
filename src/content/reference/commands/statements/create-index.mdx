@@ -1,0 +1,92 @@
+---
+title: CREATE INDEX
+---
+
+Creates a new index on a table to improve query performance.
+
+## Syntax
+
+```scopeql
+CREATE <index_type> INDEX [ IF NOT EXISTS ] [ <name> ] ON <table_name> (<index_expression>)
+[ COMMENT = '<string_literal>' ]
+[ WITH ( '<property_name>' = <literal> [, ...] ) ]
+```
+
+## Parameters
+
+### `<index_type>`
+
+The type of index to create:
+
+* `POINT`: An index that optimizes performance of predicate forms based on `=`, `IS` and `contains(...)`
+* `RANGE`: An index that optimizes performance of range queries on the indexed expression
+* `PATTERN`: An index that optimizes supported string pattern predicates
+* `SEARCH`: An index that optimizes text search operations using the `search` function
+* `MATERIALIZED`: An index that stores the results of an expression for faster access, useful for complex expressions or semi-structured data path access
+
+### `<name>`
+
+The name of the index.
+
+This is optional; if not provided, a default name will be generated based on the table and expression.
+
+The index name must be unique within the table.
+
+### `<table_name>`
+
+The name of the table on which to create the index.
+
+### `<index_expression>`
+
+The expression to index.
+
+## Examples
+
+```scopeql
+-- Create a table with different column types
+CREATE TABLE logs (
+    id int,
+    time timestamp,
+    message string,
+    level string,
+    var object,
+);
+
+-- POINT index on a column
+CREATE POINT INDEX ON logs (id);
+
+-- POINT index on a timestamp expression
+CREATE POINT INDEX ON logs (trunc(time, unit => 'hour'));
+
+-- RANGE index on a computed expression
+CREATE RANGE INDEX ON logs (var['type']::string);
+
+-- SEARCH index for text searching in log messages
+CREATE SEARCH INDEX ON logs (message) WITH ('analyzer' = 'log');
+
+-- MATERIALIZED index on a semi-structured path
+CREATE MATERIALIZED INDEX ON logs (var['host']::string);
+```
+
+## When to Use Each Index Type
+
+1. Use `POINT` or `RANGE` indexes when:
+   - You frequently filter on specific columns or expressions.
+   - You need to optimize queries that use range conditions or equality comparisons.
+
+2. Use `PATTERN` indexes when:
+   - You need to optimize supported string predicates such as `contains`, `starts_with`, `ends_with`, or compatible `regexp_like` forms.
+
+3. Use `SEARCH` indexes when:
+   - You need to perform text search operations using the `search` function.
+   - You want to optimize queries that look for specific text patterns in string columns.
+
+4. Use `MATERIALIZED` indexes when:
+   - You have complex expressions or semi-structured data paths that are expensive to compute.
+   - You want to pre-compute and store results for faster access.
+
+## Notes
+
+- Indexes improve query performance but require additional storage space.
+- Creating too many indexes can slow down write operations, and may increase query latency.
+- The query optimizer automatically determines when to use available indexes.

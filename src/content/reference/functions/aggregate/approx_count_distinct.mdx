@@ -1,0 +1,22 @@
+---
+title: approx_count_distinct
+---
+
+Estimates the number of distinct non-NULL input values.
+
+## Syntax
+
+```scopeql
+approx_count_distinct( <expr> )
+```
+
+## Returns
+
+Returns `int`.
+
+## Examples
+
+```scopeql
+VALUES ('a'), ('b'), ('a'), ('c')
+AGGREGATE approx_count_distinct($0);
+```

@@ -1,0 +1,27 @@
+---
+title: search_ip
+---
+
+Searches a string for an IPv4 or IPv6 address contained in a CIDR range.
+
+## Syntax
+
+```scopeql
+search_ip( <expr>, cidr => <cidr> )
+```
+
+## Arguments
+
+`<expr>` is a string expression.
+
+`cidr` is an IPv4 or IPv6 CIDR range string.
+
+## Returns
+
+Returns `boolean`.
+
+## Examples
+
+```scopeql
+SELECT search_ip('client=10.0.1.25', cidr => '10.0.0.0/8');
+```

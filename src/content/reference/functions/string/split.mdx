@@ -28,18 +28,18 @@ The data type of the returned value is ARRAY.
 
 ## Examples
 
-Split the localhost IP address "127.0.0.1" into an array consisting of each of the four parts:
+Split a dotted version string into an array consisting of each part:
 
 ```scopeql
-SELECT split('127.0.0.1', '.');
+SELECT split('1.2.3.4', '.');
 ```
 
 ```
-+-------------------------+
-| split('127.0.0.1', '.') |
-+-------------------------+
-| ['127','0','0','1']     |
-+-------------------------+
++-----------------------+
+| split('1.2.3.4', '.') |
++-----------------------+
+| ['1','2','3','4']     |
++-----------------------+
 ```
 
 Split a string that contains vertical lines as separators (note that the output will contain empty strings):

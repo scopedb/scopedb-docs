@@ -1,0 +1,69 @@
+---
+title: CREATE TABLE
+---
+
+Creates a new table in the system.
+
+## Syntax
+
+```scopeql
+CREATE TABLE [ IF NOT EXISTS ] <table_name> (
+    [
+        <col_name> <col_type> [ COMMENT '<string_literal>' ]
+    ],*
+)
+[ PARTITION BY <expr> [, ...] ]
+[ CLUSTER BY <expr> [, ...] ]
+[ DISTINCT ON <expr> [, ...] [ BY <order_by_expr> [, ...] ] ]
+[ COMMENT = '<string_literal>' ]
+```
+
+## Parameters
+
+### `PARTITION BY <expr> [, ...]`
+
+Defines the table partition key. ScopeDB evaluates the listed expressions for each row and groups rows with the same partition key values together.
+
+Use `PARTITION BY` when most queries filter on a stable, low-cardinality grouping expression, such as a time bucket, region, customer segment, or another business dimension. A good partition key helps ScopeDB skip unrelated data during reads.
+
+Partition expressions must be deterministic and must not be constant. The expressions can reference table columns and can use functions, for example `trunc(ts, unit => 'hour')`.
+
+### `CLUSTER BY <expr> [, ...]`
+
+Defines the table cluster key. ScopeDB uses the cluster key to keep related rows close together within each partition.
+
+Use `CLUSTER BY` for fields that are commonly used in filters, range predicates, or ordered access within a partition. For example, an events table partitioned by hourly time buckets might cluster by `account_id`, `event_type`, or `ts` depending on the most common query pattern.
+
+Cluster expressions must be deterministic and must not be constant. `CLUSTER BY` can be used together with `PARTITION BY`; partitioning chooses the broad data grouping, while clustering improves locality inside each group.
+
+## Examples
+
+```scopeql
+CREATE TABLE t1 (x int);
+
+CREATE TABLE logs (
+    ts timestamp COMMENT 'event time',
+    level string,
+    message string,
+    attrs any
+)
+PARTITION BY trunc(ts, unit => 'hour')
+CLUSTER BY level
+COMMENT = 'application logs';
+
+CREATE TABLE events (
+    ts timestamp,
+    account_id string,
+    event_type string,
+    payload any
+)
+PARTITION BY trunc(ts, unit => 'day')
+CLUSTER BY account_id, event_type;
+
+CREATE TABLE latest_logs (
+    host string,
+    ts timestamp,
+    message string
+)
+DISTINCT ON host BY ts DESC NULLS LAST;
+```

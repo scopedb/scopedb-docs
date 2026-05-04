@@ -1,0 +1,29 @@
+---
+title: regexp_replace
+---
+
+Replaces text matched by a regular expression.
+
+## Syntax
+
+```scopeql
+regexp_replace( <expr>, regex => <regex>, replacement => <replacement> )
+```
+
+## Arguments
+
+`<expr>` is a string expression.
+
+`regex` is a regular expression.
+
+`replacement` is the replacement string.
+
+## Returns
+
+Returns a string.
+
+## Examples
+
+```scopeql
+SELECT regexp_replace('status=500', regex => '[0-9]+', replacement => '200');
+```

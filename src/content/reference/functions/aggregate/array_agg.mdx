@@ -1,0 +1,22 @@
+---
+title: array_agg
+---
+
+Collects input values into an array.
+
+## Syntax
+
+```scopeql
+array_agg( <expr> )
+```
+
+## Returns
+
+Returns `array`.
+
+## Examples
+
+```scopeql
+VALUES ('info'), ('warn'), ('error')
+AGGREGATE array_agg($0);
+```

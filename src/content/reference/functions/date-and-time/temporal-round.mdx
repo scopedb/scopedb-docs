@@ -1,0 +1,29 @@
+---
+title: ceil, floor
+---
+
+Rounds a timestamp up or down to a time boundary.
+
+## Syntax
+
+```scopeql
+floor( <timestamp_expr>, n => <step>, unit => <unit> )
+ceil( <timestamp_expr>, n => <step>, unit => <unit> )
+```
+
+## Arguments
+
+`n` is a positive integer step.
+
+`unit` must be one of `hour`, `minute`, `second`, `millisecond`, `microsecond`, or `nanosecond`.
+
+## Returns
+
+Returns `timestamp`.
+
+## Examples
+
+```scopeql
+SELECT floor(now(), n => 5, unit => 'minute');
+SELECT ceil(now(), n => 1, unit => 'hour');
+```

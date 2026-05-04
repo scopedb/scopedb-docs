@@ -1,0 +1,22 @@
+---
+title: row_number
+---
+
+Returns the zero-based row number within the current window.
+
+## Syntax
+
+```scopeql
+row_number()
+```
+
+## Returns
+
+Returns `int`.
+
+## Examples
+
+```scopeql
+VALUES ('a'), ('b'), ('c')
+WINDOW row_number();
+```
