@@ -1,0 +1,21 @@
+---
+title: UPDATE
+---
+
+Updates specified rows in the target table with new values.
+
+## Syntax
+
+```scopeql
+UPDATE <table_name>
+SET <col_name> = <expr> [, ...]
+[ WHERE <predicate> ]
+```
+
+Use `SET` to assign one or more target columns. Use `WHERE` to limit the rows that are updated.
+
+## Examples
+
+```scopeql
+UPDATE t SET a = 2 WHERE a = 1;
+```

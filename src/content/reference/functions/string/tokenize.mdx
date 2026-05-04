@@ -1,0 +1,27 @@
+---
+title: tokenize
+---
+
+Tokenizes text with a search analyzer.
+
+## Syntax
+
+```scopeql
+tokenize( <expr> [, analyzer => <analyzer> ] )
+```
+
+## Arguments
+
+`<expr>` is a string expression.
+
+`analyzer` is optional. Currently supported value is `log`, which is also the default.
+
+## Returns
+
+Returns an array of lowercase string tokens.
+
+## Examples
+
+```scopeql
+SELECT tokenize('level=info status=200 request completed');
+```

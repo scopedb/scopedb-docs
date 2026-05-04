@@ -1,0 +1,26 @@
+---
+title: object_agg
+---
+
+Collects key-value pairs into an object.
+
+## Syntax
+
+```scopeql
+object_agg( <key_expr>, <value_expr> )
+```
+
+## Arguments
+
+`<key_expr>` must be `string`. NULL keys are skipped.
+
+## Returns
+
+Returns `object`.
+
+## Examples
+
+```scopeql
+VALUES ('host', 'api-1'), ('region', 'us-east-1')
+AGGREGATE object_agg($0, $1);
+```

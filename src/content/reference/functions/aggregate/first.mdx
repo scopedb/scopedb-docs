@@ -1,0 +1,21 @@
+---
+title: first, first_value
+---
+
+Returns the first input value.
+
+## Syntax
+
+```scopeql
+first( <expr> )
+first_value( <expr> )
+```
+
+`first` returns the first value, including NULL. `first_value` returns the first non-NULL value.
+
+## Examples
+
+```scopeql
+VALUES (NULL), ('a'), ('b')
+AGGREGATE first($0), first_value($0);
+```

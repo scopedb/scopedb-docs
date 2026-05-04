@@ -1,0 +1,36 @@
+---
+title: ALTER TABLE
+---
+
+Modifies an existing table in the system.
+
+## Syntax
+
+```scopeql
+ALTER TABLE [ IF EXISTS ] <table_name>
+  RENAME TO <new_table_name>
+
+ALTER TABLE [ IF EXISTS ] <table_name>
+  ADD COLUMN <col_name> <col_type>
+
+ALTER TABLE [ IF EXISTS ] <table_name>
+  DROP COLUMN <col_name>
+
+ALTER TABLE [ IF EXISTS ] <table_name>
+  DISTINCT ON <expr> [, ...] [ BY <order_by_expr> [, ...] ]
+
+ALTER TABLE [ IF EXISTS ] <table_name>
+  DROP DISTINCT KEY
+
+ALTER TABLE [ IF EXISTS ] <table_name>
+  PARTITION BY <expr> [, ...]
+
+ALTER TABLE [ IF EXISTS ] <table_name>
+  DROP PARTITION KEY
+
+ALTER TABLE [ IF EXISTS ] <table_name>
+  CLUSTER BY <expr> [, ...]
+
+ALTER TABLE [ IF EXISTS ] <table_name>
+  DROP CLUSTER KEY
+```

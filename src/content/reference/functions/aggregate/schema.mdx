@@ -1,0 +1,22 @@
+---
+title: schema
+---
+
+Infers a summary of observed object keys and value types.
+
+## Syntax
+
+```scopeql
+schema( <object_expr> )
+```
+
+## Returns
+
+Returns an array describing observed object keys and value types.
+
+## Examples
+
+```scopeql
+VALUES ({"host": 'api-1', "status": 200}), ({"host": 'api-2', "ok": true})
+AGGREGATE schema($0);
+```

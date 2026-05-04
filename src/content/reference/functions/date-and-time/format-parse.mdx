@@ -1,0 +1,33 @@
+---
+title: strftime, strptime
+---
+
+Formats timestamps as strings and parses strings as timestamps.
+
+## Syntax
+
+```scopeql
+strftime( <timestamp_expr>, format => <format> [, timezone => <timezone> ] )
+strptime( <string_expr>, format => <format> )
+```
+
+## Arguments
+
+`format` uses strftime-style formatting.
+
+`timezone` is optional for `strftime`. The default is `UTC`.
+
+When `strptime` parses a value without an offset or time zone, ScopeDB treats it as UTC.
+
+## Returns
+
+`strftime` returns `string`.
+
+`strptime` returns `timestamp`.
+
+## Examples
+
+```scopeql
+SELECT strftime(now(), format => '%Y-%m-%d %H:%M:%S', timezone => 'UTC');
+SELECT strptime('2026-05-04 12:30:00', format => '%Y-%m-%d %H:%M:%S');
+```

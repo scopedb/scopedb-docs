@@ -1,0 +1,28 @@
+---
+title: ln, log
+---
+
+Computes logarithms for numeric expressions.
+
+## Syntax
+
+```scopeql
+ln( <expr> )
+log( <expr> [, base => <base> ] )
+```
+
+## Arguments
+
+`<expr>` can be `int`, `uint`, or `float`.
+
+`base` is an optional `int` parameter for `log`. The default base is `10`.
+
+## Returns
+
+Returns `float`.
+
+## Examples
+
+```scopeql
+SELECT ln(2.718281828), log(100), log(8, base => 2);
+```

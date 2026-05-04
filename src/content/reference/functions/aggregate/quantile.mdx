@@ -1,0 +1,26 @@
+---
+title: quantile
+---
+
+Returns an exact quantile for floating-point values.
+
+## Syntax
+
+```scopeql
+quantile( <float_expr>, quantile => <q> )
+```
+
+## Arguments
+
+`q` must be a float in the range `[0.0, 1.0]`.
+
+## Returns
+
+Returns `float`.
+
+## Examples
+
+```scopeql
+VALUES (1.0), (2.0), (10.0), (20.0)
+AGGREGATE quantile($0, quantile => 0.75);
+```

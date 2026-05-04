@@ -1,0 +1,25 @@
+---
+title: abs
+---
+
+Returns the absolute value of a numeric expression.
+
+## Syntax
+
+```scopeql
+abs( <expr> )
+```
+
+## Arguments
+
+`<expr>` must be `int`, `uint`, or `float`.
+
+## Returns
+
+Returns the same numeric type as the input.
+
+## Examples
+
+```scopeql
+SELECT abs(-12), abs(12::uint), abs(-1.25);
+```

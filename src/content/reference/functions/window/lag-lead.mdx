@@ -1,0 +1,29 @@
+---
+title: lag, lead
+---
+
+Returns a value from a row before or after the current row in the window.
+
+## Syntax
+
+```scopeql
+lag( <expr> [, offset => <offset> ] [, default => <default_value> ] )
+lead( <expr> [, offset => <offset> ] [, default => <default_value> ] )
+```
+
+## Arguments
+
+`offset` is an optional non-negative integer. The default is `1`.
+
+`default` is returned when the requested row is outside the window. The default is `NULL`.
+
+## Returns
+
+Returns the same type as `<expr>`.
+
+## Examples
+
+```scopeql
+VALUES ('a'), ('b'), ('c')
+WINDOW lag($0), lead($0);
+```

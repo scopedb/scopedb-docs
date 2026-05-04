@@ -2,19 +2,19 @@
 title: search
 ---
 
-Searches character data (text) in specified columns.
+Searches text-like data.
 
 ## Syntax
 
 ```scopeql
-search( <search_data>, <query>, <analyzer> )
+search( <search_data>, query => <query> [, analyzer => <analyzer> ] )
 ```
 
 ## Arguments
 
 ### `<search_data>`
 
-The data you want to search.
+The data you want to search. This can be `string`, `array`, `object`, or `any`.
 
 ### `<query>` (named)
 
@@ -22,7 +22,7 @@ A string that contains one or more search terms. This argument must be a literal
 
 ### `<analyzer>` (named) (optional)
 
-The analyzer to use for the search. This argument must be one of the strings listed below:
+The analyzer to use for the search. Supported values:
 
 * `log`
 

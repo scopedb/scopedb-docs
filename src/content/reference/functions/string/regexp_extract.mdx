@@ -1,0 +1,33 @@
+---
+title: regexp_extract
+---
+
+Extracts a substring that matches a regular expression.
+
+## Syntax
+
+```scopeql
+regexp_extract( <expr>, regex => <regex> [, group => <group_index> ] )
+regexp_extract_all( <expr>, regex => <regex> [, group => <group_index> ] )
+```
+
+## Arguments
+
+`<expr>` is a string expression.
+
+`regex` is a regular expression.
+
+`group` is the capture group index to return. The default is `0`, which returns the whole match.
+
+## Returns
+
+`regexp_extract` returns the first matching string, or `NULL` when there is no match.
+
+`regexp_extract_all` returns an array of all matching strings.
+
+## Examples
+
+```scopeql
+SELECT regexp_extract('status=500 path=/checkout', regex => 'status=([0-9]+)', group => 1);
+SELECT regexp_extract_all('a1 b22 c333', regex => '[0-9]+');
+```

@@ -1,0 +1,21 @@
+---
+title: last, last_value
+---
+
+Returns the last input value.
+
+## Syntax
+
+```scopeql
+last( <expr> )
+last_value( <expr> )
+```
+
+`last` returns the last value, including NULL. `last_value` returns the last non-NULL value.
+
+## Examples
+
+```scopeql
+VALUES ('a'), ('b'), (NULL)
+AGGREGATE last($0), last_value($0);
+```

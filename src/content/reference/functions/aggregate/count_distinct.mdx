@@ -1,0 +1,22 @@
+---
+title: count_distinct
+---
+
+Counts distinct non-NULL input values exactly.
+
+## Syntax
+
+```scopeql
+count_distinct( <expr> )
+```
+
+## Returns
+
+Returns `int`.
+
+## Examples
+
+```scopeql
+VALUES ('a'), ('b'), ('a'), ('c')
+AGGREGATE count_distinct($0);
+```
