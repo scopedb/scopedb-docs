@@ -21,7 +21,7 @@ FROM semi_structured_insert;
 +-----------------------------------+
 | v                                 |
 +-----------------------------------+
-| {"key1":'value1',"key2":'value2'} |
+| {"key1":"value1","key2":"value2"} |
 +-----------------------------------+
 ```
 
@@ -37,7 +37,7 @@ FROM semi_structured_insert;
 +-----------------------------------+
 | v                                 |
 +-----------------------------------+
-| {"key3":'value3',"key4":'value4'} |
+| {"key3":"value3","key4":"value4"} |
 +-----------------------------------+
 ```
 
@@ -45,14 +45,14 @@ FROM semi_structured_insert;
 
 The syntax or semi-structured literal is similar to [RFC 8295 JSON format](https://datatracker.ietf.org/doc/html/rfc8259), with additions that values can be any ScopeDB data type:
 
-* Integers are 64-bit, not limited to RFC 7493 The I-JSON Message Format.
+* Integers are 64-bit, not limited to RFC 7493, The I-JSON Message Format.
 * Timestamps, intervals, booleans, and binary are supported.
 
 </Callout>
 
 ## Using semi-structured values
 
-To convert a value to or from the semi-structured data types (array, object, any), you can explicitly cast using the CAST function or the `::` operator (e.g. `<expr>::any`). For details, see [data type conversion](/reference/data-types/conversion).
+To convert a value to or from the semi-structured data types (array, object, any), you can explicitly cast using the CAST function or the `::` operator (e.g., `<expr>::any`). For details, see [data type conversion](/reference/data-types/conversion).
 
 To understand the semi-structured data, consider the following example:
 
@@ -90,7 +90,7 @@ ORDER BY n;
 | 4 | -17                          | int       |
 | 5 | 123.12                       | float     |
 | 6 | 191.2                        | float     |
-| 7 | "Om ara pa ca na dhih"       | string    |
+| 7 | Om ara pa ca na dhih         | string    |
 | 8 | [-1,12,289,2188,false]       | array     |
 | 9 | {"x":"abc","y":false,"z":10} | object    |
 +---+------------------------------+-----------+
@@ -106,12 +106,12 @@ ORDER BY n;
 ```
 
 ```
-+---+-------+------+
-| n | x     | a1   |
-+---+-------+------+
-| 8 | []    | 12   |
-| 9 | "abc" | NULL |
-+---+-------+------+
++---+------+------+
+| n | x    | a1   |
++---+------+------+
+| 8 | NULL | 12   |
+| 9 | abc  | NULL |
++---+------+------+
 ```
 
 Semi-structured data has a total ordering, which means you can use the `ORDER BY` clause to sort the data.
@@ -129,7 +129,7 @@ FROM vartab ORDER BY v DESC NULLS FIRST;
 | 9 | {"x":"abc","y":false,"z":10} |
 | 8 | [-1,12,289,2188,false]       |
 | 3 | true                         |
-| 7 | "Om ara pa ca na dhih"       |
+| 7 | Om ara pa ca na dhih         |
 | 6 | 191.2                        |
 | 5 | 123.12                       |
 | 4 | -17                          |
