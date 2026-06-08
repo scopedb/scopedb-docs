@@ -7,8 +7,8 @@ Extracts a substring that matches a regular expression.
 ## Syntax
 
 ```scopeql
-regexp_extract( <expr>, regex => <regex> [, group => <group_index> ] )
-regexp_extract_all( <expr>, regex => <regex> [, group => <group_index> ] )
+regexp_extract( <expr>, regex => <regex> [, index => <group_index> ] )
+regexp_extract_all( <expr>, regex => <regex> [, index => <group_index> ] )
 ```
 
 ## Arguments
@@ -28,6 +28,6 @@ regexp_extract_all( <expr>, regex => <regex> [, group => <group_index> ] )
 ## Examples
 
 ```scopeql
-SELECT regexp_extract('status=500 path=/checkout', regex => 'status=([0-9]+)', group => 1);
+SELECT regexp_extract('status=500 path=/checkout', regex => 'status=([0-9]+)', index => 1);
 SELECT regexp_extract_all('a1 b22 c333', regex => '[0-9]+');
 ```
