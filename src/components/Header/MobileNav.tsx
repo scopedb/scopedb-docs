@@ -7,6 +7,7 @@ import { useState, useEffect } from "react"
 import { LuMenu, LuX } from "react-icons/lu"
 import Sidebar from "@/components/Sidebar"
 import Image from "next/image"
+import Link from "next/link"
 
 export default function MobileNav() {
     const currentPath = usePathname()
@@ -184,16 +185,16 @@ export default function MobileNav() {
                             </h3>
                             <div className="space-y-1">
                                 {cs.map((c) => (
-                                    <a key={c.link} href={c.link} onClick={() => setIsOpen(false)} className={
+                                    <Link key={c.link} href={c.link} onClick={() => setIsOpen(false)} className={
                                         clsx(
                                             "flex items-center py-2.5 px-3 text-sm rounded-lg transition-colors duration-200",
                                             c.isCurrent
                                                 ? "bg-[rgba(0,0,0,0.04)] text-[var(--text-primary)] font-medium"
                                                 : "text-[var(--text-secondary)] hover:bg-[rgba(0,0,0,0.02)] hover:text-[var(--text-primary)]"
-                                        )}
+                                    )}
                                     >
                                         <span className="flex-1">{c.label}</span>
-                                    </a>
+                                    </Link>
                                 ))}
                             </div>
                         </div>
