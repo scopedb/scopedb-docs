@@ -18,7 +18,7 @@ CREATE <index_type> INDEX [ IF NOT EXISTS ] [ <name> ] ON <table_name> (<index_e
 
 The type of index to create:
 
-* `POINT`: An index that optimizes performance of predicate forms based on `=`, `IS` and `contains(...)`
+* `POINT`: An index that optimizes performance of predicate forms based on `=`, `IS` and `contains(...)`. On `object` and `any` expressions, a point index can also prune predicates on nested paths inside the value.
 * `RANGE`: An index that optimizes performance of range queries on the indexed expression
 * `PATTERN`: An index that optimizes supported string pattern predicates
 * `SEARCH`: An index that optimizes text search operations using the `search` function
@@ -55,11 +55,17 @@ CREATE TABLE logs (
 -- POINT index on a column
 CREATE POINT INDEX ON logs (id);
 
+-- POINT index on an object column and its nested paths
+CREATE POINT INDEX ON logs (var);
+
 -- POINT index on a timestamp expression
 CREATE POINT INDEX ON logs (trunc(time, unit => 'hour'));
 
--- RANGE index on a computed expression
-CREATE RANGE INDEX ON logs (var['type']::string);
+-- POINT index on a single hot semi-structured path
+CREATE POINT INDEX ON logs (var['type']::string);
+
+-- RANGE index on a timestamp column
+CREATE RANGE INDEX ON logs (time);
 
 -- SEARCH index for text searching in log messages
 CREATE SEARCH INDEX ON logs (message) WITH ('analyzer' = 'log');
@@ -73,6 +79,7 @@ CREATE MATERIALIZED INDEX ON logs (var['host']::string);
 1. Use `POINT` or `RANGE` indexes when:
    - You frequently filter on specific columns or expressions.
    - You need to optimize queries that use range conditions or equality comparisons.
+   - You filter on nested paths inside an `object` or `any` column.
 
 2. Use `PATTERN` indexes when:
    - You need to optimize supported string predicates such as `contains`, `starts_with`, `ends_with`, or compatible `regexp_like` forms.

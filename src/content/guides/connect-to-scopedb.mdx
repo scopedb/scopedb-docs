@@ -1,0 +1,80 @@
+---
+title: Connect to ScopeDB
+relatedContents:
+    - title: HTTP API
+      url: /developer/http-api
+    - title: Node.js SDK
+      url: /developer/nodejs
+---
+
+Connect your application to ScopeDB with two values from ScopeDB Console:
+
+- an endpoint URL;
+- an API key.
+
+Use the endpoint as the base URL for ScopeDB data APIs. Send the API key as a
+bearer token from your server-side code, jobs, SDKs, or CLI.
+
+## Before you start
+
+You need:
+
+- a ScopeDB account;
+- access to ScopeDB Console;
+- a terminal or application environment where you can store secrets safely.
+
+## 1. Get your endpoint
+
+Open ScopeDB Console and select your account.
+
+Copy the endpoint URL. It should look like an HTTPS base URL:
+
+```bash
+https://<account-endpoint>
+```
+
+If the endpoint is still being prepared, wait until it is ready before sending
+production ingest or query traffic.
+
+## 2. Create an API key
+
+Create an API key for your development environment or application.
+
+Copy the key when it is shown. Store it in a server-side secret manager or local
+environment file. Do not put ScopeDB API keys in browser code, mobile apps, or
+client-visible configuration.
+
+## 3. Set environment variables
+
+Set the endpoint and API key in your local shell:
+
+```bash
+export SCOPEDB_ENDPOINT="https://<account-endpoint>"
+export SCOPEDB_API_KEY="<api-key>"
+```
+
+Use separate API keys for development, staging, and production so each
+environment can be rotated independently.
+
+## 4. Send a test request
+
+Submit a small ScopeQL statement to confirm the endpoint and API key work:
+
+```bash
+curl -X POST "$SCOPEDB_ENDPOINT/v1/statements" \
+  -H "Authorization: Bearer $SCOPEDB_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "statement": "SELECT 1 AS ok",
+    "format": "json"
+  }'
+```
+
+A successful response returns a statement status and result metadata. Long-running
+statements may return a statement ID that you can poll with the HTTP API.
+
+## Next step
+
+Continue with [Quickstart](/guides/quickstart) to create a table, ingest sample
+events, and run your first event queries. If you prefer working from a terminal,
+use the [ScopeQL CLI](/developer/scopeql-cli).

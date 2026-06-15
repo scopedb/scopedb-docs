@@ -1,0 +1,100 @@
+---
+title: Ingest events
+relatedContents:
+    - title: Connect to ScopeDB
+      url: /guides/connect-to-scopedb
+    - title: HTTP API
+      url: /developer/http-api
+    - title: INSERT
+      url: /reference/commands/statements/insert
+---
+
+Send events to ScopeDB with an ingest request. Each request includes:
+
+- event rows;
+- a ScopeQL statement that reshapes those rows;
+- an `INSERT INTO` clause that writes them to a table.
+
+## Before you start
+
+You need:
+
+- `SCOPEDB_ENDPOINT` and `SCOPEDB_API_KEY` set in your environment;
+- an event table to write to.
+
+If you have not connected yet, start with
+[Connect to ScopeDB](/guides/connect-to-scopedb).
+
+## 1. Create an event table
+
+Create typed columns for fields you query often. Keep the original event in
+`var`.
+
+```scopeql
+CREATE TABLE app_events (
+    time timestamp,
+    service string,
+    name string,
+    message string,
+    var object
+);
+```
+
+## 2. Write the ingest statement
+
+The ingest statement receives each input row as `$0`. Extract stable columns,
+cast them to the target types, and preserve the original payload.
+
+```scopeql
+SELECT
+    $0["time"]::timestamp AS time,
+    $0["service"]::string AS service,
+    $0["name"]::string AS name,
+    $0["message"]::string AS message,
+    $0::object AS var
+WHERE time > NOW() - "PT24h"::interval
+  AND time < NOW() + "PT1h"::interval
+  AND service IS NOT NULL
+  AND name IS NOT NULL
+INSERT INTO app_events
+```
+
+Use the `WHERE` clause for durable checks such as required fields and reasonable
+timestamp bounds. Keep business rules that change often in queries or views.
+
+## 3. Send events with HTTP
+
+Send JSON rows to `/v1/ingest`. The `rows` field is a string containing JSON
+values.
+
+```bash
+curl -X POST "$SCOPEDB_ENDPOINT/v1/ingest" \
+  -H "Authorization: Bearer $SCOPEDB_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "format": "json",
+      "rows": "{\"time\":\"2026-01-21T10:00:00Z\",\"service\":\"checkout\",\"name\":\"payment_failed\",\"message\":\"Credit card gateway timed out\",\"gateway\":\"credit_card\"}"
+    },
+    "statement": "SELECT $0[\"time\"]::timestamp AS time, $0[\"service\"]::string AS service, $0[\"name\"]::string AS name, $0[\"message\"]::string AS message, $0::object AS var INSERT INTO app_events"
+  }'
+```
+
+The response includes the number of rows inserted.
+
+## 4. Query the new rows
+
+Run a query to confirm the data is available:
+
+```scopeql
+FROM app_events
+WHERE service = "checkout"
+SELECT time, name, message, var["gateway"]::string AS gateway
+ORDER BY time DESC
+LIMIT 10;
+```
+
+## Next step
+
+Continue with [Query events](/guides/query-events) to inspect, search, and
+aggregate event data.

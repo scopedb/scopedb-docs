@@ -26,7 +26,7 @@ export default function MobileTableOfContents({
                 },
             }}>
                 <Collapse
-                    expandIconPosition={'end'}
+                    expandIconPlacement={'end'}
                     items={[{
                         key: "mobile-headings",
                         label: <div className="flex gap-[12px] items-center">
@@ -56,7 +56,7 @@ export default function MobileTableOfContents({
                 },
             }}>
                 <Collapse
-                    expandIconPosition={'end'}
+                    expandIconPlacement={'end'}
                     items={[{
                         key: "mobile-headings",
                         label: <div className="flex gap-[12px] items-center">

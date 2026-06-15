@@ -1,0 +1,97 @@
+---
+title: HTTP API
+relatedContents:
+    - title: Connect to ScopeDB
+      url: /guides/connect-to-scopedb
+    - title: Ingest events
+      url: /guides/ingest-events
+    - title: Query syntax
+      url: /reference/commands/stmt-query
+---
+
+Use the HTTP API from backend services, jobs, integrations, or languages without
+a dedicated SDK.
+
+## Before you start
+
+Set your endpoint and API key:
+
+```bash
+export SCOPEDB_ENDPOINT="https://<account-endpoint>"
+export SCOPEDB_API_KEY="<api-key>"
+```
+
+Send the API key as a bearer token:
+
+```http
+Authorization: Bearer <api-key>
+```
+
+Keep API keys in server-side environments. Do not ship them in browser or mobile
+clients.
+
+## Submit a statement
+
+Use `/v1/statements` for DDL, inspection, and queries.
+
+```bash
+curl -X POST "$SCOPEDB_ENDPOINT/v1/statements" \
+  -H "Authorization: Bearer $SCOPEDB_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "statement": "FROM app_events ORDER BY time DESC LIMIT 10",
+    "format": "json"
+  }'
+```
+
+If the statement runs asynchronously, the response includes a statement ID.
+Poll that ID until the statement reaches a terminal state:
+
+```bash
+curl "$SCOPEDB_ENDPOINT/v1/statements/<statement-id>?format=json" \
+  -H "Authorization: Bearer $SCOPEDB_API_KEY"
+```
+
+## Ingest events
+
+Use `/v1/ingest` to send rows with a ScopeQL statement that ends in
+`INSERT INTO`.
+
+```bash
+curl -X POST "$SCOPEDB_ENDPOINT/v1/ingest" \
+  -H "Authorization: Bearer $SCOPEDB_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "format": "json",
+      "rows": "{\"time\":\"2026-01-21T10:00:00Z\",\"service\":\"checkout\",\"name\":\"payment_failed\"}"
+    },
+    "statement": "SELECT $0[\"time\"]::timestamp AS time, $0[\"service\"]::string AS service, $0[\"name\"]::string AS name, $0::object AS var INSERT INTO app_events"
+  }'
+```
+
+Use ingest when the incoming rows need casting, filtering, or reshaping before
+they become table rows.
+
+## Cancel a statement
+
+Cancel a running statement by ID:
+
+```bash
+curl -X POST "$SCOPEDB_ENDPOINT/v1/statements/<statement-id>/cancel" \
+  -H "Authorization: Bearer $SCOPEDB_API_KEY"
+```
+
+## Endpoints
+
+| Method | Path | Use |
+| --- | --- | --- |
+| `POST` | `/v1/ingest` | Write payload rows through an ingest statement. |
+| `POST` | `/v1/statements` | Submit a ScopeQL statement. |
+| `GET` | `/v1/statements/{id}` | Read statement status and result metadata. |
+| `POST` | `/v1/statements/{id}/cancel` | Cancel a running statement. |
+
+## Next step
+
+Continue with [Ingest events](/guides/ingest-events) for a complete ingest
+workflow.

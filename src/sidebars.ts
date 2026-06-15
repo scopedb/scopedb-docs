@@ -6,10 +6,31 @@ export interface SidebarItem {
 
 export const guidesSidebar: SidebarItem[] = [
     { label: "Overview", link: "/guides" },
+    {
+        label: "Get started", items: [
+            { label: "Connect to ScopeDB", link: "/guides/connect-to-scopedb" },
+            { label: "Quickstart", link: "/guides/quickstart" },
+        ],
+    },
+    {
+        label: "Work with event data", items: [
+            { label: "Ingest events", link: "/guides/ingest-events" },
+            { label: "Query events", link: "/guides/query-events" },
+            { label: "Model flexible events", link: "/guides/model-flexible-events" },
+            { label: "Add indexes", link: "/guides/add-indexes" },
+        ],
+    },
 ];
 
 export const developerSidebar: SidebarItem[] = [
     { label: "Overview", link: "/developer" },
+    {
+        label: "Build with ScopeDB", items: [
+            { label: "HTTP API", link: "/developer/http-api" },
+            { label: "Node.js SDK", link: "/developer/nodejs" },
+            { label: "ScopeQL CLI", link: "/developer/scopeql-cli" },
+        ],
+    },
 ];
 
 export const referenceSidebar: SidebarItem[] = [
