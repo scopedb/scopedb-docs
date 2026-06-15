@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation"
 import { ConfigProvider, Menu, type MenuProps } from 'antd';
 import { getSidebar, SidebarItem } from "@/sidebars";
 import { useState } from "react";
+import Link from "next/link";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -28,7 +29,7 @@ export default function Sidebar({ prefix, className }: { prefix: string, classNa
 
             return {
                 key: key,
-                label: <>{item.link ? <a href={item.link}>{item.label}</a> : item.label}</>,
+                label: <>{item.link ? <Link href={item.link}>{item.label}</Link> : item.label}</>,
                 children: children.length > 0 ? children : undefined,
             }
         })
@@ -120,4 +121,3 @@ export default function Sidebar({ prefix, className }: { prefix: string, classNa
         />
     </ConfigProvider>
 }
-

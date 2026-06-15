@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation"
 import clsx from "clsx";
 import { categories } from "@/sidebars";
+import Link from "next/link";
 
 export default function Categories() {
     const pathname = usePathname();
@@ -19,7 +20,7 @@ export default function Categories() {
     return (<ul className="flex gap-[32px] text-[14px] leading-[30px] pt-[12px] text-[var(--text-secondary)] text-center">
         {cs.map((c) => (
             <li key={c.label}>
-                <a
+                <Link
                     href={c.link}
                     className={clsx([
                         "inline-block hover:text-[var(--text-primary)]",
@@ -30,7 +31,7 @@ export default function Categories() {
                     ])}
                 >
                     {c.label}
-                </a>
+                </Link>
             </li>
         ))}
     </ul>)
