@@ -62,8 +62,8 @@ FROM events
 SELECT
     time,
     service,
-    var["http"]["url"]::string AS http_url,
-    var["user"]["id"]::string AS user_id
+    var['http']['url']::string AS http_url,
+    var['user']['id']::string AS user_id
 WHERE http_url IS NOT NULL
 LIMIT 100;
 ```

@@ -41,18 +41,18 @@ inserting it.
 ```scopeql
 VALUES
     (
-        "2026-01-21T10:00:00Z",
-        "checkout",
-        "checkout_started",
-        "User opened checkout",
-        {"region": "apac", "plan": "pro"}
+        '2026-01-21T10:00:00Z',
+        'checkout',
+        'checkout_started',
+        'User opened checkout',
+        {'region': 'apac', 'plan': 'pro'}
     ),
     (
-        "2026-01-21T10:00:03Z",
-        "checkout",
-        "payment_failed",
-        "Credit card gateway timed out",
-        {"region": "apac", "gateway": "credit_card"}
+        '2026-01-21T10:00:03Z',
+        'checkout',
+        'payment_failed',
+        'Credit card gateway timed out',
+        {'region': 'apac', 'gateway': 'credit_card'}
     )
 SELECT
     $0::timestamp AS time,
@@ -70,8 +70,8 @@ you want to return.
 
 ```scopeql
 FROM events
-WHERE service = "checkout"
-SELECT time, name, message, var["region"]::string AS region
+WHERE service = 'checkout'
+SELECT time, name, message, var['region']::string AS region
 ORDER BY time DESC
 LIMIT 10;
 ```
@@ -82,7 +82,7 @@ Use `GROUP BY ... AGGREGATE` to summarize the same table.
 
 ```scopeql
 FROM events
-WHERE time >= "2026-01-21T10:00:00Z"::timestamp
+WHERE time >= '2026-01-21T10:00:00Z'::timestamp
 GROUP BY service, name
 AGGREGATE count() AS events
 ORDER BY events DESC;

@@ -45,7 +45,7 @@ browser code.
 const result = await client
   .statement(`
     FROM app_events
-    WHERE service = "checkout"
+    WHERE service = 'checkout'
     ORDER BY time DESC
     LIMIT 10
   `)
@@ -60,9 +60,9 @@ console.log(result.intoObjects());
 const stream = client
   .ingestStream(`
     SELECT
-      $0["time"]::timestamp AS time,
-      $0["service"]::string AS service,
-      $0["name"]::string AS name,
+      $0['time']::timestamp AS time,
+      $0['service']::string AS service,
+      $0['name']::string AS name,
       $0::object AS var
     WHERE service IS NOT NULL
       AND name IS NOT NULL

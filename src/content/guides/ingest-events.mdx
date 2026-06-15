@@ -47,13 +47,13 @@ cast them to the target types, and preserve the original payload.
 
 ```scopeql
 SELECT
-    $0["time"]::timestamp AS time,
-    $0["service"]::string AS service,
-    $0["name"]::string AS name,
-    $0["message"]::string AS message,
+    $0['time']::timestamp AS time,
+    $0['service']::string AS service,
+    $0['name']::string AS name,
+    $0['message']::string AS message,
     $0::object AS var
-WHERE time > NOW() - "PT24h"::interval
-  AND time < NOW() + "PT1h"::interval
+WHERE time > NOW() - 'PT24h'::interval
+  AND time < NOW() + 'PT1h'::interval
   AND service IS NOT NULL
   AND name IS NOT NULL
 INSERT INTO app_events
@@ -76,7 +76,7 @@ curl -X POST "$SCOPEDB_ENDPOINT/v1/ingest" \
       "format": "json",
       "rows": "{\"time\":\"2026-01-21T10:00:00Z\",\"service\":\"checkout\",\"name\":\"payment_failed\",\"message\":\"Credit card gateway timed out\",\"gateway\":\"credit_card\"}"
     },
-    "statement": "SELECT $0[\"time\"]::timestamp AS time, $0[\"service\"]::string AS service, $0[\"name\"]::string AS name, $0[\"message\"]::string AS message, $0::object AS var INSERT INTO app_events"
+    "statement": "SELECT $0['time']::timestamp AS time, $0['service']::string AS service, $0['name']::string AS name, $0['message']::string AS message, $0::object AS var INSERT INTO app_events"
   }'
 ```
 
@@ -88,8 +88,8 @@ Run a query to confirm the data is available:
 
 ```scopeql
 FROM app_events
-WHERE service = "checkout"
-SELECT time, name, message, var["gateway"]::string AS gateway
+WHERE service = 'checkout'
+SELECT time, name, message, var['gateway']::string AS gateway
 ORDER BY time DESC
 LIMIT 10;
 ```

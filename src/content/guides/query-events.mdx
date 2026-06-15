@@ -16,8 +16,8 @@ then either inspect matching rows or aggregate them into a trend.
 
 ```scopeql
 FROM app_events
-WHERE time >= NOW() - "PT15m"::interval
-  AND service = "checkout"
+WHERE time >= NOW() - 'PT15m'::interval
+  AND service = 'checkout'
 SELECT time, name, message, var
 ORDER BY time DESC
 LIMIT 100;
@@ -30,8 +30,8 @@ IDs, payload fields, or examples to hand to another person.
 
 ```scopeql
 FROM app_events
-WHERE time >= NOW() - "PT1h"::interval
-  AND search(message, "timeout")
+WHERE time >= NOW() - 'PT1h'::interval
+  AND search(message, query => 'timeout')
 SELECT time, service, name, message
 ORDER BY time DESC
 LIMIT 100;
@@ -48,9 +48,9 @@ SELECT
     time,
     service,
     name,
-    var["region"]::string AS region,
-    var["gateway"]::string AS gateway
-WHERE region = "apac"
+    var['region']::string AS region,
+    var['gateway']::string AS gateway
+WHERE region = 'apac'
 ORDER BY time DESC
 LIMIT 100;
 ```
@@ -62,7 +62,7 @@ used by a later `WHERE`.
 
 ```scopeql
 FROM app_events
-WHERE time >= NOW() - "PT1h"::interval
+WHERE time >= NOW() - 'PT1h'::interval
 GROUP BY service, name
 AGGREGATE count() AS events
 ORDER BY events DESC
@@ -77,7 +77,7 @@ ranking rather than individual rows.
 ```scopeql
 FROM app_events AS e
 JOIN services AS s ON e.service = s.name
-WHERE e.time >= NOW() - "PT24h"::interval
+WHERE e.time >= NOW() - 'PT24h'::interval
 GROUP BY s.team, e.name
 AGGREGATE count() AS events
 ORDER BY events DESC;
