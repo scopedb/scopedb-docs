@@ -2,4 +2,40 @@
 title: Developer
 ---
 
-Under construction.
+Build applications and tools on ScopeDB from your backend.
+
+Start by connecting to ScopeDB, then choose the interface that fits your
+application.
+
+## Start here
+
+### [Connect to ScopeDB](/guides/connect-to-scopedb)
+
+Get your endpoint and API key, set environment variables, and send a test
+request.
+
+### [Node.js SDK](/developer/nodejs)
+
+Query ScopeDB and send batched JSON events from TypeScript or JavaScript.
+
+### [ScopeQL CLI](/developer/scopeql-cli)
+
+Run ScopeDB from a terminal, script, or CI job.
+
+### [HTTP API](/developer/http-api)
+
+Call ScopeDB from any backend service with `/v1/statements` and `/v1/ingest`.
+
+## Default production shape
+
+For most applications:
+
+1. Keep the ScopeDB API key on your server.
+2. Write events through an SDK ingest stream or `/v1/ingest`.
+3. Serve user-facing reads from bounded ScopeQL templates.
+4. Add indexes for filters that appear in important workflows.
+5. Log statement IDs for long-running work.
+
+For local exploration or scripts, use the [ScopeQL CLI](/developer/scopeql-cli).
+
+For exact language syntax, use the [Reference](/reference).

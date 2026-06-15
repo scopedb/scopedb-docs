@@ -1,0 +1,87 @@
+---
+title: Query events
+relatedContents:
+    - title: Query syntax
+      url: /reference/commands/stmt-query
+    - title: Aggregate functions
+      url: /reference/functions/aggregate
+    - title: String functions
+      url: /reference/functions/string
+---
+
+Event queries usually start with a time range, narrow the data by service or tag,
+then either inspect matching rows or aggregate them into a trend.
+
+## Inspect recent rows
+
+```scopeql
+FROM app_events
+WHERE time >= NOW() - 'PT15m'::interval
+  AND service = 'checkout'
+SELECT time, name, message, var
+ORDER BY time DESC
+LIMIT 100;
+```
+
+Use row inspection when you need evidence: error messages, trace IDs, request
+IDs, payload fields, or examples to hand to another person.
+
+## Search text fields
+
+```scopeql
+FROM app_events
+WHERE time >= NOW() - 'PT1h'::interval
+  AND search(message, query => 'timeout')
+SELECT time, service, name, message
+ORDER BY time DESC
+LIMIT 100;
+```
+
+Use `search` for token-oriented matching and `regexp_like` when you need a
+specific pattern.
+
+## Extract fields from `var`
+
+```scopeql
+FROM app_events
+SELECT
+    time,
+    service,
+    name,
+    var['region']::string AS region,
+    var['gateway']::string AS gateway
+WHERE region = 'apac'
+ORDER BY time DESC
+LIMIT 100;
+```
+
+ScopeQL clauses are evaluated in order, so a field projected by `SELECT` can be
+used by a later `WHERE`.
+
+## Aggregate by dimension
+
+```scopeql
+FROM app_events
+WHERE time >= NOW() - 'PT1h'::interval
+GROUP BY service, name
+AGGREGATE count() AS events
+ORDER BY events DESC
+LIMIT 20;
+```
+
+Use aggregates when the question is about volume, distribution, trend, or
+ranking rather than individual rows.
+
+## Join with metadata
+
+```scopeql
+FROM app_events AS e
+JOIN services AS s ON e.service = s.name
+WHERE e.time >= NOW() - 'PT24h'::interval
+GROUP BY s.team, e.name
+AGGREGATE count() AS events
+ORDER BY events DESC;
+```
+
+Joins are useful when events carry operational facts and another table carries
+business or ownership context.

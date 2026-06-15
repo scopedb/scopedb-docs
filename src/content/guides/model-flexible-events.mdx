@@ -1,0 +1,80 @@
+---
+title: Model flexible events
+relatedContents:
+    - title: Semi-structured data type
+      url: /reference/data-types/semi-structured
+    - title: Semi-structured data functions
+      url: /reference/functions/semi-structured-data
+    - title: CREATE TABLE
+      url: /reference/commands/statements/create-table
+---
+
+ScopeDB is useful when event data has both stable structure and changing
+payloads. Model that directly: use typed columns for the fields you depend on
+and a semi-structured column for the rest.
+
+## Recommended shape
+
+```scopeql
+CREATE TABLE events (
+    time timestamp,
+    service string,
+    name string,
+    message string,
+    var object
+);
+```
+
+This table gives you:
+
+- a timestamp for filtering and ordering;
+- stable tags for common filters and groups;
+- a message field for human-readable evidence;
+- an object column for event-specific context.
+
+## Put fields in typed columns when they are stable
+
+Good typed column candidates:
+
+- event time;
+- service, application, environment, region, account, or workspace identifiers;
+- event name or kind;
+- status, severity, or result;
+- fields you plan to index.
+
+Typed columns make queries clearer and avoid repeatedly extracting the same path
+from a semi-structured object.
+
+## Keep fields in `var` when they are flexible
+
+Good `var` candidates:
+
+- nested request or response details;
+- optional integration-specific fields;
+- deployment-specific labels;
+- raw event payloads used during investigation;
+- fields that appear in only a small percentage of rows.
+
+You can still query these fields:
+
+```scopeql
+FROM events
+SELECT
+    time,
+    service,
+    var['http']['url']::string AS http_url,
+    var['user']['id']::string AS user_id
+WHERE http_url IS NOT NULL
+LIMIT 100;
+```
+
+## Evolve the model gradually
+
+Start by preserving context in `var`. When a field becomes important, promote it
+in one of two ways:
+
+- add a typed column for new events and update producers over time;
+- create an index or materialized expression on the path you query often.
+
+The goal is not to avoid schema. The goal is to avoid freezing the entire event
+shape before the application has stabilized.

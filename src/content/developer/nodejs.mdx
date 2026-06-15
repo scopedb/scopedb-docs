@@ -1,0 +1,103 @@
+---
+title: Node.js SDK
+relatedContents:
+    - title: Connect to ScopeDB
+      url: /guides/connect-to-scopedb
+    - title: Query events
+      url: /guides/query-events
+    - title: HTTP API
+      url: /developer/http-api
+---
+
+Use the Node.js SDK from server-side JavaScript or TypeScript applications.
+
+## Before you start
+
+Set your ScopeDB endpoint and API key:
+
+```bash
+export SCOPEDB_ENDPOINT="https://<account-endpoint>"
+export SCOPEDB_API_KEY="<api-key>"
+```
+
+## 1. Install the SDK
+
+```bash
+pnpm install scopedb
+```
+
+## 2. Create a client
+
+```ts
+import { Client } from "scopedb";
+
+const client = new Client(process.env.SCOPEDB_ENDPOINT!, {
+  token: process.env.SCOPEDB_API_KEY,
+});
+```
+
+Keep the API key on the server. Do not create authenticated ScopeDB clients in
+browser code.
+
+## 3. Run a statement
+
+```ts
+const result = await client
+  .statement(`
+    FROM app_events
+    WHERE service = 'checkout'
+    ORDER BY time DESC
+    LIMIT 10
+  `)
+  .execute();
+
+console.log(result.intoObjects());
+```
+
+## 4. Send batched JSON events
+
+```ts
+const stream = client
+  .ingestStream(`
+    SELECT
+      $0['time']::timestamp AS time,
+      $0['service']::string AS service,
+      $0['name']::string AS name,
+      $0::object AS var
+    WHERE service IS NOT NULL
+      AND name IS NOT NULL
+    INSERT INTO app_events
+  `)
+  .build();
+
+await stream.send({
+  time: "2026-01-21T10:00:00Z",
+  service: "checkout",
+  name: "checkout_started",
+  region: "apac",
+});
+
+await stream.flush();
+await stream.shutdown();
+```
+
+Use a long-lived stream for batches that share the same transformation. Use
+separate streams when different event families write to different tables or need
+different validation.
+
+## Handle integers before returning JSON
+
+ScopeDB integer values may exceed JavaScript's safe integer range. The SDK uses
+`bigint` by default for lossless values, but `bigint` is not JSON-serializable.
+
+Convert rows at your application boundary:
+
+```ts
+const rows = result.intoObjects({ integerMode: "string" });
+```
+
+Use:
+
+- `bigint` when you need exact arithmetic in JavaScript;
+- `string` when you need JSON-safe identifiers or counters;
+- `number` only when the values fit inside `Number.MAX_SAFE_INTEGER`.

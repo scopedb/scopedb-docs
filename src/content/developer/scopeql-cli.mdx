@@ -1,0 +1,73 @@
+---
+title: ScopeQL CLI
+relatedContents:
+    - title: Connect to ScopeDB
+      url: /guides/connect-to-scopedb
+    - title: Query events
+      url: /guides/query-events
+    - title: ScopeQL repository
+      url: https://github.com/scopedb/scopeql
+---
+
+Use the ScopeQL CLI when you want to run ScopeDB from a terminal, script, or CI
+job.
+
+## Before you start
+
+Get your endpoint and API key from ScopeDB Console. If you have not done that
+yet, start with [Connect to ScopeDB](/guides/connect-to-scopedb).
+
+## 1. Install the CLI
+
+Install with Cargo:
+
+```bash
+cargo install scopeql
+```
+
+You can also download prebuilt binaries from the
+[ScopeQL releases page](https://github.com/scopedb/scopeql/releases).
+
+## 2. Configure a connection
+
+Set the default connection from environment variables:
+
+```bash
+export SCOPEQL_CONFIG_CONNECTIONS_DEFAULT_ENDPOINT="$SCOPEDB_ENDPOINT"
+export SCOPEQL_CONFIG_CONNECTIONS_DEFAULT_API_KEY="$SCOPEDB_API_KEY"
+```
+
+The CLI also supports a `config.toml` file when you want named connections or
+shared local defaults.
+
+## 3. Run a statement
+
+Run a single ScopeQL statement:
+
+```bash
+scopeql run --format json "SELECT 1 AS ok"
+```
+
+Run a query against an event table:
+
+```bash
+scopeql run \
+  "FROM app_events WHERE service = 'checkout' ORDER BY time DESC LIMIT 10"
+```
+
+## 4. Start the shell
+
+Start the interactive shell:
+
+```bash
+scopeql
+```
+
+Use the shell for local exploration, ad-hoc queries, and quick checks while you
+are building.
+
+## More CLI options
+
+The CLI supports script files, load operations, output formats, and generated
+config files. For the full command reference, see the
+[ScopeQL repository](https://github.com/scopedb/scopeql).

@@ -1,0 +1,98 @@
+---
+title: Quickstart
+relatedContents:
+    - title: Connect to ScopeDB
+      url: /guides/connect-to-scopedb
+    - title: Query syntax
+      url: /reference/commands/stmt-query
+    - title: INSERT
+      url: /reference/commands/statements/insert
+    - title: Semi-structured data type
+      url: /reference/data-types/semi-structured
+---
+
+Create a table, load a few events, and query them with ScopeQL.
+
+You need a reachable ScopeDB endpoint and a way to run ScopeQL statements. If
+you have not set up your endpoint and API key yet, start with
+[Connect to ScopeDB](/guides/connect-to-scopedb).
+
+## 1. Create an event table
+
+Event data usually has a few fields you query often and a larger payload that
+changes over time. Start with typed columns for stable fields and an `object`
+column for the original event.
+
+```scopeql
+CREATE TABLE events (
+    time timestamp,
+    service string,
+    name string,
+    message string,
+    var object
+);
+```
+
+## 2. Insert sample events
+
+Use `VALUES` to create a small input relation, then reshape each row before
+inserting it.
+
+```scopeql
+VALUES
+    (
+        '2026-01-21T10:00:00Z',
+        'checkout',
+        'checkout_started',
+        'User opened checkout',
+        {'region': 'apac', 'plan': 'pro'}
+    ),
+    (
+        '2026-01-21T10:00:03Z',
+        'checkout',
+        'payment_failed',
+        'Credit card gateway timed out',
+        {'region': 'apac', 'gateway': 'credit_card'}
+    )
+SELECT
+    $0::timestamp AS time,
+    $1::string AS service,
+    $2::string AS name,
+    $3::string AS message,
+    $4::object AS var
+INSERT INTO events;
+```
+
+## 3. Query recent events
+
+ScopeQL is a pipeline. Start from a relation, filter it, then select the fields
+you want to return.
+
+```scopeql
+FROM events
+WHERE service = 'checkout'
+SELECT time, name, message, var['region']::string AS region
+ORDER BY time DESC
+LIMIT 10;
+```
+
+## 4. Aggregate events
+
+Use `GROUP BY ... AGGREGATE` to summarize the same table.
+
+```scopeql
+FROM events
+WHERE time >= '2026-01-21T10:00:00Z'::timestamp
+GROUP BY service, name
+AGGREGATE count() AS events
+ORDER BY events DESC;
+```
+
+## 5. Next steps
+
+Continue with:
+
+- [Ingest events](/guides/ingest-events) to load application data through the ingest API.
+- [Query events](/guides/query-events) to learn the common query patterns for event data.
+- [Model flexible events](/guides/model-flexible-events) to decide what belongs in typed columns and what belongs in `var`.
+- [HTTP API](/developer/http-api) if you want to call ScopeDB from your own service.

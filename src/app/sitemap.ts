@@ -37,7 +37,7 @@ function collectSidebarItems(items: SidebarItem[], sitemapItems: SitemapItem[]) 
         }
 
         if (item.items && item.items.length > 0) {
-            sitemapItems.push(...collectSidebarItems(item.items, sitemapItems))
+            collectSidebarItems(item.items, sitemapItems)
         }
     }
 

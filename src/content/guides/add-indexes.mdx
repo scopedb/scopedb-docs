@@ -1,0 +1,82 @@
+---
+title: Add indexes
+relatedContents:
+    - title: CREATE INDEX
+      url: /reference/commands/statements/create-index
+    - title: Query syntax
+      url: /reference/commands/stmt-query
+    - title: String functions
+      url: /reference/functions/string
+---
+
+Indexes help ScopeDB avoid reading data that cannot match a query. Add them
+after you know which fields define your common filters, searches, and groupings.
+
+## Start with the query
+
+For example, this query filters by time, service, and a gateway field inside
+`var`:
+
+```scopeql
+FROM app_events
+SELECT *, var['gateway']::string AS gateway
+WHERE time >= NOW() - 'PT1h'::interval
+  AND service = 'checkout'
+  AND gateway = 'credit_card'
+ORDER BY time DESC
+LIMIT 100;
+```
+
+The useful index candidates are the fields that narrow the result set:
+
+- `time`, because nearly every event query has a time range;
+- `service`, because it is a common equality filter;
+- `var`, because filters may touch several paths inside the event payload.
+
+## Common index choices
+
+```scopeql
+CREATE RANGE INDEX ON app_events (time);
+CREATE POINT INDEX ON app_events (service);
+CREATE POINT INDEX ON app_events (var);
+```
+
+A point index on an `object` or `any` column indexes paths inside that value. Use
+it when queries filter on several nested payload fields, such as
+`var['gateway']::string = 'credit_card'` or
+`var['http']['status']::int = 500`.
+
+If one nested path is the only hot filter, you can index that expression
+directly:
+
+```scopeql
+CREATE POINT INDEX ON app_events (var['gateway']::string);
+```
+
+For text investigation, use a search index on the expression users search:
+
+```scopeql
+CREATE SEARCH INDEX ON app_events (message);
+```
+
+For expensive semi-structured extraction that appears in many queries, use a
+materialized index:
+
+```scopeql
+CREATE MATERIALIZED INDEX ON app_events (var['http']['url']::string);
+```
+
+## Index only what has a job
+
+Indexes are part of the data model. Add them for known access patterns:
+
+- time range filters;
+- high-value equality filters;
+- semi-structured objects whose paths are frequently filtered;
+- text search fields;
+- repeated semi-structured expressions;
+- fields used by latency-sensitive dashboards or APIs.
+
+Avoid adding separate expression indexes for every field in `var`. Start with an
+object-level point index when many payload paths matter, then add direct
+expression indexes only for paths that show up repeatedly in important queries.
