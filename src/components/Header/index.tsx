@@ -11,7 +11,7 @@ export default function Header() {
         <div className="flex pb-[14px] items-center justify-between border-b border-[rgba(0,0,0,0.03)]">
           <div className="title-wrapper flex items-center gap-[24px]" >
             <Link href="/" className="flex items-center gap-[12px]">
-              <Image src="/scopedb-logo.png" alt="ScopeDB Logo" height={35} width={120} />
+              <Image src="/scopedb-logo.png" alt="ScopeDB Logo" height={35} width={120} priority />
               <span className="ml-[14px] text-[16px] font-bold tracking-[.72px] text-primary">
                 DOCUMENTATION
               </span>
