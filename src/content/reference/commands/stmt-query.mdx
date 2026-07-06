@@ -202,7 +202,7 @@ The table, view, or parenthesized subquery to join with the current query result
 
 #### `ON <predicate>`
 
-A boolean expression that can reference columns from both sides of the join. If `ON` is omitted, the join condition is `TRUE`, which joins every row from the left side with every row from the right side.
+If `ON` is omitted, the join condition is `TRUE`, which produces a Cartesian product (every left row joined to every right row) and can be very large.
 
 ### Examples
 
