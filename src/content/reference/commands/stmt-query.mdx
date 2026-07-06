@@ -171,7 +171,7 @@ JOIN combines the current query result with another table or subquery. The left 
 ### Syntax
 
 ```scopeql
-FROM <left_source>
+[ ... ]
 [ <join_type> ] JOIN <right_source> [ AS <alias> ] [ ON <predicate> ]
 [ ... ]
 ```
@@ -304,7 +304,7 @@ The WHERE clause specifies a condition that acts as a filter. You can use the WH
 ### Syntax
 
 ```scopeql
-...
+[ ... ]
 WHERE <predicate>
 [ ... ]
 ```
@@ -322,7 +322,6 @@ Specifies an ordering of the rows of the result table.
 ### Syntax
 
 ```scopeql
-FROM ...
 [ ... ]
 ORDER BY orderItem [ , orderItem , ... ]
 [ ... ]
@@ -373,7 +372,6 @@ Constrains the maximum number of rows returned by a statement or subquery.
 ### Syntax
 
 ```scopeql
-FROM ...
 [ ... ]
 LIMIT <count> [ OFFSET <start> ]
 [ ... ]
@@ -398,8 +396,9 @@ Returns one or more columns that indicates aggregation results.
 ### Syntax
 
 ```scopeql
-FROM ...
+[ ... ]
 [ GROUP BY ... ] AGGREGATE <function_calls>
+[ ... ]
 ```
 
 ### Examples
@@ -485,9 +484,10 @@ When used without the `BY` clause, it returns a random row for each set of dupli
 ### Syntax
 
 ```scopeql
-FROM ...
+[ ... ]
 DISTINCT ON expr [, expr, ...]
 [ BY <order_item> [, <order_item>, ...] ]
+[ ... ]
 ```
 
 ### Parameters
