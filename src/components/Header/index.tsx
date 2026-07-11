@@ -3,6 +3,7 @@ import Categories from "./Categories";
 import Link from "next/link";
 import MobileNav from "./MobileNav";
 import Image from "next/image";
+import scopedbLogo from "@/assets/scopedb-logo.svg";
 
 export default function Header() {
   return <>
@@ -11,7 +12,7 @@ export default function Header() {
         <div className="flex pb-[14px] items-center justify-between border-b border-[rgba(0,0,0,0.03)]">
           <div className="title-wrapper flex items-center gap-[24px]" >
             <Link href="/" className="flex items-center gap-[12px]">
-              <Image src="/scopedb-logo.png" alt="ScopeDB Logo" height={35} width={120} priority />
+              <Image src={scopedbLogo} alt="ScopeDB Logo" height={34} width={120} priority unoptimized />
               <span className="ml-[14px] text-[16px] font-bold tracking-[.72px] text-primary">
                 DOCUMENTATION
               </span>
