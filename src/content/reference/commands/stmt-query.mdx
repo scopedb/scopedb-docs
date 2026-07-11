@@ -6,6 +6,7 @@ ScopeDB supports querying using a pipelined relational query language (ScopeQL) 
 
 ```
 [ FROM ... [ SAMPLE ... PERCENT ] | VALUES ... ]
+[ [ INNER | LEFT | RIGHT | FULL ] JOIN ... [ ON ... ] ]
 [ SELECT ... ]
 [ WHERE ... ]
 [ DISTINCT ON ... BY ... ]
@@ -163,6 +164,82 @@ This example queries a sample of 10% of the data in the table:
 FROM ftable1 SAMPLE 10 PERCENT;
 ```
 
+## JOIN
+
+JOIN combines the current query result with another table or subquery. The left side is the relation produced by the clauses before `JOIN`; the right side is the table or subquery named in the `JOIN` clause.
+
+### Syntax
+
+```scopeql
+[ ... ]
+[ <join_type> ] JOIN <right_source> [ AS <alias> ] [ ON <predicate> ]
+[ ... ]
+```
+
+Where:
+
+```scopeql
+join_type ::= INNER | LEFT | RIGHT | FULL
+right_source ::= <table_name> | ( <query> )
+```
+
+### Parameters
+
+#### `<join_type>`
+
+The join type. If omitted, `JOIN` is an inner join.
+
+Supported join types:
+
+* `INNER`: returns rows that match the join condition on both sides.
+* `LEFT`: returns all rows from the left side and matching rows from the right side. Columns from the right side are `NULL` when no row matches.
+* `RIGHT`: returns all rows from the right side and matching rows from the left side. Columns from the left side are `NULL` when no row matches.
+* `FULL`: returns matching rows plus unmatched rows from both sides, filling the missing side with `NULL`.
+
+#### `<right_source>`
+
+The table, view, or parenthesized subquery to join with the current query result. Use `AS <alias>` to qualify columns from the joined source.
+
+#### `ON <predicate>`
+
+If `ON` is omitted, the join condition is `TRUE`, which produces a Cartesian product (every left row joined to every right row) and can be very large.
+
+### Examples
+
+Join an event table with service metadata:
+
+```scopeql
+FROM app_events AS e
+JOIN services AS s ON e.service = s.name
+SELECT e.time, e.name, s.team;
+```
+
+Keep events even when service metadata is missing:
+
+```scopeql
+FROM app_events AS e
+LEFT JOIN services AS s ON e.service = s.name
+SELECT e.time, e.name, s.team;
+```
+
+Join with a subquery:
+
+```scopeql
+FROM app_events AS e
+JOIN (
+    FROM services
+    WHERE active = true
+    SELECT name, team
+) AS s ON e.service = s.name
+SELECT e.time, e.name, s.team;
+```
+
+### Usage notes
+
+* `JOIN` may appear after any clause that produces a relation. Most queries place joins immediately after `FROM` or `VALUES`.
+* Chain multiple joins by adding another `JOIN` clause after the previous one.
+* Use table aliases when both sides have columns with the same name.
+
 ## VALUES
 
 VALUES allows the specification of a set of constants to be used to form a finite set of rows.
@@ -227,7 +304,7 @@ The WHERE clause specifies a condition that acts as a filter. You can use the WH
 ### Syntax
 
 ```scopeql
-...
+[ ... ]
 WHERE <predicate>
 [ ... ]
 ```
@@ -245,7 +322,6 @@ Specifies an ordering of the rows of the result table.
 ### Syntax
 
 ```scopeql
-FROM ...
 [ ... ]
 ORDER BY orderItem [ , orderItem , ... ]
 [ ... ]
@@ -296,7 +372,6 @@ Constrains the maximum number of rows returned by a statement or subquery.
 ### Syntax
 
 ```scopeql
-FROM ...
 [ ... ]
 LIMIT <count> [ OFFSET <start> ]
 [ ... ]
@@ -321,8 +396,9 @@ Returns one or more columns that indicates aggregation results.
 ### Syntax
 
 ```scopeql
-FROM ...
+[ ... ]
 [ GROUP BY ... ] AGGREGATE <function_calls>
+[ ... ]
 ```
 
 ### Examples
@@ -408,9 +484,10 @@ When used without the `BY` clause, it returns a random row for each set of dupli
 ### Syntax
 
 ```scopeql
-FROM ...
+[ ... ]
 DISTINCT ON expr [, expr, ...]
 [ BY <order_item> [, <order_item>, ...] ]
+[ ... ]
 ```
 
 ### Parameters
