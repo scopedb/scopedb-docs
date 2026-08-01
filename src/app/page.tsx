@@ -18,24 +18,24 @@ function FeaturedItems() {
   const featured: FeaturedItem[] = [
     {
       category: "Get started",
-      title: "ScopeDB Cloud concepts",
-      description: "Understand workspaces, API addresses, and how the Console fits together.",
-      link: "/guides/cloud-concepts",
-    },
-    {
-      category: "Get started",
-      title: "Connect to ScopeDB",
-      description: "Copy your workspace address, create an API key, and test the connection.",
-      link: "/guides/connect-to-scopedb",
-    },
-    {
-      category: "Use ScopeDB",
       title: "Quickstart",
-      description: "Create a table, add sample data, and run your first ScopeQL query.",
+      description: "Create a table and run your first ScopeQL queries in the Console.",
       link: "/guides/quickstart",
     },
     {
-      category: "Use ScopeDB",
+      category: "Get started",
+      title: "Connect an application",
+      description: "Copy the ScopeDB API address, create an API key, and test a client.",
+      link: "/guides/connect-to-scopedb",
+    },
+    {
+      category: "Work with data",
+      title: "Ingest data",
+      description: "Transform JSON rows with ScopeQL and insert them through the ingest API.",
+      link: "/guides/ingest-events",
+    },
+    {
+      category: "Work with data",
       title: "Guides",
       description: "Follow task-focused workflows for ingest, queries, data modeling, and indexes.",
       link: "/guides",
@@ -50,7 +50,7 @@ function FeaturedItems() {
       category: "Reference",
       title: "ScopeQL reference",
       description: "Look up language syntax, data types, statements, and functions.",
-      link: "/reference/commands/stmt-query",
+      link: "/reference",
     },
   ];
 

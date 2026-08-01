@@ -8,21 +8,21 @@ export const guidesSidebar: SidebarItem[] = [
     { label: "Overview", link: "/guides" },
     {
         label: "Get started", items: [
-            { label: "ScopeDB Cloud concepts", link: "/guides/cloud-concepts" },
-            { label: "Connect to ScopeDB", link: "/guides/connect-to-scopedb" },
             { label: "Quickstart", link: "/guides/quickstart" },
+            { label: "Connect an application", link: "/guides/connect-to-scopedb" },
+            { label: "ScopeDB Cloud concepts", link: "/guides/cloud-concepts" },
         ],
     },
     {
-        label: "Use ScopeDB", items: [
-            { label: "Ingest event data", link: "/guides/ingest-events" },
-            { label: "Query event data", link: "/guides/query-events" },
-            { label: "Model flexible events", link: "/guides/model-flexible-events" },
+        label: "Work with data", items: [
+            { label: "Ingest data", link: "/guides/ingest-events" },
+            { label: "Query data", link: "/guides/query-events" },
+            { label: "Model semi-structured data", link: "/guides/model-flexible-events" },
             { label: "Add indexes", link: "/guides/add-indexes" },
         ],
     },
     {
-        label: "Access", items: [
+        label: "Manage access", items: [
             { label: "Authentication and API keys", link: "/guides/authentication" },
         ],
     },

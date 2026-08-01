@@ -1,9 +1,9 @@
 ---
 title: Node.js SDK
 relatedContents:
-    - title: Connect to ScopeDB
+    - title: Connect an application
       url: /guides/connect-to-scopedb
-    - title: Query events
+    - title: Query data
       url: /guides/query-events
     - title: HTTP API
       url: /developer/http-api
@@ -31,9 +31,14 @@ pnpm install scopedb
 ```ts
 import { Client } from "scopedb";
 
-const client = new Client(process.env.SCOPEDB_ENDPOINT!, {
-  token: process.env.SCOPEDB_API_KEY,
-});
+const endpoint = process.env.SCOPEDB_ENDPOINT;
+const apiKey = process.env.SCOPEDB_API_KEY;
+
+if (!endpoint || !apiKey) {
+  throw new Error("SCOPEDB_ENDPOINT and SCOPEDB_API_KEY are required");
+}
+
+const client = new Client(endpoint, { token: apiKey });
 ```
 
 Keep the API key on the server. Do not create authenticated ScopeDB clients in

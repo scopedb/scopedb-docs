@@ -1,5 +1,5 @@
 ---
-title: Model flexible events
+title: Model semi-structured data
 relatedContents:
     - title: Semi-structured data type
       url: /reference/data-types/semi-structured
@@ -12,6 +12,9 @@ relatedContents:
 ScopeDB is useful when event data has both stable structure and changing
 payloads. Model that directly: use typed columns for the fields you depend on
 and a semi-structured column for the rest.
+
+The examples use events, but ScopeDB does not require an event schema or a time
+column. Apply the same typed-versus-flexible decision to your own data model.
 
 ## Recommended shape
 

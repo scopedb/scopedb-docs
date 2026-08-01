@@ -1,7 +1,7 @@
 ---
 title: ScopeDB Cloud concepts
 relatedContents:
-    - title: Connect to ScopeDB
+    - title: Connect an application
       url: /guides/connect-to-scopedb
     - title: Authentication and API keys
       url: /guides/authentication
@@ -16,11 +16,11 @@ Console, SDKs, the ScopeQL CLI, and the HTTP data API.
 
 | Concept | What it means |
 | --- | --- |
-| Workspace | The Console context for a data catalog and its programmatic access. Select the intended workspace before copying connection values or managing keys. |
+| Workspace | The current Console context for a data catalog and its programmatic access. Connection values and API keys shown in the Console belong to this workspace. |
 | Console | The workspace-specific UI for exploring the catalog, running queries, connecting clients, and managing API keys. |
 | ScopeDB API address | The HTTPS base URL shown under its purpose label in **Connect**. SDKs, the CLI, and HTTP clients use this value as their endpoint. |
 | API key | A secret credential created for programmatic access to a workspace. Send it as a bearer token and keep it out of client-side applications. |
-| Catalog | The databases, schemas, tables, and views available in the selected workspace. ScopeQL operates on these objects. |
+| Catalog | The databases, schemas, tables, and views available in the current workspace. ScopeQL operates on these objects. |
 
 ## Console and API responsibilities
 
@@ -39,11 +39,11 @@ your workspace.
 
 ## Typical workflow
 
-1. Select the workspace in ScopeDB Console.
-2. Inspect existing data in **Explore** or **Query**.
-3. Open **Connect** and copy the **ScopeDB API** address.
+1. Open ScopeDB Console; the current workspace is the context for the workflow.
+2. Inspect existing data in **Explore** or run ScopeQL in **Query**.
+3. For programmatic access, open **Connect** and copy the **ScopeDB API** address.
 4. Create an API key and copy its one-time secret.
 5. Configure a server-side client and verify it with `SELECT 1`.
 
-Continue with [Connect to ScopeDB](/guides/connect-to-scopedb) for the exact
+Continue with [Connect an application](/guides/connect-to-scopedb) for the exact
 steps.

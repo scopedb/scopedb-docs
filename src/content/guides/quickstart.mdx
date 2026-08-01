@@ -1,7 +1,7 @@
 ---
 title: Quickstart
 relatedContents:
-    - title: Connect to ScopeDB
+    - title: Connect an application
       url: /guides/connect-to-scopedb
     - title: Query syntax
       url: /reference/commands/stmt-query
@@ -13,9 +13,11 @@ relatedContents:
 
 Create a table, load a few events, and query them with ScopeQL.
 
-You need a reachable ScopeDB endpoint and a way to run ScopeQL statements. If
-you have not set up your endpoint and API key yet, start with
-[Connect to ScopeDB](/guides/connect-to-scopedb).
+This tutorial uses event data as a compact example. ScopeDB does not require
+this schema, an event model, or a time column.
+
+Open ScopeDB Console, then open **Query**. Run each ScopeQL block below in
+order. You do not need an API address or API key for this Console workflow.
 
 ## 1. Create an event table
 
@@ -93,7 +95,7 @@ ORDER BY events DESC;
 
 Continue with:
 
-- [Ingest events](/guides/ingest-events) to load application data through the ingest API.
-- [Query events](/guides/query-events) to learn the common query patterns for event data.
-- [Model flexible events](/guides/model-flexible-events) to decide what belongs in typed columns and what belongs in `var`.
+- [Ingest data](/guides/ingest-events) to load application data through the ingest API.
+- [Query data](/guides/query-events) to learn common query patterns.
+- [Model semi-structured data](/guides/model-flexible-events) to decide what belongs in typed columns and what belongs in `var`.
 - [HTTP API](/developer/http-api) if you want to call ScopeDB from your own service.

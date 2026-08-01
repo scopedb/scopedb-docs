@@ -1,5 +1,5 @@
 ---
-title: Query events
+title: Query data
 relatedContents:
     - title: Query syntax
       url: /reference/commands/stmt-query
@@ -9,7 +9,11 @@ relatedContents:
       url: /reference/functions/string
 ---
 
-Event queries usually start with a time range, narrow the data by service or tag,
+This guide uses the `events` table from the Quickstart to demonstrate reusable
+query patterns: filtering, projection, search, aggregation, and joins. The same
+operators apply to other table shapes.
+
+Event queries often start with a time range, narrow the data by service or tag,
 then either inspect matching rows or aggregate them into a trend.
 
 ## Inspect recent rows

@@ -1,7 +1,7 @@
 ---
-title: Ingest events
+title: Ingest data
 relatedContents:
-    - title: Connect to ScopeDB
+    - title: Connect an application
       url: /guides/connect-to-scopedb
     - title: HTTP API
       url: /developer/http-api
@@ -23,12 +23,16 @@ You need:
 - an event table to write to.
 
 If you have not connected yet, start with
-[Connect to ScopeDB](/guides/connect-to-scopedb).
+[Connect an application](/guides/connect-to-scopedb).
 
-## 1. Create an event table
+## 1. Prepare the destination table
 
-Create typed columns for fields you query often. Keep the original event in
-`var`.
+This guide continues from the [Quickstart](/guides/quickstart) and reuses its
+`events` table. If you completed that guide, skip to the ingest statement.
+
+If you are reading this guide independently, open **Query** in ScopeDB Console
+and create the destination table. The example uses typed columns for fields it
+queries often and keeps the original event in `var`:
 
 ```scopeql
 CREATE TABLE events (
@@ -102,5 +106,5 @@ LIMIT 10;
 
 ## Next step
 
-Continue with [Query events](/guides/query-events) to inspect, search, and
+Continue with [Query data](/guides/query-events) to inspect, search, and
 aggregate event data.

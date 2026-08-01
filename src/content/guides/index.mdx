@@ -7,32 +7,35 @@ common data workflows.
 
 ## Start here
 
+### [Quickstart](/guides/quickstart)
+
+Create a table and run your first ScopeQL queries in ScopeDB Console.
+
+### [Connect an application](/guides/connect-to-scopedb)
+
+Copy your workspace's ScopeDB API address, create an API key, and verify the
+connection.
+
 ### [ScopeDB Cloud concepts](/guides/cloud-concepts)
 
 Learn how workspaces, the Console, API addresses, API keys, and the data catalog
 fit together.
 
-### [Connect to ScopeDB](/guides/connect-to-scopedb)
+## Work with data
 
-Copy your workspace's ScopeDB API address, create an API key, and verify the
-connection.
+The following guides use event data as one coherent example. ScopeDB does not
+require this schema, an event model, or a time column.
 
-### [Quickstart](/guides/quickstart)
-
-Create a table, insert sample rows, and run your first ScopeQL queries.
-
-## Use ScopeDB
-
-### [Ingest events](/guides/ingest-events)
+### [Ingest data](/guides/ingest-events)
 
 Load application events with ScopeQL transformations and data-quality checks.
 
-### [Query events](/guides/query-events)
+### [Query data](/guides/query-events)
 
 Inspect rows, search messages, extract fields from payloads, aggregate trends,
 and join metadata.
 
-### [Model flexible events](/guides/model-flexible-events)
+### [Model semi-structured data](/guides/model-flexible-events)
 
 Decide what belongs in typed columns and what belongs in a semi-structured
 `object` column.
@@ -40,9 +43,6 @@ Decide what belongs in typed columns and what belongs in a semi-structured
 ### [Add indexes](/guides/add-indexes)
 
 Choose point, range, search, and materialized indexes from real query patterns.
-
-The event workflow is a practical example of ingesting and querying flexible
-data. It is not a required ScopeDB schema or application model.
 
 ## Manage access
 
@@ -52,17 +52,17 @@ Create, store, rotate, and revoke workspace API keys safely.
 
 ## Choose a path
 
-If you are new to ScopeDB, follow these guides in order:
+If you are new to ScopeDB, start in the Console:
 
-1. Read [ScopeDB Cloud concepts](/guides/cloud-concepts).
-2. [Connect to ScopeDB](/guides/connect-to-scopedb).
-3. Complete the [Quickstart](/guides/quickstart).
+1. Complete the [Quickstart](/guides/quickstart).
+2. When you need programmatic access, [connect an application](/guides/connect-to-scopedb).
+3. Read [ScopeDB Cloud concepts](/guides/cloud-concepts) when you need the product model.
 
 Then choose the guide for the task in front of you:
 
-- write data producers with [Ingest events](/guides/ingest-events);
-- inspect and aggregate data with [Query events](/guides/query-events);
-- design flexible event tables with [Model flexible events](/guides/model-flexible-events);
+- write data producers with [Ingest data](/guides/ingest-events);
+- inspect and aggregate data with [Query data](/guides/query-events);
+- design flexible schemas with [Model semi-structured data](/guides/model-flexible-events);
 - improve important query paths with [Add indexes](/guides/add-indexes).
 
 For exact syntax, use the [Reference](/reference).

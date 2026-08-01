@@ -1,7 +1,7 @@
 ---
 title: Authentication and API keys
 relatedContents:
-    - title: Connect to ScopeDB
+    - title: Connect an application
       url: /guides/connect-to-scopedb
     - title: ScopeDB Cloud concepts
       url: /guides/cloud-concepts
@@ -18,8 +18,8 @@ Authorization: Bearer <api-key>
 
 ## Create a key
 
-1. Select the workspace in ScopeDB Console.
-2. Open **Connect**, then choose **Manage keys**, or open **API Keys** directly.
+1. In ScopeDB Console for the current workspace, open **Connect**.
+2. Choose **Manage keys**, or open **API Keys** directly.
 3. Create a key with a name that identifies its application and environment.
 4. Choose the expiration offered by the Console and add useful tags when
    appropriate.
@@ -55,13 +55,15 @@ the exposed key as soon as possible. Revocation is not reversible.
 
 ## Troubleshoot authentication
 
-An HTTP `401` response means the gateway could not authenticate the request.
-Check that:
+An HTTP `401` response means the ScopeDB API could not authenticate the
+request. Check that:
 
 - the request uses `Authorization: Bearer <api-key>`;
 - the key value has no extra whitespace or quotes;
-- the key belongs to the workspace whose API address you are calling;
 - the key has not expired or been revoked.
 
 Do not retry a `401` with the same key. Correct the configuration or create a
 replacement key first.
+
+For a `403` response or an unexpected catalog, confirm that the API address and
+API key were copied from the intended workspace.
