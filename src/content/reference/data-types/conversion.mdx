@@ -97,5 +97,7 @@ Currently, the following explicit casts are supported:
 * Between int and timestamp (timestamp internally stores UNIX epoch in nanoseconds in 64-bit integer).
 * Between int and interval (interval internally stores nanoseconds in 64-bit integer).
 * Between string and any numeric types, boolean, timestamp, or interval.
-* Between value in ANY type and any data type. If the value of ANY type is not compatible with the target data type, it will be converted to NULL.
+* Between a value in ANY type and another data type. If the value is not
+  compatible with the target data type, the cast raises an error. Wrap the cast
+  in [`TRY`](/reference/functions/conversion#try-cast) to return NULL instead.
 * From NULL to any data type.

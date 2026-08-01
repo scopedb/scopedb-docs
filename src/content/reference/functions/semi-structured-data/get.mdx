@@ -4,7 +4,7 @@ title: "[] (get)"
 
 Extracts a value from a semi-structured value that contains an array or object. The return value is of ANY type.
 
-The `[]` operator provides alternative syntax for index or field get, or array map on key-value pairs.
+Use the `[]` operator for array indexing or object field access.
 
 The function returns NULL if either of the arguments is NULL.
 
@@ -33,9 +33,10 @@ An expression that evaluates to a string. This specifies the key in a key-value 
 
 `<field_name>` must not be an empty string.
 
-If object does not contain the specified key, the function returns NULL.
+If the object does not contain the specified key, the function returns NULL.
 
-If `<data>` is an array, the function iterates over the array elements and applies the get logic.
+String keys apply only to OBJECT values. To retrieve an ARRAY element, use an
+integer index. Applying a string key to a non-object ANY value returns NULL.
 
 ## Returns
 
@@ -118,18 +119,4 @@ FROM vartab SELECT v['temperature'];
 +------------------+
 | 31.5             |
 +------------------+
-```
-
-Extract the value of the `name` field from each element in an ARRAY of OBJECTs:
-
-```scopeql
-FROM vartab SELECT s['name'];
-```
-
-```
-+-----------------------+
-| s['name']             |
-+-----------------------+
-| ["sensor1","sensor2"] |
-+-----------------------+
 ```
