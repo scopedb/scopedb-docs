@@ -72,15 +72,40 @@ if err != nil {
 fmt.Println(rows)
 ```
 
-The current conversions are:
+### Result value mapping
 
-| ScopeDB value | Go value |
-| --- | --- |
-| `binary` | `[]byte` |
-| `timestamp` | `time.Time` |
-| Fixed-duration `interval` | `time.Duration` |
-| `null` | `nil` |
-| `array`, `object`, or `any` | JSON string |
+`ToValues` converts each non-null result cell according to its ScopeDB result
+type:
+
+| ScopeDB result type | Go value | Notes |
+| --- | --- | --- |
+| `int` | `int64` | |
+| `uint` | `uint64` | |
+| `float` | `float64` | Includes `NaN` and infinities. |
+| `binary` | `[]byte` | Decoded bytes. |
+| `string` | `string` | |
+| `boolean` | `bool` | |
+| `timestamp` | `time.Time` | Preserves nanosecond precision. |
+| `interval` | `time.Duration` | Fixed-duration intervals only. |
+| `array` | `string` | JSON text; decode with `encoding/json` when needed. |
+| `object` | `string` | JSON text; decode with `encoding/json` when needed. |
+| `any` | `string` | Raw textual value; the SDK does not infer its dynamic Go type. |
+| `null` | `nil` | A null cell is `nil` regardless of the field's declared type. |
+
+The `null` result type can appear in query metadata, such as for a literal
+`NULL`; it is not a table column type. See the
+[data types reference](/reference/data-types) for ScopeDB type semantics.
+
+`ToValues` returns an error when a non-null cell cannot be converted, a numeric
+value is out of range, or the result contains an unrecognized data type.
+
+`array` and `object` contain JSON text, but do not assume that an `any` value is
+JSON. It remains raw text because its dynamic ScopeDB type cannot be
+reconstructed from the result. Decode structured values into a concrete Go
+type, or use `json.Decoder.UseNumber` when decoding into interface values and
+numeric precision matters. Decoding structured values does not recursively
+apply the SDK's result conversions; nested binary, timestamp, and interval
+values remain strings.
 
 ## Control statement execution
 

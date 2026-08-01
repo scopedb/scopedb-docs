@@ -78,6 +78,30 @@ console.log(rows[0]);
 Use `first()` for a lookup or aggregate that returns at most one row, and
 `intoValues()` when positional arrays are more convenient.
 
+### Result value mapping
+
+`intoValues()`, `intoObjects()`, and `first()` convert result cells according
+to their ScopeDB result type:
+
+| ScopeDB result type | JavaScript value | Notes |
+| --- | --- | --- |
+| `int` | `bigint` | Use `integerMode` to return a `number` or decimal `string` instead. |
+| `uint` | `bigint` | Use `integerMode` to return a `number` or decimal `string` instead. |
+| `float` | `number` | Finite values only; `NaN` and infinities cause conversion to throw. |
+| `binary` | `string` | Hexadecimal representation. |
+| `string` | `string` | |
+| `boolean` | `boolean` | |
+| `timestamp` | `Date` | JavaScript `Date` preserves milliseconds, not nanoseconds. |
+| `interval` | `string` | Fixed-duration ISO 8601 representation. |
+| `array` | `string` | JSON text; use `JSON.parse()` when an array is needed. |
+| `object` | `string` | JSON text; use `JSON.parse()` when an object is needed. |
+| `any` | `string` | Raw textual value; the SDK does not infer its dynamic JavaScript type. |
+| `null` | `null` | A null cell is `null` regardless of the field's declared type. |
+
+The `null` result type can appear in query metadata, such as for a literal
+`NULL`; it is not a table column type. See the
+[data types reference](/reference/data-types) for ScopeDB type semantics.
+
 ScopeDB integers can exceed JavaScript's safe integer range. The SDK returns
 them as `bigint` by default, which preserves precision but cannot be passed to
 `JSON.stringify` directly. Choose the representation at the application
@@ -92,6 +116,17 @@ Use:
 - `bigint` for lossless JavaScript arithmetic;
 - `string` for JSON-safe identifiers or unbounded counters;
 - `number` only when values fit within JavaScript's safe integer range.
+
+Converting a `timestamp` to `Date` discards sub-millisecond precision. Use
+`jsonRows()` when the application must retain the original result text.
+
+`array` and `object` values contain JSON text. Do not assume that an `any`
+value is JSON: it remains raw text because its dynamic ScopeDB type cannot be
+reconstructed from the result. When parsing `array` or `object` values with
+`JSON.parse()`, nested integers outside JavaScript's safe range can lose
+precision. Parsing structured values does not recursively apply the SDK's
+result conversions; nested binary, timestamp, and interval values remain
+strings.
 
 ## Control statement execution
 
