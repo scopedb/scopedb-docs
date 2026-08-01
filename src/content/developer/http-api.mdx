@@ -142,40 +142,9 @@ the statement may already have finished or failed.
 
 ## Ingest JSON rows
 
-`POST /v1/ingest` turns incoming rows into a ScopeQL input relation. The
-statement can cast, filter, and reshape each row before ending with
-`INSERT INTO`.
-
-The example writes to the `events` table created in the
-[Quickstart](/guides/quickstart). Create that table first or replace the table
-and columns with your own destination schema.
-
-This example uses ingestion time so it remains queryable with a recent-time
-filter:
-
-```bash
-curl -X POST "$SCOPEDB_ENDPOINT/v1/ingest" \
-  -H "Authorization: Bearer $SCOPEDB_API_KEY" \
-  -H "Content-Type: application/json" \
-  --data-binary @- <<'JSON'
-{
-  "data": {
-    "format": "json",
-    "rows": "{\"service\":\"checkout\",\"name\":\"checkout_started\"}\n{\"service\":\"checkout\",\"name\":\"payment_failed\"}"
-  },
-  "statement": "SELECT NOW() AS time, $0['service']::string AS service, $0['name']::string AS name, $0::object AS var INSERT INTO events"
-}
-JSON
-```
-
-The request body uses these fields:
-
-| Field | Required | Description |
-| --- | --- | --- |
-| `data` | Yes | Input data object. |
-| `data.format` | Yes | Use `json` for JSON rows. |
-| `data.rows` | Yes | A string containing one JSON value per line. A single row is also valid. |
-| `statement` | Yes | ScopeQL transformation that ends with `INSERT INTO`. Each input row is available as `$0`. |
+`POST /v1/ingest` inserts JSON rows through a ScopeQL transformation that ends
+with `INSERT INTO`. See [Ingest data](/guides/ingest-events) for the current
+runnable workflow and request shape.
 
 Send a complete, buffered JSON request body with a known `Content-Length`.
 Streaming or chunked request bodies are not currently supported by this
@@ -191,9 +160,7 @@ A successful response reports the rows inserted:
 ```
 
 If the connection ends before this response arrives, the ingest outcome may be
-unknown. Retrying the same batch can insert it again. When replays matter, add a
-stable event identifier and make deduplication part of the application's data
-model.
+unknown. Retrying the same batch can insert it again; do not retry blindly.
 
 ## Errors and retries
 
