@@ -13,10 +13,10 @@ Use the Node.js SDK from server-side JavaScript or TypeScript applications.
 
 ## Before you start
 
-Set your ScopeDB endpoint and API key:
+Use Node.js 20 or later. Set your ScopeDB endpoint and API key:
 
 ```bash
-export SCOPEDB_ENDPOINT="https://<account-endpoint>"
+export SCOPEDB_ENDPOINT="https://<endpoint>"
 export SCOPEDB_API_KEY="<api-key>"
 ```
 
@@ -44,7 +44,7 @@ browser code.
 ```ts
 const result = await client
   .statement(`
-    FROM app_events
+    FROM events
     WHERE service = 'checkout'
     ORDER BY time DESC
     LIMIT 10
@@ -66,12 +66,12 @@ const stream = client
       $0::object AS var
     WHERE service IS NOT NULL
       AND name IS NOT NULL
-    INSERT INTO app_events
+    INSERT INTO events
   `)
   .build();
 
 await stream.send({
-  time: "2026-01-21T10:00:00Z",
+  time: new Date().toISOString(),
   service: "checkout",
   name: "checkout_started",
   region: "apac",
@@ -81,9 +81,13 @@ await stream.flush();
 await stream.shutdown();
 ```
 
-Use a long-lived stream for batches that share the same transformation. Use
-separate streams when different event families write to different tables or need
-different validation.
+Use a long-lived stream for batches that share the same transformation. Always
+call `shutdown()` when you are done; it flushes remaining records before closing,
+so the explicit `flush()` above is only a checkpoint.
+
+The stream retries transient failures. Because an ingest response can be lost
+after rows are accepted, a retry may insert the same row again. Include a stable
+event identifier when your application needs to detect replays.
 
 ## Handle integers before returning JSON
 

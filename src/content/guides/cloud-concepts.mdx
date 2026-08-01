@@ -1,0 +1,49 @@
+---
+title: ScopeDB Cloud concepts
+relatedContents:
+    - title: Connect to ScopeDB
+      url: /guides/connect-to-scopedb
+    - title: Authentication and API keys
+      url: /guides/authentication
+    - title: Developer overview
+      url: /developer
+---
+
+ScopeDB Cloud is the managed ScopeDB service. You work with data through the
+Console, SDKs, the ScopeQL CLI, and the HTTP data API.
+
+## Core concepts
+
+| Concept | What it means |
+| --- | --- |
+| Workspace | The Console context for a data catalog and its programmatic access. Select the intended workspace before copying connection values or managing keys. |
+| Console | The workspace-specific UI for exploring the catalog, running queries, connecting clients, and managing API keys. |
+| ScopeDB API address | The HTTPS base URL shown under its purpose label in **Connect**. SDKs, the CLI, and HTTP clients use this value as their endpoint. |
+| API key | A secret credential created for programmatic access to a workspace. Send it as a bearer token and keep it out of client-side applications. |
+| Catalog | The databases, schemas, tables, and views available in the selected workspace. ScopeQL operates on these objects. |
+
+## Console and API responsibilities
+
+Use the Console when you need workspace-specific information or an interactive
+workflow:
+
+- **Explore** to browse the catalog;
+- **Query** to run ScopeQL interactively;
+- **Connect** to copy a purpose-labeled API address and client recipe;
+- **API Keys** to create or revoke credentials.
+
+Use an SDK, the CLI, or the HTTP API when an application, job, or script needs
+programmatic access. The documentation uses placeholders such as
+`https://<endpoint>` because the authoritative value comes from **Connect** in
+your workspace.
+
+## Typical workflow
+
+1. Select the workspace in ScopeDB Console.
+2. Inspect existing data in **Explore** or **Query**.
+3. Open **Connect** and copy the **ScopeDB API** address.
+4. Create an API key and copy its one-time secret.
+5. Configure a server-side client and verify it with `SELECT 1`.
+
+Continue with [Connect to ScopeDB](/guides/connect-to-scopedb) for the exact
+steps.

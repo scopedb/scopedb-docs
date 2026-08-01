@@ -31,7 +31,7 @@ Create typed columns for fields you query often. Keep the original event in
 `var`.
 
 ```scopeql
-CREATE TABLE app_events (
+CREATE TABLE events (
     time timestamp,
     service string,
     name string,
@@ -43,24 +43,25 @@ CREATE TABLE app_events (
 ## 2. Write the ingest statement
 
 The ingest statement receives each input row as `$0`. Extract stable columns,
-cast them to the target types, and preserve the original payload.
+cast them to the target types, and preserve the original payload. This runnable
+sample uses ingestion time from `NOW()`:
 
 ```scopeql
 SELECT
-    $0['time']::timestamp AS time,
+    NOW() AS time,
     $0['service']::string AS service,
     $0['name']::string AS name,
     $0['message']::string AS message,
     $0::object AS var
-WHERE time > NOW() - 'PT24h'::interval
-  AND time < NOW() + 'PT1h'::interval
-  AND service IS NOT NULL
+WHERE service IS NOT NULL
   AND name IS NOT NULL
-INSERT INTO app_events
+INSERT INTO events
 ```
 
-Use the `WHERE` clause for durable checks such as required fields and reasonable
-timestamp bounds. Keep business rules that change often in queries or views.
+For production data, send the source event time and replace `NOW()` with
+`$0['time']::timestamp`. Use the `WHERE` clause for durable checks such as
+required fields and reasonable timestamp bounds. Keep business rules that
+change often in queries or views.
 
 ## 3. Send events with HTTP
 
@@ -71,24 +72,29 @@ values.
 curl -X POST "$SCOPEDB_ENDPOINT/v1/ingest" \
   -H "Authorization: Bearer $SCOPEDB_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
-    "data": {
-      "format": "json",
-      "rows": "{\"time\":\"2026-01-21T10:00:00Z\",\"service\":\"checkout\",\"name\":\"payment_failed\",\"message\":\"Credit card gateway timed out\",\"gateway\":\"credit_card\"}"
-    },
-    "statement": "SELECT $0['time']::timestamp AS time, $0['service']::string AS service, $0['name']::string AS name, $0['message']::string AS message, $0::object AS var INSERT INTO app_events"
-  }'
+  --data-binary @- <<'JSON'
+{
+  "data": {
+    "format": "json",
+    "rows": "{\"service\":\"checkout\",\"name\":\"payment_failed\",\"message\":\"Credit card gateway timed out\",\"gateway\":\"credit_card\"}"
+  },
+  "statement": "SELECT NOW() AS time, $0['service']::string AS service, $0['name']::string AS name, $0['message']::string AS message, $0::object AS var INSERT INTO events"
+}
+JSON
 ```
 
-The response includes the number of rows inserted.
+The response includes `num_rows_inserted`. If the connection ends before the
+response arrives, the outcome may be unknown; see
+[HTTP API retries](/developer/http-api#errors-and-retries).
 
 ## 4. Query the new rows
 
 Run a query to confirm the data is available:
 
 ```scopeql
-FROM app_events
-WHERE service = 'checkout'
+FROM events
+WHERE time >= NOW() - 'PT15m'::interval
+  AND service = 'checkout'
 SELECT time, name, message, var['gateway']::string AS gateway
 ORDER BY time DESC
 LIMIT 10;

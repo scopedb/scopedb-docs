@@ -18,7 +18,7 @@ For example, this query filters by time, service, and a gateway field inside
 `var`:
 
 ```scopeql
-FROM app_events
+FROM events
 SELECT *, var['gateway']::string AS gateway
 WHERE time >= NOW() - 'PT1h'::interval
   AND service = 'checkout'
@@ -36,9 +36,9 @@ The useful index candidates are the fields that narrow the result set:
 ## Common index choices
 
 ```scopeql
-CREATE RANGE INDEX ON app_events (time);
-CREATE POINT INDEX ON app_events (service);
-CREATE POINT INDEX ON app_events (var);
+CREATE RANGE INDEX ON events (time);
+CREATE POINT INDEX ON events (service);
+CREATE POINT INDEX ON events (var);
 ```
 
 A point index on an `object` or `any` column indexes paths inside that value. Use
@@ -50,20 +50,20 @@ If one nested path is the only hot filter, you can index that expression
 directly:
 
 ```scopeql
-CREATE POINT INDEX ON app_events (var['gateway']::string);
+CREATE POINT INDEX ON events (var['gateway']::string);
 ```
 
 For text investigation, use a search index on the expression users search:
 
 ```scopeql
-CREATE SEARCH INDEX ON app_events (message);
+CREATE SEARCH INDEX ON events (message);
 ```
 
 For expensive semi-structured extraction that appears in many queries, use a
 materialized index:
 
 ```scopeql
-CREATE MATERIALIZED INDEX ON app_events (var['http']['url']::string);
+CREATE MATERIALIZED INDEX ON events (var['http']['url']::string);
 ```
 
 ## Index only what has a job

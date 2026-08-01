@@ -1,9 +1,10 @@
 import Footer from "@/components/Footer";
 import { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "ScopeDB Documentation",
-  description: "Get an overview of ScopeDB features, integrations, and how to use them",
+  description: "Learn how to connect, ingest, query, and build with ScopeDB Cloud",
 }
 
 function FeaturedItems() {
@@ -16,21 +17,39 @@ function FeaturedItems() {
 
   const featured: FeaturedItem[] = [
     {
-      category: "Reference",
-      title: "Data Types",
-      description: "Learn about ScopeDB data types",
-      link: "/reference/data-types",
+      category: "Get started",
+      title: "ScopeDB Cloud concepts",
+      description: "Understand workspaces, API addresses, and how the Console fits together.",
+      link: "/guides/cloud-concepts",
+    },
+    {
+      category: "Get started",
+      title: "Connect to ScopeDB",
+      description: "Copy your workspace address, create an API key, and test the connection.",
+      link: "/guides/connect-to-scopedb",
+    },
+    {
+      category: "Use ScopeDB",
+      title: "Quickstart",
+      description: "Create a table, add sample data, and run your first ScopeQL query.",
+      link: "/guides/quickstart",
+    },
+    {
+      category: "Use ScopeDB",
+      title: "Guides",
+      description: "Follow task-focused workflows for ingest, queries, data modeling, and indexes.",
+      link: "/guides",
+    },
+    {
+      category: "Build",
+      title: "Developer resources",
+      description: "Use the HTTP API, SDKs, or ScopeQL CLI from your application.",
+      link: "/developer",
     },
     {
       category: "Reference",
-      title: "Functions",
-      description: "Learn about ScopeDB functions",
-      link: "/reference/functions",
-    },
-    {
-      category: "Reference",
-      title: "Query Syntax",
-      description: "Learn about ScopeDB query syntax",
+      title: "ScopeQL reference",
+      description: "Look up language syntax, data types, statements, and functions.",
       link: "/reference/commands/stmt-query",
     },
   ];
@@ -43,7 +62,7 @@ function FeaturedItems() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {
           featured.map((item) => (
-            <a
+            <Link
               key={`${item.category}-${item.title}`}
               className="bg-white border border-[rgba(0,0,0,0.1)] rounded-[16px] p-[16px] flex flex-col gap-[4px] no-underline transition-all duration-300  hover:shadow-lg"
               href={item.link}
@@ -57,52 +76,12 @@ function FeaturedItems() {
               <div className="text-[var(--text-tertiary)]  text-[14px] leading-relaxed">
                 {item.description}
               </div>
-            </a>
+            </Link>
           ))
         }
       </div>
     </>
   );
-}
-
-function BasicItems() {
-  interface BasicItem {
-    title: string;
-    description: string;
-    link: string;
-  }
-
-  const basics: BasicItem[] = [];
-
-  return (
-    <>
-      {
-        basics.length > 0 && (
-          <div>
-            <div className="text-[var(--text-primary)] text-[16px] font-normal pt-[16px]">
-              ScopeDB basics
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-              {basics.map((item) => (
-                <a
-                  key={item.title}
-                  className="bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-300 rounded-xl p-6 flex flex-col gap-3 no-underline transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-1 hover:from-slate-100 hover:to-slate-200 min-h-[140px]"
-                  href={item.link}
-                >
-                  <div className="text-[var(--text-primary)] font-semibold text-[20px] eading-tight">
-                    {item.title}
-                  </div>
-                  <div className="text-[var(--text-tertiary)]  text-[14px] leading-relaxed">
-                    {item.description}
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-        )
-      }
-    </>
-  )
 }
 
 export default function Home() {
@@ -113,11 +92,11 @@ export default function Home() {
           ScopeDB<br />Documentation
         </div>
         <div className="text-[var(--text-secondary)] max-w-[500px] text-[20px] font-normal pt-[16px]">
-          Get an overview of ScopeDB features, integrations, and how to use them.
+          Connect to ScopeDB Cloud, work with your data, and build applications
+          with ScopeQL, APIs, and SDKs.
         </div>
 
         <FeaturedItems />
-        <BasicItems />
 
         <div className="sticky top-full">
           <Footer />

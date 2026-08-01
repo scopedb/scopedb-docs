@@ -3,25 +3,27 @@ title: HTTP API
 relatedContents:
     - title: Connect to ScopeDB
       url: /guides/connect-to-scopedb
-    - title: Ingest events
-      url: /guides/ingest-events
+    - title: Authentication and API keys
+      url: /guides/authentication
     - title: Query syntax
       url: /reference/commands/stmt-query
 ---
 
-Use the HTTP API from backend services, jobs, integrations, or languages without
-a dedicated SDK.
+Use the ScopeDB Cloud HTTP API from backend services, jobs, integrations, or
+languages without a dedicated SDK. The customer data API consists of the ingest
+endpoint and the statement endpoint family documented on this page.
 
-## Before you start
+## Base URL and authentication
 
-Set your endpoint and API key:
+Copy the **ScopeDB API** address from **Connect** in ScopeDB Console, then set it
+with an API key for the same workspace:
 
 ```bash
-export SCOPEDB_ENDPOINT="https://<account-endpoint>"
+export SCOPEDB_ENDPOINT="https://<endpoint>"
 export SCOPEDB_API_KEY="<api-key>"
 ```
 
-Send the API key as a bearer token:
+Send the key as a bearer token on every request:
 
 ```http
 Authorization: Bearer <api-key>
@@ -30,68 +32,186 @@ Authorization: Bearer <api-key>
 Keep API keys in server-side environments. Do not ship them in browser or mobile
 clients.
 
-## Submit a statement
+## Endpoints
 
-Use `/v1/statements` for DDL, inspection, and queries.
+| Method | Path | Use |
+| --- | --- | --- |
+| `POST` | `/v1/ingest` | Transform and insert JSON rows. |
+| `POST` | `/v1/statements` | Submit a ScopeQL statement. |
+| `GET` | `/v1/statements/{statement_id}` | Read statement status and, when ready, its result. |
+| `POST` | `/v1/statements/{statement_id}/cancel` | Request cancellation of a statement. |
+
+## Submit a statement
 
 ```bash
 curl -X POST "$SCOPEDB_ENDPOINT/v1/statements" \
   -H "Authorization: Bearer $SCOPEDB_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
-    "statement": "FROM app_events ORDER BY time DESC LIMIT 10",
-    "format": "json"
-  }'
+  --data-binary @- <<'JSON'
+{
+  "statement": "SELECT 1 AS ok",
+  "format": "json"
+}
+JSON
 ```
 
-If the statement runs asynchronously, the response includes a statement ID.
-Poll that ID until the statement reaches a terminal state:
+The request body accepts these fields:
+
+| Field | Required | Description |
+| --- | --- | --- |
+| `statement` | Yes | ScopeQL text to execute. |
+| `format` | Yes | Result format. Use `json` for the response shape documented here. |
+| `statement_id` | No | A caller-selected UUID. ScopeDB creates one when this field is omitted. |
+| `exec_timeout` | No | Maximum execution duration written as an ISO 8601 duration, such as `PT30S`. |
+
+The response represents the statement's current state. Its common fields are:
+
+| Field | Description |
+| --- | --- |
+| `statement_id` | UUID used to poll or cancel the statement. |
+| `status` | One of the five states below. |
+| `created_at` | Timestamp for the statement. |
+| `progress` | Completion and scan counters reported while the statement runs. |
+| `result_set` | Present when `status` is `finished`. |
+| `message` | Present when `status` is `failed` or `cancelled`. |
+
+### Statement states
+
+| State | Meaning | What the client should do |
+| --- | --- | --- |
+| `pending` | Accepted and waiting to run. | Poll the statement ID. |
+| `running` | Execution is in progress. | Continue polling with a delay. |
+| `finished` | Execution completed successfully. | Read `result_set`. |
+| `failed` | Execution ended with an error. | Read `message`; fix the statement or input before retrying unless the failure is transient. |
+| `cancelled` | Execution ended after cancellation. | Read `message` and stop polling. |
+
+`finished`, `failed`, and `cancelled` are terminal. An HTTP `2xx` response only
+means the API request succeeded; it does not make `failed` or `cancelled`
+statements successful. Always inspect `status`.
+
+### Poll a statement
+
+Poll while the state is `pending` or `running`:
 
 ```bash
 curl "$SCOPEDB_ENDPOINT/v1/statements/<statement-id>?format=json" \
   -H "Authorization: Bearer $SCOPEDB_API_KEY"
 ```
 
-## Ingest events
+Use an increasing delay with jitter instead of a tight loop. Keep the
+`statement_id` with application logs or job state so work can resume after a
+client restart.
 
-Use `/v1/ingest` to send rows with a ScopeQL statement that ends in
+For JSON results, `result_set` has this shape:
+
+```json
+{
+  "metadata": {
+    "fields": [
+      { "name": "ok", "data_type": "int" }
+    ],
+    "num_rows": 1
+  },
+  "format": "json",
+  "rows": [
+    ["1"]
+  ]
+}
+```
+
+`metadata.fields` defines the column order and type. Each entry in `rows` is an
+array in that order. JSON cell values are strings or `null`; convert them using
+the corresponding `data_type` in your client.
+
+### Cancel a statement
+
+```bash
+curl -X POST \
+  "$SCOPEDB_ENDPOINT/v1/statements/<statement-id>/cancel" \
+  -H "Authorization: Bearer $SCOPEDB_API_KEY"
+```
+
+The response includes `statement_id`, its current terminal `status`, `message`,
+and `created_at`. Treat cancellation as a request and inspect the returned state;
+the statement may already have finished or failed.
+
+## Ingest JSON rows
+
+`POST /v1/ingest` turns incoming rows into a ScopeQL input relation. The
+statement can cast, filter, and reshape each row before ending with
 `INSERT INTO`.
+
+This example uses ingestion time so it remains queryable with a recent-time
+filter:
 
 ```bash
 curl -X POST "$SCOPEDB_ENDPOINT/v1/ingest" \
   -H "Authorization: Bearer $SCOPEDB_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
-    "data": {
-      "format": "json",
-      "rows": "{\"time\":\"2026-01-21T10:00:00Z\",\"service\":\"checkout\",\"name\":\"payment_failed\"}"
-    },
-    "statement": "SELECT $0['time']::timestamp AS time, $0['service']::string AS service, $0['name']::string AS name, $0::object AS var INSERT INTO app_events"
-  }'
+  --data-binary @- <<'JSON'
+{
+  "data": {
+    "format": "json",
+    "rows": "{\"service\":\"checkout\",\"name\":\"checkout_started\"}\n{\"service\":\"checkout\",\"name\":\"payment_failed\"}"
+  },
+  "statement": "SELECT NOW() AS time, $0['service']::string AS service, $0['name']::string AS name, $0::object AS var INSERT INTO events"
+}
+JSON
 ```
 
-Use ingest when the incoming rows need casting, filtering, or reshaping before
-they become table rows.
+The request body uses these fields:
 
-## Cancel a statement
-
-Cancel a running statement by ID:
-
-```bash
-curl -X POST "$SCOPEDB_ENDPOINT/v1/statements/<statement-id>/cancel" \
-  -H "Authorization: Bearer $SCOPEDB_API_KEY"
-```
-
-## Endpoints
-
-| Method | Path | Use |
+| Field | Required | Description |
 | --- | --- | --- |
-| `POST` | `/v1/ingest` | Write payload rows through an ingest statement. |
-| `POST` | `/v1/statements` | Submit a ScopeQL statement. |
-| `GET` | `/v1/statements/{id}` | Read statement status and result metadata. |
-| `POST` | `/v1/statements/{id}/cancel` | Cancel a running statement. |
+| `data` | Yes | Input data object. |
+| `data.format` | Yes | Use `json` for JSON rows. |
+| `data.rows` | Yes | A string containing one JSON value per line. A single row is also valid. |
+| `statement` | Yes | ScopeQL transformation that ends with `INSERT INTO`. Each input row is available as `$0`. |
 
-## Next step
+A successful response reports the rows inserted:
 
-Continue with [Ingest events](/guides/ingest-events) for a complete ingest
-workflow.
+```json
+{
+  "num_rows_inserted": 2
+}
+```
+
+If the connection ends before this response arrives, the ingest outcome may be
+unknown. Retrying the same batch can insert it again. When replays matter, add a
+stable event identifier and make deduplication part of the application's data
+model.
+
+## Errors and retries
+
+Errors generated by the ScopeDB Cloud gateway use this envelope:
+
+```json
+{
+  "error": {
+    "message": "request could not be completed"
+  },
+  "request_id": "<request-id>"
+}
+```
+
+`error.retryable` may also be present. Preserve `request_id` when reporting a
+problem. Statement execution failures can instead arrive in-band as a `failed`
+or `cancelled` statement state with an HTTP `2xx` response.
+
+Use the HTTP status, statement state, and `retryable` value when present:
+
+| Response | Guidance |
+| --- | --- |
+| `400` or `422` | Fix the request body or ScopeQL before retrying. |
+| `401` or `403` | Correct the API key or access configuration; do not retry unchanged credentials. |
+| `404` | Check the path or statement ID. |
+| `413` | Reduce the request body or ingest batch. |
+| `429` | Retry with exponential backoff and jitter; honor `Retry-After` when present. |
+| `5xx` | Retry transient failures with exponential backoff and jitter; honor `Retry-After` when present. |
+
+Polling `GET` requests can be retried. Treat statement submissions that mutate
+data as non-idempotent. A caller-selected `statement_id` can correlate polling
+and logs, but resubmitting the same ID is not an idempotency mechanism. After an
+ambiguous submission, fetch that ID and reconcile application state before
+deciding whether to retry. For ambiguous ingest requests, assume a retry may
+duplicate rows.

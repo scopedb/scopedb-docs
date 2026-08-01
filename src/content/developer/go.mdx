@@ -1,0 +1,83 @@
+---
+title: Go SDK
+relatedContents:
+    - title: Connect to ScopeDB
+      url: /guides/connect-to-scopedb
+    - title: HTTP API
+      url: /developer/http-api
+    - title: Go SDK repository
+      url: https://github.com/scopedb/scopedb-sdk/tree/main/go
+---
+
+Use the Go SDK to execute ScopeQL statements from server-side Go applications.
+
+## Before you start
+
+Use Go 1.24 or later. Set the ScopeDB API address and API key copied from
+**Connect** in ScopeDB Console:
+
+```bash
+export SCOPEDB_ENDPOINT="https://<endpoint>"
+export SCOPEDB_API_KEY="<api-key>"
+```
+
+## 1. Install the SDK
+
+From your Go module, run:
+
+```bash
+go get github.com/scopedb/scopedb-sdk/go
+```
+
+## 2. Create a client and run a statement
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"os"
+	"time"
+
+	"github.com/scopedb/scopedb-sdk/go"
+)
+
+func main() {
+	client := scopedb.NewClient(&scopedb.Config{
+		Endpoint: os.Getenv("SCOPEDB_ENDPOINT"),
+		APIKey:   os.Getenv("SCOPEDB_API_KEY"),
+	})
+	defer client.Close()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	result, err := client.Statement("SELECT 1 AS ok").Execute(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	rows, err := result.ToValues()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(rows)
+}
+```
+
+`Execute` submits the statement and polls until it finishes, fails, or is
+cancelled. It returns early if the context is cancelled or reaches its deadline.
+Cancelling the context stops client-side requests and polling; it does not cancel
+the statement in ScopeDB. `ToValues` converts scalar cells to the corresponding
+Go values, converts `null` to `nil`, and leaves array, object, and `any` cells as
+JSON strings.
+
+For direct control over submission and polling, use `Submit` to obtain a
+`StatementHandle`. Call `FetchOnce` and then inspect `Status`, `Progress`, or
+`ResultSet`, or call `Fetch` to poll until completion. To cancel the statement in
+ScopeDB, call `Cancel` on the handle. See the
+[HTTP API guide](/developer/http-api) for the underlying statement-state contract
+and ingest behavior.

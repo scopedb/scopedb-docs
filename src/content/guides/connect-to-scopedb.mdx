@@ -1,18 +1,22 @@
 ---
 title: Connect to ScopeDB
 relatedContents:
+    - title: ScopeDB Cloud concepts
+      url: /guides/cloud-concepts
+    - title: Authentication and API keys
+      url: /guides/authentication
     - title: HTTP API
       url: /developer/http-api
     - title: Node.js SDK
       url: /developer/nodejs
 ---
 
-Connect your application to ScopeDB with two values from ScopeDB Console:
+Connect a client to your workspace with two values from ScopeDB Console:
 
-- an endpoint URL;
+- the **ScopeDB API** address;
 - an API key.
 
-Use the endpoint as the base URL for ScopeDB data APIs. Send the API key as a
+Use the address as the base URL for ScopeDB data APIs. Send the API key as a
 bearer token from your server-side code, jobs, SDKs, or CLI.
 
 ## Before you start
@@ -23,33 +27,39 @@ You need:
 - access to ScopeDB Console;
 - a terminal or application environment where you can store secrets safely.
 
-## 1. Get your endpoint
+## 1. Copy the ScopeDB API address
 
-Open ScopeDB Console and select your account.
+Select your workspace in ScopeDB Console, then open **Connect**.
 
-Copy the endpoint URL. It should look like an HTTPS base URL:
+Under **ScopeDB API**, copy the address shown by the Console. It is an HTTPS base
+URL:
 
 ```bash
-https://<account-endpoint>
+https://<endpoint>
 ```
 
-If the endpoint is still being prepared, wait until it is ready before sending
-production ingest or query traffic.
+Use the purpose label in **Connect** to choose the address. Do not construct an
+address from workspace names or other Console values.
 
 ## 2. Create an API key
 
-Create an API key for your development environment or application.
+From **Connect**, choose **Manage keys**, or open **API Keys** for the workspace.
+Create a key for your application or development environment.
 
-Copy the key when it is shown. Store it in a server-side secret manager or local
-environment file. Do not put ScopeDB API keys in browser code, mobile apps, or
-client-visible configuration.
+Copy the secret when it is shown. This is the only time the Console displays the
+complete secret. If it is lost, create a new key; an existing secret cannot be
+revealed again.
+
+Store the key in a server-side secret manager or local environment file. Do not
+put ScopeDB API keys in browser code, mobile apps, or client-visible
+configuration.
 
 ## 3. Set environment variables
 
 Set the endpoint and API key in your local shell:
 
 ```bash
-export SCOPEDB_ENDPOINT="https://<account-endpoint>"
+export SCOPEDB_ENDPOINT="https://<endpoint>"
 export SCOPEDB_API_KEY="<api-key>"
 ```
 
@@ -70,11 +80,13 @@ curl -X POST "$SCOPEDB_ENDPOINT/v1/statements" \
   }'
 ```
 
-A successful response returns a statement status and result metadata. Long-running
-statements may return a statement ID that you can poll with the HTTP API.
+A successful statement reaches `finished` and returns a result containing `ok`.
+If the first response is `pending` or `running`, poll its `statement_id` as
+described in the [HTTP API guide](/developer/http-api#poll-a-statement).
 
-## Next step
+## Use the connection
 
-Continue with [Quickstart](/guides/quickstart) to create a table, ingest sample
-events, and run your first event queries. If you prefer working from a terminal,
-use the [ScopeQL CLI](/developer/scopeql-cli).
+The **Connect** page also provides copy-ready recipes for supported clients. For
+the full behavior of each interface, see the [HTTP API](/developer/http-api),
+[Node.js SDK](/developer/nodejs), [Go SDK](/developer/go), or
+[ScopeQL CLI](/developer/scopeql-cli).
