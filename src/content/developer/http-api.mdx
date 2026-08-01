@@ -91,7 +91,7 @@ statements successful. Always inspect `status`.
 
 ### Poll a statement
 
-Poll while the state is `pending` or `running`:
+Poll only while the submit response is `pending` or `running`:
 
 ```bash
 curl "$SCOPEDB_ENDPOINT/v1/statements/<statement-id>?format=json" \
@@ -101,6 +101,11 @@ curl "$SCOPEDB_ENDPOINT/v1/statements/<statement-id>?format=json" \
 Use an increasing delay with jitter instead of a tight loop. Keep the
 `statement_id` with application logs or active job state so later polling and
 support reports can be correlated.
+
+If the submit response is already terminal, consume that response directly.
+Statements that finish within the submit request are not necessarily retained
+for a later `GET`. In particular, a `VALUES ... INSERT INTO` statement returns
+its terminal result without creating a pollable statement record.
 
 For JSON results, `result_set` has this shape:
 
@@ -172,9 +177,10 @@ The request body uses these fields:
 | `data.rows` | Yes | A string containing one JSON value per line. A single row is also valid. |
 | `statement` | Yes | ScopeQL transformation that ends with `INSERT INTO`. Each input row is available as `$0`. |
 
-Send one complete JSON document per request. ScopeDB validates the whole
-document before ingestion. Split large datasets into batches, and reduce the
-batch size if the API returns `413`.
+Send a complete, buffered JSON request body with a known `Content-Length`.
+Streaming or chunked request bodies are not currently supported by this
+endpoint. Split large datasets into batches, and reduce the batch size if the
+API returns `413`.
 
 A successful response reports the rows inserted:
 
