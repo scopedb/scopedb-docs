@@ -172,8 +172,9 @@ The request body uses these fields:
 | `data.rows` | Yes | A string containing one JSON value per line. A single row is also valid. |
 | `statement` | Yes | ScopeQL transformation that ends with `INSERT INTO`. Each input row is available as `$0`. |
 
-Send a complete, buffered JSON request body. Streaming or chunked request
-bodies are not currently supported by this endpoint.
+Send one complete JSON document per request. ScopeDB validates the whole
+document before ingestion. Split large datasets into batches, and reduce the
+batch size if the API returns `413`.
 
 A successful response reports the rows inserted:
 
@@ -190,10 +191,21 @@ model.
 
 ## Errors and retries
 
-Use the HTTP status and the `X-Request-ID` response header as the stable error
-contract. Preserve the request ID when reporting a problem. Error bodies are
-diagnostic and may be JSON or plain text; do not make retry decisions from a
-particular body shape.
+API errors use one JSON envelope:
+
+```json
+{
+  "error": {
+    "message": "unprocessable entity"
+  },
+  "request_id": "6c2bd761-9695-44c7-9723-215f618d1199"
+}
+```
+
+Use the HTTP status for retry decisions. Preserve the `X-Request-ID` response
+header when reporting a problem; its value is also returned as `request_id` in
+the body. `error.message` is diagnostic and its exact wording may evolve, so do
+not branch application logic on the message text.
 
 Statement execution failures can instead arrive in-band as a `failed` or
 `cancelled` statement state with an HTTP `2xx` response. Always combine the HTTP
