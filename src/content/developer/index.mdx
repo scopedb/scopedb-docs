@@ -4,31 +4,31 @@ title: Developer
 
 Build applications and tools on ScopeDB from your backend.
 
-Start by connecting to a workspace, then choose the interface that fits your
-application and language.
+Start by connecting to a workspace, then choose an SDK, the HTTP API, or the
+ScopeQL CLI.
 
-## Start here
+## Connect to ScopeDB
 
 ### [Connect an application](/guides/connect-to-scopedb)
 
 Get your endpoint and API key, set environment variables, and send a test
 request.
 
-### [Node.js SDK](/developer/nodejs)
+## Choose an interface
 
-Query ScopeDB and send batched JSON events from TypeScript or JavaScript.
+### [SDKs](/developer/sdks)
 
-### [Go SDK](/developer/go)
+Build backend applications with the Node.js or Go SDK. Start with the SDK
+overview, then follow the task-based guide for your language.
 
-Execute ScopeQL statements from Go applications.
+### [HTTP API](/developer/http-api)
+
+Call ScopeDB from another backend runtime or control requests and statement
+polling directly.
 
 ### [ScopeQL CLI](/developer/scopeql-cli)
 
 Run ScopeDB from a terminal, script, or CI job.
-
-### [HTTP API](/developer/http-api)
-
-Call ScopeDB from any backend service with `/v1/statements` and `/v1/ingest`.
 
 ## Common rules
 
@@ -36,8 +36,6 @@ Whichever interface you choose:
 
 - keep the ScopeDB API key in server-side secret storage;
 - use the ScopeDB API address copied from **Connect** in Console;
-- treat `finished` as the only successful terminal statement state;
-- retain statement IDs while polling or troubleshooting;
 - bound application queries and validate any user-controlled inputs.
 
 For local exploration or scripts, use the [ScopeQL CLI](/developer/scopeql-cli).

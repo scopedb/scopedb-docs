@@ -1,32 +1,37 @@
 ---
 title: Node.js SDK
 relatedContents:
+    - title: SDKs
+      url: /developer/sdks
     - title: Connect an application
       url: /guides/connect-to-scopedb
-    - title: Query data
-      url: /guides/query-events
     - title: HTTP API
       url: /developer/http-api
+    - title: Node.js SDK repository
+      url: https://github.com/scopedb/scopedb-js
 ---
 
-Use the Node.js SDK from server-side JavaScript or TypeScript applications.
+Use the Node.js SDK from server-side TypeScript or JavaScript applications.
 
 ## Before you start
 
-Use Node.js 20 or later. Set your ScopeDB endpoint and API key:
+Use Node.js 20 or later. Follow [Connect an application](/guides/connect-to-scopedb),
+then set the endpoint and API key used by the examples:
 
 ```bash
 export SCOPEDB_ENDPOINT="https://<endpoint>"
 export SCOPEDB_API_KEY="<api-key>"
 ```
 
-## 1. Install the SDK
+## Install
 
 ```bash
-pnpm install scopedb
+pnpm add scopedb
 ```
 
-## 2. Create a client
+The package is ESM-only. Import it with ES module syntax as shown below.
+
+## Create a client
 
 ```ts
 import { Client } from "scopedb";
@@ -44,7 +49,7 @@ const client = new Client(endpoint, { token: apiKey });
 Keep the API key on the server. Do not create authenticated ScopeDB clients in
 browser code.
 
-## 3. Run a statement
+## Execute a statement
 
 ```ts
 const result = await client
@@ -55,58 +60,73 @@ const result = await client
     LIMIT 10
   `)
   .execute();
-
-console.log(result.intoObjects());
 ```
 
-## 4. Send batched JSON events
+`execute()` returns a finished result or throws when execution fails, is
+cancelled, or the request is aborted. It handles an active statement's polling
+internally.
+
+## Work with results
+
+For most application code, convert rows to objects keyed by column name:
 
 ```ts
-const stream = client
-  .ingestStream(`
-    SELECT
-      $0['time']::timestamp AS time,
-      $0['service']::string AS service,
-      $0['name']::string AS name,
-      $0::object AS var
-    WHERE service IS NOT NULL
-      AND name IS NOT NULL
-    INSERT INTO events
-  `)
-  .build();
-
-await stream.send({
-  time: new Date().toISOString(),
-  service: "checkout",
-  name: "checkout_started",
-  region: "apac",
-});
-
-await stream.flush();
-await stream.shutdown();
+const rows = result.intoObjects();
+console.log(rows[0]);
 ```
 
-Use a long-lived stream for batches that share the same transformation. Always
-call `shutdown()` when you are done; it flushes remaining records before closing,
-so the explicit `flush()` above is only a checkpoint.
+Use `first()` for a lookup or aggregate that returns at most one row, and
+`intoValues()` when positional arrays are more convenient.
 
-The stream retries transient failures. Because an ingest response can be lost
-after rows are accepted, a retry may insert the same row again. Include a stable
-event identifier when your application needs to detect replays.
-
-## Handle integers before returning JSON
-
-ScopeDB integer values may exceed JavaScript's safe integer range. The SDK uses
-`bigint` by default for lossless values, but `bigint` is not JSON-serializable.
-
-Convert rows at your application boundary:
+ScopeDB integers can exceed JavaScript's safe integer range. The SDK returns
+them as `bigint` by default, which preserves precision but cannot be passed to
+`JSON.stringify` directly. Choose the representation at the application
+boundary:
 
 ```ts
-const rows = result.intoObjects({ integerMode: "string" });
+const jsonSafeRows = result.intoObjects({ integerMode: "string" });
 ```
 
 Use:
 
-- `bigint` when you need exact arithmetic in JavaScript;
-- `string` when you need JSON-safe identifiers or counters;
-- `number` only when the values fit inside `Number.MAX_SAFE_INTEGER`.
+- `bigint` for lossless JavaScript arithmetic;
+- `string` for JSON-safe identifiers or unbounded counters;
+- `number` only when values fit within JavaScript's safe integer range.
+
+## Control statement execution
+
+Use `submit()` when you need a `StatementHandle` instead of waiting through
+`execute()`:
+
+```ts
+const handle = await client.statement("SELECT 1 AS ok").submit();
+
+console.log(handle.status());
+await handle.fetchOnce();
+const result = await handle.fetch();
+```
+
+An `AbortSignal` stops client-side requests and polling; it does not cancel a
+statement in ScopeDB. Call `handle.cancel()` to request server-side
+cancellation. See the [HTTP API](/developer/http-api) for the underlying state
+and cancellation contract.
+
+## Ingest data
+
+The current SDK exposes `ingestStream()` for batching JSON rows that share one
+ScopeQL transformation. Follow [Ingest data](/guides/ingest-events) for the
+current write workflow. Reuse a stream for its transformation and always call
+`shutdown()` when finished; `shutdown()` flushes remaining rows, so a preceding
+`flush()` is optional.
+
+The helper retries transient failures. A lost response can cause a row to be
+sent again, so use the retry guidance in the
+[HTTP API](/developer/http-api#errors-and-retries).
+
+## Next steps
+
+- Build application queries with [Query data](/guides/query-events).
+- Review statement states, errors, and retries in the
+  [HTTP API](/developer/http-api).
+- Browse the [Node.js SDK repository](https://github.com/scopedb/scopedb-js)
+  for the complete package surface.
