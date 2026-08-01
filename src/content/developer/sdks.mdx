@@ -1,0 +1,40 @@
+---
+title: SDKs
+relatedContents:
+    - title: Connect an application
+      url: /guides/connect-to-scopedb
+    - title: HTTP API
+      url: /developer/http-api
+    - title: Query data
+      url: /guides/query-events
+---
+
+Use a ScopeDB SDK from a supported backend runtime. SDKs configure
+authentication, follow statement execution to a terminal result, and convert
+result cells into language-native values.
+
+These SDKs are pre-release. The pages below describe current behavior only;
+pin your dependency version and upgrade intentionally.
+
+## Choose an SDK
+
+| Runtime | Package | Start here |
+| --- | --- | --- |
+| Node.js 20 or later | [`scopedb`](https://www.npmjs.com/package/scopedb) | [Node.js SDK](/developer/nodejs) |
+| Go 1.24 or later | [`github.com/scopedb/scopedb-sdk/go`](https://pkg.go.dev/github.com/scopedb/scopedb-sdk/go) | [Go SDK](/developer/go) |
+
+Use the [HTTP API](/developer/http-api) from other backend runtimes or when you
+need direct control over requests and responses.
+
+## Common workflow
+
+1. Copy the ScopeDB API address and create an API key by following
+   [Connect an application](/guides/connect-to-scopedb).
+2. Create a client in a trusted server-side process.
+3. Execute a ScopeQL statement. The SDK consumes a terminal submit response or
+   polls while the statement is `pending` or `running`.
+4. Convert the result into the representation expected by your application.
+
+Each language page covers its result types, client-side cancellation, and
+lower-level statement controls. For the underlying statement lifecycle, error
+contract, and retry guidance, use the [HTTP API](/developer/http-api).

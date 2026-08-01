@@ -1,6 +1,8 @@
 ---
 title: Go SDK
 relatedContents:
+    - title: SDKs
+      url: /developer/sdks
     - title: Connect an application
       url: /guides/connect-to-scopedb
     - title: HTTP API
@@ -9,19 +11,19 @@ relatedContents:
       url: https://github.com/scopedb/scopedb-sdk/tree/main/go
 ---
 
-Use the Go SDK to execute ScopeQL statements from server-side Go applications.
+Use the Go SDK from server-side Go applications.
 
 ## Before you start
 
-Use Go 1.24 or later. Set the ScopeDB API address and API key copied from
-**Connect** in ScopeDB Console:
+Use Go 1.24 or later. Follow [Connect an application](/guides/connect-to-scopedb),
+then set the endpoint and API key used by the examples:
 
 ```bash
 export SCOPEDB_ENDPOINT="https://<endpoint>"
 export SCOPEDB_API_KEY="<api-key>"
 ```
 
-## 1. Install the SDK
+## Install
 
 From your Go module, run:
 
@@ -29,55 +31,73 @@ From your Go module, run:
 go get github.com/scopedb/scopedb-sdk/go
 ```
 
-## 2. Create a client and run a statement
+## Create a client
 
 ```go
-package main
+client := scopedb.NewClient(&scopedb.Config{
+	Endpoint: os.Getenv("SCOPEDB_ENDPOINT"),
+	APIKey:   os.Getenv("SCOPEDB_API_KEY"),
+})
+defer client.Close()
+```
 
-import (
-	"context"
-	"fmt"
-	"log"
-	"os"
-	"time"
+Create the client once and reuse it for requests from your application.
 
-	"github.com/scopedb/scopedb-sdk/go"
-)
+## Execute a statement
 
-func main() {
-	client := scopedb.NewClient(&scopedb.Config{
-		Endpoint: os.Getenv("SCOPEDB_ENDPOINT"),
-		APIKey:   os.Getenv("SCOPEDB_API_KEY"),
-	})
-	defer client.Close()
+```go
+ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+defer cancel()
 
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
-
-	result, err := client.Statement("SELECT 1 AS ok").Execute(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	rows, err := result.ToValues()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println(rows)
+result, err := client.Statement("SELECT 1 AS ok").Execute(ctx)
+if err != nil {
+	log.Fatal(err)
 }
 ```
 
-`Execute` submits the statement and polls until it finishes, fails, or is
-cancelled. It returns early if the context is cancelled or reaches its deadline.
-Cancelling the context stops client-side requests and polling; it does not cancel
-the statement in ScopeDB. `ToValues` converts binary cells to `[]byte`, timestamps
-to `time.Time`, fixed-duration intervals to `time.Duration`, and `null` to `nil`.
-Array, object, and `any` cells remain JSON strings.
+`Execute` returns a finished result or an error. It handles an active
+statement's polling internally and returns early when the context is cancelled
+or reaches its deadline.
 
-For direct control over submission and polling, use `Submit` to obtain a
-`StatementHandle`. Call `FetchOnce` and then inspect `Status`, `Progress`, or
-`ResultSet`, or call `Fetch` to poll until completion. To cancel the statement in
-ScopeDB, call `Cancel` on the handle. See the
-[HTTP API guide](/developer/http-api) for the underlying statement-state contract
-and ingest behavior.
+## Work with results
+
+Use `ToValues` to convert JSON result cells to Go values:
+
+```go
+rows, err := result.ToValues()
+if err != nil {
+	log.Fatal(err)
+}
+
+fmt.Println(rows)
+```
+
+The current conversions are:
+
+| ScopeDB value | Go value |
+| --- | --- |
+| `binary` | `[]byte` |
+| `timestamp` | `time.Time` |
+| Fixed-duration `interval` | `time.Duration` |
+| `null` | `nil` |
+| `array`, `object`, or `any` | JSON string |
+
+## Control statement execution
+
+Use `Submit` when you need direct control over a `StatementHandle`. `FetchOnce`
+updates its status once, `Fetch` waits for a terminal result, and `Status`,
+`Progress`, and `ResultSet` expose the last response.
+
+Cancelling the Go context stops client-side requests and polling; it does not
+cancel the statement in ScopeDB. Call `Cancel` on the handle to request
+server-side cancellation. See the [HTTP API](/developer/http-api) for the
+underlying state and cancellation contract.
+
+## Next steps
+
+- Build application queries with [Query data](/guides/query-events).
+- Follow [Ingest data](/guides/ingest-events) for the current write workflow.
+- Review statement states, errors, and retries in the
+  [HTTP API](/developer/http-api).
+- Browse the [Go SDK repository](https://github.com/scopedb/scopedb-sdk/tree/main/go)
+  for the complete package surface.

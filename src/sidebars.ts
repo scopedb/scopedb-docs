@@ -31,21 +31,14 @@ export const guidesSidebar: SidebarItem[] = [
 export const developerSidebar: SidebarItem[] = [
     { label: "Overview", link: "/developer" },
     {
-        label: "APIs", items: [
-            { label: "HTTP API", link: "/developer/http-api" },
-        ],
-    },
-    {
         label: "SDKs", items: [
+            { label: "Overview", link: "/developer/sdks" },
             { label: "Node.js SDK", link: "/developer/nodejs" },
             { label: "Go SDK", link: "/developer/go" },
         ],
     },
-    {
-        label: "Tools", items: [
-            { label: "ScopeQL CLI", link: "/developer/scopeql-cli" },
-        ],
-    },
+    { label: "HTTP API", link: "/developer/http-api" },
+    { label: "ScopeQL CLI", link: "/developer/scopeql-cli" },
 ];
 
 export const referenceSidebar: SidebarItem[] = [
