@@ -15,13 +15,13 @@ Compares whether two expressions are equal (or not equal). The function is NULL-
 The value returned depends on whether any of the inputs are NULL values:
 
 * Returns TRUE, if:
-    * `<null> IS NOT <null>`
-    * `<null> IS <not_null>`
-    * `<not_null> IS <null>`
-* Returns FALSE, if:
     * `<null> IS <null>`
     * `<null> IS NOT <not_null>`
     * `<not_null> IS NOT <null>`
+* Returns FALSE, if:
+    * `<null> IS NOT <null>`
+    * `<null> IS <not_null>`
+    * `<not_null> IS <null>`
 * Otherwise,
-    * `<expr1> IS <expr2>` is equivalent to `<expr1> != <expr2>`
-    * `<expr1> IS NOT <expr2>` is equivalent to `<expr1> = <expr2>`
+    * `<expr1> IS <expr2>` is equivalent to `<expr1> = <expr2>`
+    * `<expr1> IS NOT <expr2>` is equivalent to `<expr1> != <expr2>`

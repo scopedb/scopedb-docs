@@ -7,7 +7,12 @@ Searches text-like data.
 ## Syntax
 
 ```scopeql
-search( <search_data>, query => <query> [, analyzer => <analyzer> ] )
+search(
+    <search_data>,
+    query => <query>
+    [, analyzer => <analyzer> ]
+    [, mode => <mode> ]
+)
 ```
 
 ## Arguments
@@ -28,12 +33,28 @@ The analyzer to use for the search. Supported values:
 
 The default value is `log`.
 
+### `<mode>` (named) (optional)
+
+Controls how analyzed query tokens are matched. Supported values:
+
+* `and`: all unique query tokens must occur in the searched value. Their order
+  does not matter.
+* `phrase`: the analyzed query tokens must occur consecutively and in order
+  within the same string value. A phrase does not span separate strings inside
+  an array or object.
+
+The default value is `and`.
+
 ## Returns
 
 Returns a boolean.
 
-* The value is TRUE if any `<query>` tokens are found in `<search_data>`.
-* Returns NULL if either of these arguments is NULL.
+* In `and` mode, the value is TRUE if every unique `<query>` token is found in
+  `<search_data>`.
+* In `phrase` mode, the value is TRUE if the analyzed phrase is found in a
+  string within `<search_data>`.
+* Returns NULL if `<search_data>` is NULL. The `query`, `analyzer`, and `mode`
+  parameters must be non-NULL string literals.
 * Otherwise, returns FALSE.
 
 ## Examples
@@ -42,7 +63,7 @@ Returns a boolean.
 VALUES ('foo bar'), ('foobar'), ('bar baz'), ('') SELECT *, search($0, query => 'foo');
 ```
 
-```
+```text
 +---------+----------------------------+
 | $0      | search($0, query => 'foo') |
 +---------+----------------------------+
@@ -51,4 +72,25 @@ VALUES ('foo bar'), ('foobar'), ('bar baz'), ('') SELECT *, search($0, query => 
 | bar baz | false                      |
 |         | false                      |
 +---------+----------------------------+
+```
+
+Compare the default `and` mode with phrase matching:
+
+```scopeql
+VALUES ('foo bar'), ('foo one bar'), ('bar foo'), ('foo')
+SELECT
+    $0 AS value,
+    search($0, query => 'foo bar') AS all_tokens,
+    search($0, query => 'foo bar', mode => 'phrase') AS exact_phrase;
+```
+
+```text
++-------------+------------+--------------+
+| value       | all_tokens | exact_phrase |
++-------------+------------+--------------+
+| foo bar     | true       | true         |
+| foo one bar | true       | false        |
+| bar foo     | true       | false        |
+| foo         | false      | false        |
++-------------+------------+--------------+
 ```

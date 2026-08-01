@@ -1,99 +1,60 @@
 ---
-title: substr
+title: String slicing
 ---
 
-Returns the portion of the string value from `<base_expr>`, starting from the character specified by `<start_expr>`, with optionally limited length.
+Returns a range of characters from a string.
 
 ## Syntax
 
 ```scopeql
-substr( <base_expr>, <start_expr> [ , <length_expr> ] )
+<string>[<start>:<end>]
+<string>[:<end>]
+<string>[<start>:]
+<string>[:]
 ```
 
 ## Arguments
 
-### `<base_expr>`
+### `<string>`
 
-An expression that evaluates to a string value.
+An expression that evaluates to a STRING.
 
-### `<start_expr>`
+### `<start>`
 
-An expression that evaluates to an integer. It specifies the offset from which the substring starts. The offset is measured in the number of UTF-8 characters.
+The zero-based character position at which the result starts. A negative value
+counts backward from the end of the string. When omitted or NULL, the slice
+starts at the first character.
 
-The start position is 0-based.
+### `<end>`
 
-### `<length_expr>`
-
-An expression that evaluates to an integer. It specifies the number of UTF-8 characters to return.
-
-Specify a length that is greater than or equal to zero. If the length is a negative number, the function throws an error.
+The zero-based character position at which the result stops. The character at
+this position is not included. A negative value counts backward from the end of
+the string. When omitted or NULL, the slice continues through the final
+character.
 
 ## Returns
 
-The data type of the returned value is string. If any of the inputs are NULL, NULL is returned.
+Returns a STRING. ScopeDB counts Unicode characters rather than UTF-8 bytes.
+Bounds outside the string are clamped to its valid range. If the normalized
+start position is greater than or equal to the end position, the result is an
+empty string. A NULL input string returns NULL.
+
+ScopeQL does not provide a `substr()` function or support a step value in slice
+syntax.
 
 ## Examples
 
-The following example uses the substr function to return the portion of the string that starts at the ninth character and limits the length of the returned value to three characters:
-
 ```scopeql
-SELECT substr('testing 1 2 3', 8, 3);
-```
-
-```
-+-------------------------------+
-| substr('testing 1 2 3', 8, 3) |
-+-------------------------------+
-| 1 2                           |
-+-------------------------------+
-```
-
-The following example shows the substrings returned for the same `<base_expr>` when different values are specified for `<start_expr>` and `<length_expr>`:
-
-```scopeql
-VALUES
-  ('mystring', -1, 3),
-  ('mystring', -3, 3),
-  ('mystring', -3, 7),
-  ('mystring', -5, 3),
-  ('mystring', -7, 3),
-  ('mystring', 0, 3),
-  ('mystring', 0, 7),
-  ('mystring', 1, 3),
-  ('mystring', 1, 7),
-  ('mystring', 3, 3),
-  ('mystring', 3, 7),
-  ('mystring', 5, 3),
-  ('mystring', 5, 7),
-  ('mystring', 7, 3),
-  ('mystring', NULL, 3),
-  ('mystring', 3, NULL)
 SELECT
-  $0 as base_value,
-  $1 as start_value,
-  $2 as length_value,
-  substr($0, $1, $2) as substring;
+    'testing 1 2 3'[8:11] AS part,
+    'mystring'[-3:] AS tail,
+    '零1二3四5'[1:4] AS unicode_part;
 ```
 
-```
-+------------+-------------+--------------+-----------+
-| base_value | start_value | length_value | substring |
-+------------+-------------+--------------+-----------+
-| mystring   | -1          | 3            | g         |
-| mystring   | -3          | 3            | ing       |
-| mystring   | -3          | 7            | ing       |
-| mystring   | -5          | 3            | tri       |
-| mystring   | -7          | 3            | yst       |
-| mystring   | 0           | 3            | mys       |
-| mystring   | 0           | 7            | mystrin   |
-| mystring   | 1           | 3            | yst       |
-| mystring   | 1           | 7            | ystring   |
-| mystring   | 3           | 3            | tri       |
-| mystring   | 3           | 7            | tring     |
-| mystring   | 5           | 3            | ing       |
-| mystring   | 5           | 7            | ing       |
-| mystring   | 7           | 3            | g         |
-| mystring   | NULL        | 3            | NULL      |
-| mystring   | 3           | NULL         | NULL      |
-+------------+-------------+--------------+-----------+
+```text
++------+------+--------------+
+| part | tail | unicode_part |
++------+------+--------------+
+| 1 2  | ing  | 1二3          |
++------+------+--------------+
 ```
