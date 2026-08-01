@@ -1,73 +1,134 @@
 ---
 title: ScopeQL CLI
 relatedContents:
-    - title: Connect to ScopeDB
+    - title: Connect an application
       url: /guides/connect-to-scopedb
-    - title: Query events
-      url: /guides/query-events
+    - title: Authentication and API keys
+      url: /guides/authentication
     - title: ScopeQL repository
       url: https://github.com/scopedb/scopeql
 ---
 
-Use the ScopeQL CLI when you want to run ScopeDB from a terminal, script, or CI
-job.
+Use the ScopeQL CLI to work with a ScopeDB workspace from a terminal, script,
+or CI job.
 
 ## Before you start
 
-Get your endpoint and API key from ScopeDB Console. If you have not done that
-yet, start with [Connect to ScopeDB](/guides/connect-to-scopedb).
+Copy the **ScopeDB API** address and create an API key from **Connect** in
+ScopeDB Console. If you have not done that yet, start with
+[Connect an application](/guides/connect-to-scopedb).
 
 ## 1. Install the CLI
 
-Install with Cargo:
+Download a prebuilt v0.6.0 binary from the
+[ScopeQL v0.6.0 release](https://github.com/scopedb/scopeql/releases/tag/v0.6.0).
+
+To install v0.6.0 from crates.io, use its pinned Rust nightly toolchain:
 
 ```bash
-cargo install scopeql
+rustup toolchain install nightly-2026-05-01
+cargo +nightly-2026-05-01 install scopeql --version 0.6.0
 ```
 
-You can also download prebuilt binaries from the
-[ScopeQL releases page](https://github.com/scopedb/scopeql/releases).
+## 2. Add a connection
 
-## 2. Configure a connection
-
-Set the default connection from environment variables:
+Create a named connection with the interactive flow:
 
 ```bash
-export SCOPEQL_CONFIG_CONNECTIONS_DEFAULT_ENDPOINT="$SCOPEDB_ENDPOINT"
-export SCOPEQL_CONFIG_CONNECTIONS_DEFAULT_API_KEY="$SCOPEDB_API_KEY"
+scopeql config set-connection development
 ```
 
-The CLI also supports a `config.toml` file when you want named connections or
-shared local defaults.
+Paste the ScopeDB API address when prompted, choose `api_key`, then paste the
+API key. The API key prompt does not echo the secret.
 
-## 3. Run a statement
+The first connection becomes the default. Manage named connections with the
+commands available in ScopeQL v0.6.0:
 
-Run a single ScopeQL statement:
+```bash
+scopeql config get-connections
+scopeql config get-connections development
+scopeql config use-connection development
+scopeql config delete-connection old-development
+```
+
+`get-connections` marks the default stored in the discovered local configuration
+file. `use-connection` updates that value. Environment configuration can still
+override the default at runtime for the shell, `run`, and `load`.
+
+## 3. Run ScopeQL
+
+Run a single statement and choose an output format:
 
 ```bash
 scopeql run --format json "SELECT 1 AS ok"
 ```
 
-Run a query against an event table:
+Available output formats are `table`, `json`, `csv`, and `jsonl`. The `json` and
+`csv` formats require a single statement. Run a script containing one or more
+statements with `jsonl`, which can represent a sequence of results:
 
 ```bash
-scopeql run \
-  "FROM app_events WHERE service = 'checkout' ORDER BY time DESC LIMIT 10"
+scopeql run --file workflow.scopeql --format jsonl
 ```
 
-## 4. Start the shell
-
-Start the interactive shell:
+Start the interactive shell by running the CLI without a subcommand:
 
 ```bash
 scopeql
 ```
 
-Use the shell for local exploration, ad-hoc queries, and quick checks while you
-are building.
+## Configuration file shape
 
-## More CLI options
+The connection commands create or update a supported local configuration file.
+A configuration with two API-key connections has this shape:
 
-The CLI supports script files, load operations, output formats, and generated
-config files. For the full command reference, see the
-[ScopeQL repository](https://github.com/scopedb/scopeql).
+```toml
+default_connection = "development"
+
+[connections.development]
+endpoint = "https://<endpoint>"
+auth = "api_key"
+api_key = "<development-api-key>"
+
+[connections.production]
+endpoint = "https://<endpoint>"
+auth = "api_key"
+api_key = "<production-api-key>"
+```
+
+Protect this file because it contains API keys. To use an explicit configuration
+path:
+
+- shell: `scopeql --config-file <file>`;
+- statements: `scopeql run --config-file <file> ...`;
+- loads: `scopeql load --config-file <file> ...`.
+
+## Environment configuration
+
+Environment variables can provide or override the default connection. This is
+useful in CI, where the key should come from secret storage:
+
+```bash
+export SCOPEQL_CONFIG_DEFAULT_CONNECTION="default"
+export SCOPEQL_CONFIG_CONNECTIONS_DEFAULT_ENDPOINT="$SCOPEDB_ENDPOINT"
+export SCOPEQL_CONFIG_CONNECTIONS_DEFAULT_AUTH="api_key"
+export SCOPEQL_CONFIG_CONNECTIONS_DEFAULT_API_KEY="$SCOPEDB_API_KEY"
+```
+
+The `DEFAULT` segment identifies a connection named `default`; it is not an API
+address or workspace identifier.
+
+## Load JSON data
+
+Use `load` to send a local file through a ScopeQL transformation:
+
+```bash
+scopeql load \
+  --file events.jsonl \
+  --format json \
+  --transform "SELECT NOW() AS time, \$0['service']::string AS service, \$0['name']::string AS name, \$0::object AS var INSERT INTO events"
+```
+
+For the flags and release notes that match these commands, see the
+[ScopeQL v0.6.0 source](https://github.com/scopedb/scopeql/tree/v0.6.0) and
+[release](https://github.com/scopedb/scopeql/releases/tag/v0.6.0).

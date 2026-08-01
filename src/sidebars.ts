@@ -8,16 +8,22 @@ export const guidesSidebar: SidebarItem[] = [
     { label: "Overview", link: "/guides" },
     {
         label: "Get started", items: [
-            { label: "Connect to ScopeDB", link: "/guides/connect-to-scopedb" },
             { label: "Quickstart", link: "/guides/quickstart" },
+            { label: "Connect an application", link: "/guides/connect-to-scopedb" },
+            { label: "ScopeDB Cloud concepts", link: "/guides/cloud-concepts" },
         ],
     },
     {
-        label: "Work with event data", items: [
-            { label: "Ingest events", link: "/guides/ingest-events" },
-            { label: "Query events", link: "/guides/query-events" },
-            { label: "Model flexible events", link: "/guides/model-flexible-events" },
+        label: "Work with data", items: [
+            { label: "Ingest data", link: "/guides/ingest-events" },
+            { label: "Query data", link: "/guides/query-events" },
+            { label: "Model semi-structured data", link: "/guides/model-flexible-events" },
             { label: "Add indexes", link: "/guides/add-indexes" },
+        ],
+    },
+    {
+        label: "Manage access", items: [
+            { label: "Authentication and API keys", link: "/guides/authentication" },
         ],
     },
 ];
@@ -25,9 +31,18 @@ export const guidesSidebar: SidebarItem[] = [
 export const developerSidebar: SidebarItem[] = [
     { label: "Overview", link: "/developer" },
     {
-        label: "Build with ScopeDB", items: [
+        label: "APIs", items: [
             { label: "HTTP API", link: "/developer/http-api" },
+        ],
+    },
+    {
+        label: "SDKs", items: [
             { label: "Node.js SDK", link: "/developer/nodejs" },
+            { label: "Go SDK", link: "/developer/go" },
+        ],
+    },
+    {
+        label: "Tools", items: [
             { label: "ScopeQL CLI", link: "/developer/scopeql-cli" },
         ],
     },

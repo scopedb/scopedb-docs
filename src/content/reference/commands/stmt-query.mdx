@@ -209,7 +209,7 @@ If `ON` is omitted, the join condition is `TRUE`, which produces a Cartesian pro
 Join an event table with service metadata:
 
 ```scopeql
-FROM app_events AS e
+FROM events AS e
 JOIN services AS s ON e.service = s.name
 SELECT e.time, e.name, s.team;
 ```
@@ -217,7 +217,7 @@ SELECT e.time, e.name, s.team;
 Keep events even when service metadata is missing:
 
 ```scopeql
-FROM app_events AS e
+FROM events AS e
 LEFT JOIN services AS s ON e.service = s.name
 SELECT e.time, e.name, s.team;
 ```
@@ -225,7 +225,7 @@ SELECT e.time, e.name, s.team;
 Join with a subquery:
 
 ```scopeql
-FROM app_events AS e
+FROM events AS e
 JOIN (
     FROM services
     WHERE active = true

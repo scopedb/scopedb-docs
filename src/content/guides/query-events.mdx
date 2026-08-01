@@ -1,5 +1,5 @@
 ---
-title: Query events
+title: Query data
 relatedContents:
     - title: Query syntax
       url: /reference/commands/stmt-query
@@ -9,13 +9,17 @@ relatedContents:
       url: /reference/functions/string
 ---
 
-Event queries usually start with a time range, narrow the data by service or tag,
+This guide uses the `events` table from the Quickstart to demonstrate reusable
+query patterns: filtering, projection, search, aggregation, and joins. The same
+operators apply to other table shapes.
+
+Event queries often start with a time range, narrow the data by service or tag,
 then either inspect matching rows or aggregate them into a trend.
 
 ## Inspect recent rows
 
 ```scopeql
-FROM app_events
+FROM events
 WHERE time >= NOW() - 'PT15m'::interval
   AND service = 'checkout'
 SELECT time, name, message, var
@@ -29,7 +33,7 @@ IDs, payload fields, or examples to hand to another person.
 ## Search text fields
 
 ```scopeql
-FROM app_events
+FROM events
 WHERE time >= NOW() - 'PT1h'::interval
   AND search(message, query => 'timeout')
 SELECT time, service, name, message
@@ -43,7 +47,7 @@ specific pattern.
 ## Extract fields from `var`
 
 ```scopeql
-FROM app_events
+FROM events
 SELECT
     time,
     service,
@@ -61,7 +65,7 @@ used by a later `WHERE`.
 ## Aggregate by dimension
 
 ```scopeql
-FROM app_events
+FROM events
 WHERE time >= NOW() - 'PT1h'::interval
 GROUP BY service, name
 AGGREGATE count() AS events
@@ -75,7 +79,7 @@ ranking rather than individual rows.
 ## Join with metadata
 
 ```scopeql
-FROM app_events AS e
+FROM events AS e
 JOIN services AS s ON e.service = s.name
 WHERE e.time >= NOW() - 'PT24h'::interval
 GROUP BY s.team, e.name

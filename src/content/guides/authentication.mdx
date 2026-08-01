@@ -1,0 +1,69 @@
+---
+title: Authentication and API keys
+relatedContents:
+    - title: Connect an application
+      url: /guides/connect-to-scopedb
+    - title: ScopeDB Cloud concepts
+      url: /guides/cloud-concepts
+    - title: HTTP API
+      url: /developer/http-api
+---
+
+ScopeDB data APIs use workspace API keys. Send a key from a trusted,
+server-side client with the bearer authentication scheme:
+
+```http
+Authorization: Bearer <api-key>
+```
+
+## Create a key
+
+1. In ScopeDB Console for the current workspace, open **Connect**.
+2. Choose **Manage keys**, or open **API Keys** directly.
+3. Create a key with a name that identifies its application and environment.
+4. Choose the expiration offered by the Console and add useful tags when
+   appropriate.
+5. Copy the secret immediately.
+
+The complete secret is displayed once. ScopeDB cannot reveal an existing secret
+later; create a new key if the value is lost.
+
+## Store and use keys safely
+
+- Keep keys in a server-side secret manager or protected local environment
+  file.
+- Do not commit keys to source control, print them in logs, or include them in
+  support messages.
+- Do not put keys in browser code, mobile applications, or other downloadable
+  clients.
+- Use a separate key for each application and environment so you can replace or
+  revoke one without interrupting unrelated clients.
+- Give keys descriptive names and tags so their owners and purpose remain clear
+  in the Console.
+
+## Rotate a key
+
+For a planned rotation:
+
+1. Create a replacement key and copy its one-time secret.
+2. Update the application's secret storage.
+3. Verify the application with the replacement key.
+4. Revoke the old key in the Console.
+
+If a key may have been exposed, create and distribute a replacement, then revoke
+the exposed key as soon as possible. Revocation is not reversible.
+
+## Troubleshoot authentication
+
+An HTTP `401` response means the ScopeDB API could not authenticate the
+request. Check that:
+
+- the request uses `Authorization: Bearer <api-key>`;
+- the key value has no extra whitespace or quotes;
+- the key has not expired or been revoked.
+
+Do not retry a `401` with the same key. Correct the configuration or create a
+replacement key first.
+
+For a `403` response or an unexpected catalog, confirm that the API address and
+API key were copied from the intended workspace.
