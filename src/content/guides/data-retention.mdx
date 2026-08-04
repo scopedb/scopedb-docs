@@ -1,0 +1,83 @@
+---
+title: Set data retention
+relatedContents:
+    - title: CREATE TABLE
+      url: /reference/commands/statements/create-table
+    - title: ALTER TABLE
+      url: /reference/commands/statements/alter-table
+    - title: Query data
+      url: /guides/query-events
+---
+
+Use a table-level retention policy to make stored data eligible for asynchronous
+expiration after a configured window. ScopeDB accepts a whole number from 1
+through 1825 days. Tables have no automatic retention policy unless you
+configure one.
+
+Retention is a table lifecycle policy, not a row-level time-to-live rule. It
+does not use a timestamp column from your data to decide when an individual row
+expires. Because enforcement is asynchronous, eligible data may remain
+queryable for some time.
+
+## Set retention when you create a table
+
+Add `DATA RETENTION <days> DAY` to `CREATE TABLE`. Use `DAY` even when the value
+is greater than one:
+
+```scopeql
+CREATE TABLE events (
+    time timestamp,
+    service string,
+    name string,
+    message string,
+    var object
+)
+DATA RETENTION 30 DAY;
+```
+
+## Change retention for an existing table
+
+Use `ALTER TABLE` to change the retention window:
+
+```scopeql
+ALTER TABLE events SET DATA RETENTION 90 DAY;
+```
+
+Changes apply to subsequent cleanup. Reducing the window can make existing data
+eligible for removal. The policy applies to the entire table, including data
+that existed before you changed it. Increasing the window does not restore data
+that ScopeDB has already removed.
+
+## Check the current policy
+
+Query `system.tables` to inspect the retention setting:
+
+```scopeql
+FROM system.tables
+SELECT database_name, schema_name, table_name, data_retention_days
+WHERE database_name = 'scopedb'
+  AND schema_name = 'public'
+ORDER BY table_name;
+```
+
+`data_retention_days` is `NULL` when the table has no automatic retention
+policy.
+
+## Remove a retention policy
+
+To stop automatic retention cleanup for a table:
+
+```scopeql
+ALTER TABLE events DROP DATA RETENTION;
+```
+
+Removing the policy prevents future retention enforcement. It cannot recover
+data that ScopeDB already expired while the policy was active.
+
+## Choose a retention window
+
+Use a window that matches how long the table remains useful and any retention
+requirements that apply to the data. If datasets need different windows, keep
+them in separate tables so each table can have its own policy.
+
+Use `DELETE` when you need to target specific rows.
