@@ -1,5 +1,8 @@
 ---
 title: ALTER TABLE
+relatedContents:
+    - title: Set data retention
+      url: /guides/data-retention
 ---
 
 Modifies an existing table in the system.
@@ -33,4 +36,25 @@ ALTER TABLE [ IF EXISTS ] <table_name>
 
 ALTER TABLE [ IF EXISTS ] <table_name>
   DROP CLUSTER KEY
+
+ALTER TABLE [ IF EXISTS ] <table_name>
+  SET DATA RETENTION <days> DAY
+
+ALTER TABLE [ IF EXISTS ] <table_name>
+  DROP DATA RETENTION
 ```
+
+## Data retention
+
+`SET DATA RETENTION` configures a table-level retention window. `<days>` must
+be a whole number from 1 through 1825. `DROP DATA RETENTION` removes the policy
+without restoring data that has already been removed.
+
+```scopeql
+ALTER TABLE events SET DATA RETENTION 90 DAY;
+
+ALTER TABLE events DROP DATA RETENTION;
+```
+
+See [Set data retention](/guides/data-retention) for lifecycle behavior and how
+to inspect the current policy.

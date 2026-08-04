@@ -1,5 +1,8 @@
 ---
 title: CREATE TABLE
+relatedContents:
+    - title: Set data retention
+      url: /guides/data-retention
 ---
 
 Creates a new table in the system.
@@ -15,6 +18,7 @@ CREATE TABLE [ IF NOT EXISTS ] <table_name> (
 [ PARTITION BY <expr> [, ...] ]
 [ CLUSTER BY <expr> [, ...] ]
 [ DISTINCT ON <expr> [, ...] [ BY <order_by_expr> [, ...] ] ]
+[ DATA RETENTION <days> DAY ]
 [ COMMENT = '<string_literal>' ]
 ```
 
@@ -35,6 +39,15 @@ Defines the table cluster key. ScopeDB uses the cluster key to keep related rows
 Use `CLUSTER BY` for fields that are commonly used in filters, range predicates, or ordered access within a partition. For example, an events table partitioned by hourly time buckets might cluster by `account_id`, `event_type`, or `ts` depending on the most common query pattern.
 
 Cluster expressions must be deterministic and must not be constant. `CLUSTER BY` can be used together with `PARTITION BY`; partitioning chooses the broad data grouping, while clustering improves locality inside each group.
+
+### `DATA RETENTION <days> DAY`
+
+Configures automatic table-level data retention. `<days>` must be a whole
+number from 1 through 1825. If this clause is omitted, the table has no
+automatic retention policy.
+
+See [Set data retention](/guides/data-retention) for lifecycle behavior and how
+to inspect or change the policy.
 
 ## Examples
 
@@ -65,5 +78,6 @@ CREATE TABLE latest_logs (
     ts timestamp,
     message string
 )
-DISTINCT ON host BY ts DESC NULLS LAST;
+DISTINCT ON host BY ts DESC NULLS LAST
+DATA RETENTION 30 DAY;
 ```
