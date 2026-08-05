@@ -1,0 +1,172 @@
+---
+title: Rust SDK
+relatedContents:
+    - title: SDKs
+      url: /developer/sdks
+    - title: Connect an application
+      url: /guides/connect-to-scopedb
+    - title: Query data
+      url: /guides/query-events
+    - title: Rust SDK repository
+      url: https://github.com/scopedb/scopedb-sdk/tree/main/rust
+---
+
+Use the async Rust SDK from trusted backend applications and services.
+
+## Before you start
+
+Use Rust 1.85 or later. Follow
+[Connect an application](/guides/connect-to-scopedb), then set the endpoint and
+API key used by the examples:
+
+```bash
+export SCOPEDB_ENDPOINT="https://<endpoint>"
+export SCOPEDB_API_KEY="<api-key>"
+```
+
+## Install
+
+```bash
+cargo add scopedb-client serde_json
+cargo add tokio --features macros,rt-multi-thread
+```
+
+## Create a client
+
+The SDK accepts a configured HTTP client. Use the compatible `reqwest` version
+re-exported by `scopedb-client` to configure authentication, TLS, timeouts, and
+connection pooling:
+
+```rust
+use scopedb_client::Client;
+use scopedb_client::reqwest;
+use scopedb_client::reqwest::header::{AUTHORIZATION, HeaderMap, HeaderValue};
+
+let endpoint = std::env::var("SCOPEDB_ENDPOINT")?;
+let api_key = std::env::var("SCOPEDB_API_KEY")?;
+
+let mut authorization = HeaderValue::from_str(&format!("Bearer {api_key}"))?;
+authorization.set_sensitive(true);
+
+let mut headers = HeaderMap::new();
+headers.insert(AUTHORIZATION, authorization);
+
+let http_client = reqwest::Client::builder()
+    .default_headers(headers)
+    .build()?;
+let client = Client::new(endpoint, http_client)?;
+```
+
+Marking the authorization header as sensitive prevents standard header and
+request `Debug` formatting from exposing the API key.
+
+## Execute a statement
+
+```rust
+let result = client
+    .statement(
+        r#"
+        FROM events
+        WHERE service = 'checkout'
+        ORDER BY time DESC
+        LIMIT 10
+        "#
+        .to_string(),
+    )
+    .execute()
+    .await?;
+```
+
+`execute()` waits for a terminal result and returns an error when execution
+fails or is cancelled.
+
+## Work with results
+
+Convert result cells to typed Rust values:
+
+```rust
+let fields = result.schema().fields();
+println!("{} columns", fields.len());
+
+let rows = result.into_values()?;
+println!("{rows:?}");
+```
+
+Use `json_rows()` when the application needs unconverted string cell values
+instead of typed SDK values. See the
+[data types reference](/reference/data-types) for ScopeDB type semantics.
+
+## Control statement execution
+
+Use `submit()` when you need a statement handle instead of waiting through
+`execute()`:
+
+```rust
+let mut handle = client.statement("SELECT 1 AS ok".to_string()).submit().await?;
+
+println!("status: {:?}", handle.status());
+handle.fetch_once().await?;
+let result = handle.fetch().await?;
+```
+
+Dropping the future stops client-side waiting; it does not cancel the remote
+statement. Call `handle.cancel().await` to request server-side cancellation.
+See the [HTTP API](/developer/http-api) for the underlying lifecycle and error
+contract.
+
+## Browse the catalog
+
+List methods return one page and preserve the opaque continuation token. Fetch
+methods return a complete database, schema, or table resource:
+
+```rust
+use scopedb_client::CatalogListOptions;
+
+let tables = client
+    .list_tables("scopedb", "public", CatalogListOptions::default())
+    .await?;
+let table = client.fetch_table("scopedb", "public", "events").await?;
+
+println!("{} tables; selected {}", tables.items.len(), table.name);
+```
+
+## Stream JSON rows to a table
+
+Use `append_stream()` when records already match an existing destination table.
+It serializes each object as NDJSON, creates bounded batches, and limits
+concurrent append requests:
+
+```rust
+use std::time::Duration;
+
+let stream = client
+    .table("events")
+    .with_schema("public")
+    .append_stream()
+    .batch_bytes(4 * 1024 * 1024)
+    .flush_interval(Duration::from_secs(1))
+    .max_in_flight_requests(4)
+    .build()?;
+
+stream
+    .send(&serde_json::json!({
+        "service": "checkout",
+        "name": "request.completed",
+    }))
+    .await?;
+
+let report = stream.shutdown().await?;
+println!("committed {} rows", report.committed_rows);
+```
+
+`send()` confirms local admission, not remote commit. `flush()` and `shutdown()`
+are remote delivery barriers. The in-memory stream is not a durable queue; use
+an outbox when rows must survive process failure.
+
+## Next steps
+
+- Learn the language with the [ScopeQL quickstart](/guides/quickstart).
+- Build application queries with [Query data](/guides/query-events).
+- Use the [ScopeQL reference](/reference) for exact language syntax.
+- Review the [Rust SDK examples](https://github.com/scopedb/scopedb-sdk/tree/main/rust/examples)
+  for catalog, direct append, streaming write, and telemetry workflows.

@@ -1,0 +1,28 @@
+# ScopeDB documentation
+
+> Canonical public documentation for ScopeDB and the ScopeQL language. SDK
+> documentation describes client behavior; use the ScopeQL guides and reference
+> for language syntax.
+
+## Learn ScopeQL
+
+- [Quickstart](https://docs.scopedb.io/guides/quickstart): Create a table and run initial ScopeQL queries.
+- [Query data](https://docs.scopedb.io/guides/query-events): Common filtering, projection, aggregation, ordering, and join workflows.
+- [ScopeQL reference](https://docs.scopedb.io/reference/): Language syntax, data types, statements, operators, and functions.
+- [Query syntax](https://docs.scopedb.io/reference/commands/stmt-query): Canonical query pipeline syntax.
+- [Statements](https://docs.scopedb.io/reference/commands/statements): DDL and DML statements.
+- [Functions](https://docs.scopedb.io/reference/functions): Scalar and aggregate functions.
+
+## Build with ScopeDB
+
+- [Connect an application](https://docs.scopedb.io/guides/connect-to-scopedb): Configure an endpoint and API key.
+- [SDK overview](https://docs.scopedb.io/developer/sdks): Choose a supported SDK.
+- [Node.js SDK](https://docs.scopedb.io/developer/nodejs): Use the JavaScript and TypeScript client.
+- [Go SDK](https://docs.scopedb.io/developer/go): Use the Go client.
+- [Rust SDK](https://docs.scopedb.io/developer/rust): Use the async Rust client.
+- [HTTP API](https://docs.scopedb.io/developer/http-api): Request, response, statement lifecycle, and error contracts.
+- [ScopeQL CLI](https://docs.scopedb.io/developer/scopeql-cli): Run ScopeQL from a terminal, script, or CI job.
+
+## Discovery
+
+- [Sitemap](https://docs.scopedb.io/sitemap.xml): Complete documentation URL index.
