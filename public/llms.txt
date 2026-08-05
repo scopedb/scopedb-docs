@@ -1,14 +1,14 @@
 # ScopeDB documentation
 
-> Canonical public documentation for ScopeDB and the ScopeQL language. SDK
-> documentation describes client behavior; use the ScopeQL guides and reference
-> for language syntax.
+> Canonical public documentation for ScopeDB Cloud, the serverless database for
+> event analytics, and the ScopeQL language. SDK documentation describes client
+> behavior; use the ScopeQL guides and reference for language syntax.
 
 ## Learn ScopeQL
 
 - [Quickstart](https://docs.scopedb.io/guides/quickstart): Create a table and run initial ScopeQL queries.
 - [Query data](https://docs.scopedb.io/guides/query-events): Common filtering, projection, aggregation, ordering, and join workflows.
-- [ScopeQL reference](https://docs.scopedb.io/reference/): Language syntax, data types, statements, operators, and functions.
+- [ScopeQL reference](https://docs.scopedb.io/reference): Language syntax, data types, statements, operators, and functions.
 - [Query syntax](https://docs.scopedb.io/reference/commands/stmt-query): Canonical query pipeline syntax.
 - [Statements](https://docs.scopedb.io/reference/commands/statements): DDL and DML statements.
 - [Functions](https://docs.scopedb.io/reference/functions): Scalar and aggregate functions.

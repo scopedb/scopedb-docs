@@ -11,6 +11,13 @@ import scopeql from "./shiki-scopeql-grammar.json"
 
 const nextConfig: NextConfig = {
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  async redirects() {
+    return [
+      { source: '/guides/index', destination: '/guides', permanent: true },
+      { source: '/developer/index', destination: '/developer', permanent: true },
+      { source: '/reference/index', destination: '/reference', permanent: true },
+    ]
+  },
 };
 
 const withMDX = createMDX({

@@ -1,45 +1,29 @@
 import { categories, SidebarItem } from '@/sidebars'
+import { SITE_URL } from '@/utils/seo'
 import type { MetadataRoute } from 'next'
 
-interface SitemapItem {
-    url: string;
-    lastModified: Date;
-    changeFrequency: 'daily' | 'weekly' | 'monthly' | 'yearly';
-    priority: number;
-}
-
 export default function sitemap(): MetadataRoute.Sitemap {
-    const items: SitemapItem[] = []
+    const urls = new Set<string>()
     for (const category of Object.values(categories)) {
-        collectSidebarItems(category.sidebar, items)
+        collectSidebarItems(category.sidebar, urls)
     }
 
     return [
         {
-            url: 'https://docs.scopedb.io',
-            lastModified: new Date(),
-            changeFrequency: 'yearly',
-            priority: 1,
+            url: SITE_URL.toString(),
         },
-        ...items
+        ...Array.from(urls, (url) => ({ url }))
     ]
 }
 
-function collectSidebarItems(items: SidebarItem[], sitemapItems: SitemapItem[]) {
+function collectSidebarItems(items: SidebarItem[], urls: Set<string>) {
     for (const item of items) {
         if (item.link) {
-            sitemapItems.push({
-                url: new URL(item.link, 'https://docs.scopedb.io').toString(),
-                lastModified: new Date(),
-                changeFrequency: 'weekly',
-                priority: 0.8,
-            })
+            urls.add(new URL(item.link, SITE_URL).toString())
         }
 
         if (item.items && item.items.length > 0) {
-            collectSidebarItems(item.items, sitemapItems)
+            collectSidebarItems(item.items, urls)
         }
     }
-
-    return sitemapItems
 }

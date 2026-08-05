@@ -181,9 +181,9 @@ export default function MobileNav() {
                     <div className="flex-1 overflow-y-auto">
                         {/* Categories */}
                         <div className="p-4 border-b border-gray-100">
-                            <h3 className="text-xs font-medium text-[var(--text-tertiary)] uppercase tracking-wider mb-3">
+                            <div className="text-xs font-medium text-[var(--text-tertiary)] uppercase tracking-wider mb-3">
                                 Categories
-                            </h3>
+                            </div>
                             <div className="space-y-1">
                                 {cs.map((c) => (
                                     <Link key={c.link} href={c.link} onClick={() => setIsOpen(false)} className={
@@ -203,9 +203,9 @@ export default function MobileNav() {
                         {/* Sidebar */}
                         {sidebar && sidebar.length > 0 && (
                             <div className="p-4">
-                                <h3 className="text-xs font-medium text-[var(--text-tertiary)] uppercase tracking-wider mb-3">
+                                <div className="text-xs font-medium text-[var(--text-tertiary)] uppercase tracking-wider mb-3">
                                     Content
-                                </h3>
+                                </div>
                                 <div className="space-y-1">
                                     {sidebar && <Sidebar prefix="nav" />}
                                 </div>

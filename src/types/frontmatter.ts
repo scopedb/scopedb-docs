@@ -1,5 +1,7 @@
 export interface FrontmatterProps {
     title: string;
+    seoTitle?: string;
+    description?: string;
     relatedContents?: RelatedContent[];
 }
 
