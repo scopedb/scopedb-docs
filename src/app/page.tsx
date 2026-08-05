@@ -105,13 +105,12 @@ export default function Home() {
         }}
       />
       <div className="py-[16px] px-[12px] md:px-[24px] mt-[60px] min-h-[calc(100vh-220px)]">
-        <h1 className="text-[var(--text-primary)] leading-tight text-[50px] font-medium m-0 max-w-[760px]">
-          Build event analytics<br />with ScopeDB Cloud
+        <h1 className="text-[var(--text-primary)] leading-tight text-[50px] font-medium m-0">
+          ScopeDB Documentation
         </h1>
-        <div className="text-[var(--text-secondary)] max-w-[660px] text-[20px] font-normal pt-[16px]">
-          ScopeDB Cloud is a serverless database for event analytics. Learn to
-          load, query, model, and retain data with ScopeQL, APIs, and SDKs.
-        </div>
+        <p className="text-[var(--text-secondary)] max-w-[660px] text-[20px] font-normal pt-[16px] m-0">
+          Connect to ScopeDB Cloud and build with ScopeQL, APIs, and SDKs.
+        </p>
 
         <FeaturedItems />
 
