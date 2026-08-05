@@ -36,6 +36,7 @@ export const developerSidebar: SidebarItem[] = [
             { label: "Overview", link: "/developer/sdks" },
             { label: "Node.js SDK", link: "/developer/nodejs" },
             { label: "Go SDK", link: "/developer/go" },
+            { label: "Rust SDK", link: "/developer/rust" },
         ],
     },
     { label: "HTTP API", link: "/developer/http-api" },
