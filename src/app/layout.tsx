@@ -1,6 +1,8 @@
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { Inter, Roboto_Mono } from "next/font/google";
+import type { Metadata } from "next";
 import Header from "@/components/Header";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/utils/seo";
 import "./globals.css";
 
 const inter = Inter({
@@ -14,6 +16,41 @@ const robotoMono = Roboto_Mono({
   subsets: ["latin"],
 });
 
+export const metadata: Metadata = {
+  metadataBase: SITE_URL,
+  title: {
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  icons: {
+    icon: "/favicon.svg",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    url: "/",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "ScopeDB Docs — serverless database for event analytics",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    images: ["/opengraph-image"],
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,9 +63,6 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <script async defer data-domain="docs.scopedb.io" src="https://plausible.io/js/script.js" />
       </head>
 

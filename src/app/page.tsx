@@ -1,11 +1,17 @@
 import Footer from "@/components/Footer";
-import { Metadata } from "next";
+import JsonLd from "@/components/JsonLd";
+import { absoluteUrl, createPageMetadata, SITE_DESCRIPTION, SITE_NAME } from "@/utils/seo";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "ScopeDB Documentation",
-  description: "Learn how to connect, ingest, query, and build with ScopeDB Cloud",
-}
+const HOME_TITLE = "ScopeDB Docs — Serverless Event Analytics Database";
+
+export const metadata = createPageMetadata({
+  title: HOME_TITLE,
+  description: SITE_DESCRIPTION,
+  pathname: "/",
+  absoluteTitle: true,
+  type: "website",
+});
 
 function FeaturedItems() {
   interface FeaturedItem {
@@ -30,14 +36,14 @@ function FeaturedItems() {
     },
     {
       category: "Work with data",
-      title: "Ingest data",
-      description: "Transform JSON rows with ScopeQL and insert them through the ingest API.",
-      link: "/guides/ingest-events",
+      title: "Query event data",
+      description: "Filter, search, aggregate, and join event data with ScopeQL.",
+      link: "/guides/query-events",
     },
     {
       category: "Work with data",
       title: "Guides",
-      description: "Follow task-focused workflows for ingest, queries, data modeling, and indexes.",
+      description: "Follow task-focused workflows for querying, data modeling, retention, and indexes.",
       link: "/guides",
     },
     {
@@ -56,9 +62,9 @@ function FeaturedItems() {
 
   return (
     <>
-      <div className="text-[var(--text-secondary)] text-[16px] font-normal pt-[60px]">
+      <h2 className="text-[var(--text-secondary)] text-[16px] font-normal pt-[60px]">
         Featured Resources
-      </div>
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
         {
           featured.map((item) => (
@@ -70,9 +76,9 @@ function FeaturedItems() {
               <div className="text-[var(--text-tertiary)] text-[12px] font-normal uppercase tracking-wider">
                 {item.category}
               </div>
-              <div className="text-[var(--text-primary)] font-semibold text-[20px] leading-tight">
+              <h3 className="text-[var(--text-primary)] font-semibold text-[20px] leading-tight m-0">
                 {item.title}
-              </div>
+              </h3>
               <div className="text-[var(--text-tertiary)]  text-[14px] leading-relaxed">
                 {item.description}
               </div>
@@ -87,13 +93,24 @@ function FeaturedItems() {
 export default function Home() {
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": `${absoluteUrl("/")}#website`,
+          name: SITE_NAME,
+          alternateName: "ScopeDB Documentation",
+          url: absoluteUrl("/"),
+          description: SITE_DESCRIPTION,
+        }}
+      />
       <div className="py-[16px] px-[12px] md:px-[24px] mt-[60px] min-h-[calc(100vh-220px)]">
-        <div className="text-[var(--text-primary)] leading-tight text-[50px] font-medium">
-          ScopeDB<br />Documentation
-        </div>
-        <div className="text-[var(--text-secondary)] max-w-[500px] text-[20px] font-normal pt-[16px]">
-          Connect to ScopeDB Cloud, work with your data, and build applications
-          with ScopeQL, APIs, and SDKs.
+        <h1 className="text-[var(--text-primary)] leading-tight text-[50px] font-medium m-0 max-w-[760px]">
+          Build event analytics<br />with ScopeDB Cloud
+        </h1>
+        <div className="text-[var(--text-secondary)] max-w-[660px] text-[20px] font-normal pt-[16px]">
+          ScopeDB Cloud is a serverless database for event analytics. Learn to
+          load, query, model, and retain data with ScopeQL, APIs, and SDKs.
         </div>
 
         <FeaturedItems />

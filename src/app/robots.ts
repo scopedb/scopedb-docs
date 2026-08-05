@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/utils/seo";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://docs.scopedb.io/sitemap.xml",
+    sitemap: new URL("/sitemap.xml", SITE_URL).toString(),
   };
 }

@@ -1,6 +1,16 @@
 import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
 import { RelatedContent } from "@/types/frontmatter";
+import {
+    absoluteUrl,
+    type ContentCategory,
+    getBreadcrumbs,
+    getContentPath,
+    SITE_DESCRIPTION,
+    SITE_NAME,
+} from "@/utils/seo";
 import { MarkdownHeading } from "@astrojs/markdown-remark";
+import Breadcrumbs from "./Breadcrumbs";
 import DesktopTableOfContents from "./DesktopTableOfContents";
 import MobileTableOfContents from "./MobileTableOfContents";
 import Sidebar from "@/components/Sidebar";
@@ -8,23 +18,72 @@ import Sidebar from "@/components/Sidebar";
 export default function Document({
     headings,
     relatedContents,
+    title,
+    description,
+    category,
+    slug,
     children,
 }: Readonly<{
     headings: MarkdownHeading[],
     relatedContents?: RelatedContent[],
+    title: string,
+    description?: string,
+    category: ContentCategory,
+    slug?: string[],
     children: React.ReactNode,
 }>) {
-    return (
-        <div className="grid grid-cols-10 gap-[16px]">
-            <div className="col-span-2 hidden lg:block">
-                <div className="sticky top-[140px]">
-                    <Sidebar prefix="doc" className="h-[calc(100vh-140px)] overflow-y-auto" />
-                </div>
-            </div>
+    const pathname = getContentPath(category, slug)
+    const breadcrumbs = getBreadcrumbs(category, pathname, title)
+    const pageUrl = absoluteUrl(pathname)
+    const breadcrumbId = `${pageUrl}#breadcrumb`
 
-            <div className="col-span-10 lg:col-span-6 my-[32px] px-[32px]">
-                <MobileTableOfContents headings={headings} relatedContents={relatedContents} />
-                <div className="
+    return (
+        <>
+            <JsonLd
+                data={{
+                    "@context": "https://schema.org",
+                    "@graph": [
+                        {
+                            "@type": "BreadcrumbList",
+                            "@id": breadcrumbId,
+                            itemListElement: breadcrumbs.map((breadcrumb, index) => ({
+                                "@type": "ListItem",
+                                position: index + 1,
+                                name: breadcrumb.name,
+                                item: absoluteUrl(breadcrumb.pathname),
+                            })),
+                        },
+                        {
+                            "@type": "WebPage",
+                            "@id": pageUrl,
+                            url: pageUrl,
+                            name: title,
+                            description: description || SITE_DESCRIPTION,
+                            breadcrumb: { "@id": breadcrumbId },
+                            isPartOf: {
+                                "@type": "WebSite",
+                                "@id": `${absoluteUrl("/")}#website`,
+                                name: SITE_NAME,
+                                url: absoluteUrl("/"),
+                            },
+                        },
+                    ],
+                }}
+            />
+            <div className="grid grid-cols-10 gap-[16px]">
+                <div className="col-span-2 hidden lg:block">
+                    <div className="sticky top-[140px]">
+                        <Sidebar prefix="doc" className="h-[calc(100vh-140px)] overflow-y-auto" />
+                    </div>
+                </div>
+
+                <div className="col-span-10 lg:col-span-6 my-[32px] px-[32px]">
+                    <Breadcrumbs items={breadcrumbs} />
+                    <h1 className="relative scroll-mt-[80px] text-[32px] font-medium leading-tight text-black mt-0 mb-[24px] [&>code]:[font-size:inherit]">
+                        {title}
+                    </h1>
+                    <MobileTableOfContents headings={headings} relatedContents={relatedContents} />
+                    <div className="
                     w-full max-w-none
                     text-[16px] text-[rgba(0,0,0,0.8)] leading-[1.4]
                     prose
@@ -79,14 +138,15 @@ export default function Document({
                     prose-td:border prose-td:border-[rgba(0,0,0,0.1)] prose-td:p-[12px]
                     prose-hr:my-[32px] prose-hr:border-t prose-hr:border-[rgba(0,0,0,0.1)]
                 ">
-                    {children}
+                        {children}
+                    </div>
+                    <div className="sticky top-full">
+                        <Footer />
+                    </div>
                 </div>
-                <div className="sticky top-full">
-                    <Footer />
-                </div>
-            </div>
 
-            <DesktopTableOfContents headings={headings} relatedContents={relatedContents} />
-        </div>
+                <DesktopTableOfContents headings={headings} relatedContents={relatedContents} />
+            </div>
+        </>
     )
 }
