@@ -1,6 +1,10 @@
 import type { MDXComponents } from 'mdx/types'
 import Link from 'next/link'
 import type { AnchorHTMLAttributes } from 'react'
+import {
+    ClusteringIndexPruningDiagram,
+    ColumnarIndexPruningDiagram,
+} from './components/ArchitectureDiagrams'
 import Callout from './components/Callout'
 
 function MarkdownLink({ href, children, ...props }: AnchorHTMLAttributes<HTMLAnchorElement>) {
@@ -22,6 +26,8 @@ function MarkdownLink({ href, children, ...props }: AnchorHTMLAttributes<HTMLAnc
 export function useMDXComponents(components: MDXComponents): MDXComponents {
     return {
         Callout,
+        ClusteringIndexPruningDiagram,
+        ColumnarIndexPruningDiagram,
         a: MarkdownLink,
         ...components,
     }
