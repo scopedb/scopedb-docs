@@ -19,6 +19,7 @@ export const guidesSidebar: SidebarItem[] = [
             { label: "Query data", link: "/guides/query-events" },
             { label: "Model semi-structured data", link: "/guides/model-flexible-events" },
             { label: "Set data retention", link: "/guides/data-retention" },
+            { label: "Storage architecture", link: "/guides/storage-architecture" },
             { label: "Add indexes", link: "/guides/add-indexes" },
         ],
     },

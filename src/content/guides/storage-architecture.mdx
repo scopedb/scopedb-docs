@@ -1,0 +1,116 @@
+---
+title: Storage architecture
+seoTitle: ScopeDB Columnar Storage Architecture
+description: Learn how ScopeDB uses columnar storage, clustering, and index pruning to reduce query work for event analytics.
+relatedContents:
+    - title: Query data
+      url: /guides/query-events
+    - title: Add indexes
+      url: /guides/add-indexes
+    - title: Model semi-structured data
+      url: /guides/model-flexible-events
+---
+
+ScopeDB is designed for event analytics, where a query often reads a subset of
+fields from a large table and filters or aggregates many events. Its storage
+engine follows a simple principle: avoid reading data that cannot affect the
+result.
+
+ScopeDB Cloud manages storage for you. You work with tables, queries, retention,
+and clustering—not storage infrastructure.
+
+## Columnar storage
+
+ScopeDB tables keep the familiar model of rows and columns, while the storage
+engine organizes values by column. An analytical query can therefore read the
+columns it needs without reading every field from every event.
+
+This is especially useful for wide event tables. A query that selects `time`
+and `service` does not also need to read a large `message` or semi-structured
+payload column unless the query references it.
+
+## Index pruning
+
+ScopeDB can use index pruning to avoid reading segments that cannot match a query
+predicate. Pruning only removes segments known not to match; candidate data is
+still evaluated normally.
+
+For example, this query references two columns and combines two filters:
+
+```scopeql
+FROM events
+SELECT time, service
+WHERE time >= NOW() - 'PT1h'::interval
+  AND service = 'checkout'
+```
+
+<ColumnarIndexPruningDiagram />
+
+Index pruning is a performance optimization, not a requirement for query
+correctness. When no segment can be ruled out, ScopeDB evaluates the query
+against the relevant columnar data normally.
+
+## Clustering with `CLUSTER BY`
+
+`CLUSTER BY` is a table-layout hint that keeps rows with similar key values
+close together within each partition. It does not change query results or
+guarantee their order. Use `ORDER BY` when result order matters.
+
+The query in the first diagram combines an equality filter on `service` with a
+range filter on `time`. For that recurring access pattern:
+
+```scopeql
+ALTER TABLE events
+CLUSTER BY service, time;
+```
+
+The illustration uses the same filter shape with a fixed `10:00` cutoff. It
+compares the same rows in an unclustered layout and an illustrative clustered
+layout; only the distribution of values changes.
+
+<ClusteringIndexPruningDiagram />
+
+Key order matters. Put the expression used by the most important recurring
+filters first. Here, `service` groups related events first, while `time`
+organizes values within each service. Choose a small, stable set of expressions
+that reflects important recurring queries.
+
+When filters align with the cluster keys, clustering can improve data locality
+and make index pruning more effective. It does not guarantee that fewer segments
+will be scanned. The benefit depends on key order, value distribution, and the
+query filters.
+
+Partitioning defines broad data groups, clustering improves locality inside
+each group, and index pruning can skip segments that cannot match a query.
+ScopeDB Cloud manages the physical organization after you define the key. See
+[CREATE TABLE](/reference/commands/statements/create-table) for the complete
+syntax and expression rules.
+
+## How the pieces work together
+
+At a high level, ScopeDB follows this path:
+
+1. Identify the columns required by the query.
+2. Use index pruning to rule out segments that cannot match the query.
+3. Read the required columnar data from the remaining candidates, apply the
+   query operations, and return the result.
+
+Column selection reduces the width of a read. Index pruning reduces the segments
+that need to be considered. A cluster key aligned with recurring filters can
+concentrate matching values and make that pruning more effective.
+
+## Performance optimization priorities
+
+| Direction | What it reduces |
+| --- | --- |
+| Column projection | Reads only the columns referenced by the query. |
+| Index pruning | Rules out segments that cannot match the query predicates. |
+| Clustering | Keeps similar values together, creating more opportunities for pruning. |
+
+Start with representative queries and optimize the paths that matter. Select
+only the fields a query needs, and choose cluster keys for stable, recurring
+filter patterns.
+
+Continue with [Query data](/guides/query-events) for query patterns and
+[Add indexes](/guides/add-indexes) for ways to improve pruning for recurring
+access patterns.
