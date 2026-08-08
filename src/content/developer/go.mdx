@@ -5,13 +5,17 @@ relatedContents:
       url: /developer/sdks
     - title: Connect an application
       url: /guides/connect-to-scopedb
-    - title: HTTP API
-      url: /developer/http-api
+    - title: Query data
+      url: /guides/query-events
+    - title: Go package reference
+      url: https://pkg.go.dev/github.com/scopedb/scopedb-sdk/go
     - title: Go SDK repository
       url: https://github.com/scopedb/scopedb-sdk/tree/main/go
 ---
 
-Use the Go SDK from server-side Go applications.
+Use the Go SDK from trusted server-side applications. For application writes,
+start with `Table.AppendStream`: it accepts typed Go rows and owns bounded
+encoding, batching, backpressure, and request concurrency.
 
 ## Before you start
 
@@ -23,59 +27,81 @@ export SCOPEDB_ENDPOINT="https://<endpoint>"
 export SCOPEDB_API_KEY="<api-key>"
 ```
 
+Keep the API key in a trusted server-side process. Do not put it in browser,
+mobile, or client-visible configuration.
+
 ## Install
 
-From your Go module, run:
+Install the current Go SDK release from your module:
 
 ```bash
-go get github.com/scopedb/scopedb-sdk/go
+go get github.com/scopedb/scopedb-sdk/go@v0.6.0
 ```
 
 ## Create a client
 
 ```go
-client := scopedb.NewClient(&scopedb.Config{
-	Endpoint: os.Getenv("SCOPEDB_ENDPOINT"),
-	APIKey:   os.Getenv("SCOPEDB_API_KEY"),
+endpoint := os.Getenv("SCOPEDB_ENDPOINT")
+apiKey := os.Getenv("SCOPEDB_API_KEY")
+if endpoint == "" || apiKey == "" {
+	return errors.New("SCOPEDB_ENDPOINT and SCOPEDB_API_KEY are required")
+}
+
+client, err := scopedb.NewClient(scopedb.Config{
+	Endpoint: endpoint,
+	APIKey:   apiKey,
 })
+if err != nil {
+	return err
+}
 defer client.Close()
 ```
 
-Create the client once and reuse it for requests from your application.
+Create one client and reuse it. `NewClient` validates the endpoint. Set
+`Config.HTTPClient` when the application needs to own HTTP timeouts, proxies,
+TLS, or connection pooling; the SDK never closes a caller-provided client.
 
-## Execute a statement
+## Query data
+
+`Query` is the short path for submitting a ScopeQL statement and waiting for
+its result:
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 defer cancel()
 
-result, err := client.Statement("SELECT 1 AS ok").Execute(ctx)
+result, err := client.Query(ctx, `
+	FROM events
+	WHERE service = 'checkout'
+	ORDER BY time DESC
+	LIMIT 10
+`)
 if err != nil {
-	log.Fatal(err)
-}
-```
-
-`Execute` returns a finished result or an error. It handles an active
-statement's polling internally and returns early when the context is cancelled
-or reaches its deadline.
-
-## Work with results
-
-Use `ToValues` to convert JSON result cells to Go values:
-
-```go
-rows, err := result.ToValues()
-if err != nil {
-	log.Fatal(err)
+	return err
 }
 
+rows, err := result.ToObjects()
+if err != nil {
+	return err
+}
 fmt.Println(rows)
 ```
 
-### Result value mapping
+SDK documentation covers client behavior, not the ScopeQL language. Use the
+[quickstart](/guides/quickstart), [Query data](/guides/query-events), and
+[ScopeQL reference](/reference) for language syntax.
 
-`ToValues` converts each non-null result cell according to its ScopeDB result
-type:
+## Work with results
+
+Choose the representation needed by the application:
+
+- `RawRows` returns unconverted wire cell strings and nulls.
+- `ToValues` returns positional rows with typed Go values.
+- `ToObjects` keys each typed row by column name.
+- `First` returns an optional first keyed row.
+
+`ToValues`, `ToObjects`, and `First` convert non-null cells according to the
+result metadata:
 
 | ScopeDB result type | Go value | Notes |
 | --- | --- | --- |
@@ -89,42 +115,207 @@ type:
 | `interval` | `time.Duration` | Fixed-duration intervals only. |
 | `array` | `string` | JSON text; decode with `encoding/json` when needed. |
 | `object` | `string` | JSON text; decode with `encoding/json` when needed. |
-| `any` | `string` | Raw textual value; the SDK does not infer its dynamic Go type. |
-| `null` | `nil` | A null cell is `nil` regardless of the field's declared type. |
+| `any` | `string` | Raw text; the SDK does not infer its dynamic Go type. |
+| `null` | `nil` | A null cell is `nil` regardless of the declared type. |
 
 The `null` result type can appear in query metadata, such as for a literal
 `NULL`; it is not a table column type. See the
 [data types reference](/reference/data-types) for ScopeDB type semantics.
 
-`ToValues` returns an error when a non-null cell cannot be converted, a numeric
-value is out of range, or the result contains an unrecognized data type.
-
-`array` and `object` contain JSON text, but do not assume that an `any` value is
-JSON. It remains raw text because its dynamic ScopeDB type cannot be
-reconstructed from the result. Decode structured values into a concrete Go
-type, or use `json.Decoder.UseNumber` when decoding into interface values and
-numeric precision matters. Decoding structured values does not recursively
-apply the SDK's result conversions; nested binary, timestamp, and interval
-values remain strings.
+Conversions return an error for invalid cells, numeric overflow, duplicate
+column names in an object conversion, or an unrecognized data type. Structured
+`array` and `object` values remain JSON text; decoding them does not recursively
+apply SDK conversions to nested values.
 
 ## Control statement execution
 
-Use `Submit` when you need direct control over a `StatementHandle`. `FetchOnce`
-updates its status once, `Fetch` waits for a terminal result, and `Status`,
-`Progress`, and `ResultSet` expose the last response.
+Use `Submit` when the application needs the statement ID, a local status
+snapshot, one explicit remote status request, or a separate wait:
 
-Cancelling the Go context stops client-side requests and polling; it does not
-cancel the statement in ScopeDB. Call `Cancel` on the handle to request
-server-side cancellation. See the [HTTP API](/developer/http-api) for the
-underlying state and cancellation contract.
+```go
+handle, err := client.Statement("SELECT 1 AS ready").Submit(ctx)
+if err != nil {
+	return err
+}
+
+fmt.Println("statement ID:", handle.ID())
+if cached := handle.LastStatus(); cached != nil {
+	fmt.Println("local status:", *cached) // No network request.
+}
+
+latest, err := handle.Status(ctx) // At most one remote status request.
+if err != nil {
+	return err
+}
+fmt.Println("latest status:", latest)
+
+result, err := handle.Wait(ctx)
+if err != nil {
+	return err
+}
+```
+
+Once a terminal status is cached, `Status` returns it without another request.
+Persist `handle.ID()` and use `client.StatementHandle(id)` to resume the
+lifecycle in another process. `Cancel` requests server-side cancellation and
+returns the statement ID, creation time, status, and message.
+
+`Statement.ID` and `Statement.ExecTimeout` are the only optional statement
+settings. Omit `ID` to let ScopeDB generate one. Cancelling the Go context stops
+the current client request or wait; it does not itself cancel the remote
+statement.
+
+## Browse the catalog
+
+Use iterators for normal discovery. They request REST catalog pages lazily and
+keep continuation tokens opaque:
+
+```go
+for table, err := range client.IterateTables(
+	ctx,
+	"scopedb",
+	"public",
+	scopedb.CatalogListOptions{PageSize: 100},
+) {
+	if err != nil {
+		return err
+	}
+	fmt.Println(table.Name)
+}
+```
+
+`ListDatabases`, `ListSchemas`, and `ListTables` expose one page when the
+application owns pagination. `FetchDatabase`, `FetchSchema`, and `FetchTable`
+return complete resources.
+
+The table helper defaults to database `scopedb` and schema `public`:
+
+```go
+table := client.Table("events")
+description, err := table.Describe(ctx)
+if err != nil {
+	return err
+}
+fmt.Println(description.Columns)
+```
+
+Set `table.Database` and `table.Schema` explicitly when the destination comes
+from application configuration.
+
+## Stream typed rows to a table
+
+Use `AppendStream` when rows already match an existing destination table. The
+stream uses `encoding/json`, so standard JSON tags, `omitempty`, and custom
+`MarshalJSON` methods apply. Each row must encode as one top-level JSON object.
+
+```go
+type Event struct {
+	ID         int               `json:"id"`
+	Name       string            `json:"name"`
+	OccurredAt time.Time         `json:"occurred_at"`
+	Attributes map[string]string `json:"attributes,omitempty"`
+}
+
+table := client.Table("events")
+stream, err := table.AppendStream(scopedb.AppendStreamOptions{})
+if err != nil {
+	return err
+}
+
+for _, event := range []Event{
+	{ID: 1, Name: "checkout.started", OccurredAt: time.Now().UTC()},
+	{ID: 2, Name: "checkout.completed", OccurredAt: time.Now().UTC()},
+} {
+	if err := stream.Send(ctx, event); err != nil {
+		_, _ = stream.Shutdown(ctx)
+		return err
+	}
+}
+
+report, err := stream.Shutdown(ctx)
+if err != nil {
+	return err
+}
+fmt.Printf("committed %d of %d accepted rows\n", report.CommittedRows, report.AcceptedRows)
+```
+
+`Send` waits for bounded local admission. A nil error means the row entered the
+local stream; it does not confirm schema compatibility or a remote commit.
+`Flush` settles the prefix accepted before its barrier and keeps the stream
+open. `Shutdown` permanently closes admission and settles all accepted rows.
+
+`Send` and `TrySend` are safe for concurrent producers. Use a fixed worker pool
+instead of starting one goroutine per row. Concurrent HTTP batches have no
+defined commit order; set `MaxConcurrentBatches: 1` when request submission must
+be serial.
+
+The default `AppendFailureStop` policy stops after the first failed batch. For
+latency-sensitive logs or telemetry, opt into `AppendFailureContinue`, use
+`TrySend`, and monitor every delivery report plus `Stats().DroppedByReason` and
+`Stats().LastFailure`.
+
+A timeout, transport failure, or malformed response can leave a batch outcome
+unknown. The SDK never automatically retries an unknown batch because it may
+already have committed. Only an exact temporary batch explicitly reported as
+`rejected` is retried. An in-memory stream is not a durable queue; use an
+application-owned outbox and reconciliation when rows must survive process
+failure or an unknown outcome.
+
+## Send one raw NDJSON request
+
+Use `AppendNDJSON` only when the caller already owns one exact NDJSON request
+body. Each non-empty line must be one JSON object, not a JSON array:
+
+```go
+ndjson := []byte("{\"id\":1,\"name\":\"first\"}\n{\"id\":2,\"name\":\"second\"}\n")
+result, err := table.AppendNDJSON(ctx, ndjson)
+if err != nil {
+	return err
+}
+fmt.Println("committed rows:", result.NumRowsInserted)
+```
+
+One request is limited to 16 MiB and 200,000 rows. `AppendStream` is the simpler
+path when the SDK should own encoding and request boundaries.
+
+## Handle structured errors
+
+Server messages pass through unchanged. Use `errors.As` for operation metadata
+without parsing the message:
+
+```go
+var scopeErr *scopedb.Error
+if errors.As(err, &scopeErr) {
+	fmt.Printf("kind=%s status=%d request_id=%s retryable=%t\n",
+		scopeErr.Kind,
+		scopeErr.HTTPStatus,
+		scopeErr.RequestID,
+		scopeErr.Retryable,
+	)
+}
+```
+
+`StatementDetails` preserves a failed statement's structured code, message,
+and code-specific JSON details. `AppendDetails` preserves whether a table
+append was `rejected` or has an `unknown` commit outcome, plus any structured
+row errors.
+
+## Advanced: transform before writing
+
+Use `Client.IngestStream` only when source JSON specifically needs a server-side
+ScopeQL transformation before it can match the destination table. For normal
+typed events, shape the row in the producer and use `Table.AppendStream`.
+
+This advanced path is sequential and fail-fast. An ingest error can follow a
+remote commit, so reconcile the failing batch before replaying it. See
+[Ingest data](/guides/ingest-events) for the transform-oriented HTTP workflow.
 
 ## Next steps
 
 - Learn the language with the [ScopeQL quickstart](/guides/quickstart).
 - Build application queries with [Query data](/guides/query-events).
 - Use the [ScopeQL reference](/reference) for exact language syntax.
-- Follow [Ingest data](/guides/ingest-events) for the current write workflow.
-- Review statement states, errors, and retries in the
-  [HTTP API](/developer/http-api).
-- Browse the [Go SDK repository](https://github.com/scopedb/scopedb-sdk/tree/main/go)
-  for the complete package surface.
+- Review statement states and HTTP errors in the [HTTP API](/developer/http-api).
+- Browse the [Go SDK examples](https://github.com/scopedb/scopedb-sdk/tree/main/go/examples)
+  for statement, catalog, direct append, streaming write, bulk, and telemetry
+  workflows.
