@@ -11,8 +11,9 @@ relatedContents:
 ---
 
 Use a ScopeDB SDK from a supported backend runtime. SDKs configure
-authentication, follow statement execution to a terminal result, and convert
-result cells into language-native values.
+authentication, follow statement execution to a terminal result, browse the
+catalog, convert result cells into language-native values, and provide bounded
+streaming writes.
 
 These SDKs are pre-release. The pages below describe current behavior only;
 pin your dependency version and upgrade intentionally.
@@ -33,13 +34,16 @@ need direct control over requests and responses.
 1. Copy the ScopeDB API address and create an API key by following
    [Connect an application](/guides/connect-to-scopedb).
 2. Create a client in a trusted server-side process.
-3. Execute a ScopeQL statement. The SDK consumes a terminal submit response or
-   polls while the statement is `pending` or `running`.
-4. Convert the result into the representation expected by your application.
+3. Use the catalog to discover or describe an existing destination table.
+4. Call the SDK's query path to execute ScopeQL and convert the result into the
+   representation expected by your application.
+5. For typed rows that already match a table, use the SDK's append stream for
+   bounded batching and explicit flush or shutdown barriers.
 
-Each language page covers its result types, client-side cancellation, and
-lower-level statement controls. For the underlying statement lifecycle, error
-contract, and retry guidance, use the [HTTP API](/developer/http-api).
+Use each language page for its documented workflows and its package reference
+or repository examples for the complete public surface. For the underlying
+statement lifecycle, error contract, and retry guidance, use the
+[HTTP API](/developer/http-api).
 
 SDK documentation covers client behavior, not the ScopeQL language. Start with
 the [ScopeQL quickstart](/guides/quickstart), use [Query data](/guides/query-events)
