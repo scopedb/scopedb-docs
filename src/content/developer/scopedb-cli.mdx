@@ -124,5 +124,27 @@ scope doctor
 scope query --format json 'SELECT 1 AS ready'
 ```
 
-Both environment variables are required. Keep API keys out of source control
-and terminal logs.
+Both environment variables are required and override the saved login for queries, status, and connection checks. Setting only one fails instead of falling back to your login. Workspace selection and API key management still use your login. Keep API keys out of source control and terminal logs.
+
+To return to login-based queries:
+
+```bash
+unset SCOPEDB_ENDPOINT SCOPEDB_API_KEY
+```
+
+## Prepare application credentials
+
+With a CLI login and a selected workspace, show its endpoint and create an application key:
+
+```bash
+scope workspace show
+scope api-key create my-app --expires-in 720h
+```
+
+The key is shown only once. Store it in your application's secret manager, then pass it and the workspace endpoint explicitly to your [SDK](/developer/sdks). SDKs do not read the CLI's stored login. An existing API key cannot manage keys through the CLI.
+
+## Diagnose a connection
+
+Use `scope status` to see the active authentication mode and `scope doctor --format json` for diagnostics. Incomplete account setup is a warning, so exit code 0 alone does not confirm query readiness. Use `scope query 'SELECT 1 AS ready'` as a readiness gate in scripts.
+
+If a key is rejected, check that it belongs to the endpoint's workspace and has not expired or been revoked. If the workspace is provisioning, check `scope status` or the Console and retry when it is ready.
