@@ -1,0 +1,128 @@
+---
+title: ScopeDB CLI
+seoTitle: "ScopeDB CLI: Install and Query ScopeDB Cloud"
+description: Install the ScopeDB CLI, sign in to a workspace, run queries, and use an API key for automation.
+relatedContents:
+    - title: Connect an application
+      url: /guides/connect-to-scopedb
+    - title: Query quickstart
+      url: /guides/quickstart
+    - title: Query reference
+      url: /reference
+    - title: ScopeDB CLI repository
+      url: https://github.com/scopedb/scopedb-cli
+---
+
+Use the ScopeDB CLI to query a ScopeDB Cloud workspace from a terminal or
+script. The executable is `scope`. The CLI is in public preview, and current
+releases are release candidates whose commands may change before a stable
+release. See the [ScopeDB CLI repository](https://github.com/scopedb/scopedb-cli)
+for the current release and complete command help.
+
+## Install
+
+### Download a release
+
+The latest public preview release is
+[v0.1.0-rc.3](https://github.com/scopedb/scopedb-cli/releases/tag/v0.1.0-rc.3).
+Choose the archive for your platform:
+
+| Platform | Download |
+| --- | --- |
+| macOS, Apple silicon | [ARM64 archive](https://github.com/scopedb/scopedb-cli/releases/download/v0.1.0-rc.3/scope_0.1.0-rc.3_darwin_arm64.tar.gz) |
+| macOS, Intel | [x86-64 archive](https://github.com/scopedb/scopedb-cli/releases/download/v0.1.0-rc.3/scope_0.1.0-rc.3_darwin_amd64.tar.gz) |
+| Linux, x86-64 | [x86-64 archive](https://github.com/scopedb/scopedb-cli/releases/download/v0.1.0-rc.3/scope_0.1.0-rc.3_linux_amd64.tar.gz) |
+| Linux, ARM64 | [ARM64 archive](https://github.com/scopedb/scopedb-cli/releases/download/v0.1.0-rc.3/scope_0.1.0-rc.3_linux_arm64.tar.gz) |
+| Windows, x86-64 | [x86-64 ZIP](https://github.com/scopedb/scopedb-cli/releases/download/v0.1.0-rc.3/scope_0.1.0-rc.3_windows_amd64.zip) |
+| Windows, ARM64 | [ARM64 ZIP](https://github.com/scopedb/scopedb-cli/releases/download/v0.1.0-rc.3/scope_0.1.0-rc.3_windows_arm64.zip) |
+
+Download the release's [SHA-256 checksums](https://github.com/scopedb/scopedb-cli/releases/download/v0.1.0-rc.3/checksums.txt)
+and compare the digest for your archive before extracting it. On macOS, use
+`shasum -a 256 <archive>`; on Linux, use `sha256sum <archive>`; on Windows,
+use `Get-FileHash <archive> -Algorithm SHA256` in PowerShell.
+
+On macOS or Linux, extract the archive and put `scope` on your `PATH`. For
+example, from a directory containing only the downloaded ScopeDB CLI archive:
+
+```bash
+tar -xzf scope_*.tar.gz scope
+mkdir -p "$HOME/.local/bin"
+install -m 0755 scope "$HOME/.local/bin/scope"
+export PATH="$HOME/.local/bin:$PATH"
+scope version
+```
+
+Add the `export PATH=...` line to your shell profile to keep `scope` available
+in new terminals. On Windows, extract the ZIP, add the directory containing
+`scope.exe` to your `PATH`, then run `scope version`.
+
+Official Homebrew, Scoop, and winget packages are not available yet. Use the
+release archives or Go source instead of an unverified package with a similar
+name.
+
+### Build from source
+
+With Go 1.27 or later:
+
+```bash
+go install github.com/scopedb/scopedb-cli/cmd/scope@v0.1.0-rc.3
+```
+
+The binary is installed in Go's binary directory. Ensure that directory is on
+your `PATH` before running `scope version`.
+
+## Sign in and select a workspace
+
+For interactive use, sign in with your ScopeDB Cloud account and run a test
+query:
+
+```bash
+scope login
+scope status
+scope query 'SELECT 1 AS ready'
+```
+
+`scope login` prompts for an email address and verification code, then stores
+the session in the operating system keyring. If your account is pending or has
+no workspace, `scope status` explains the next step. Use `scope open` to check
+approval status or create a workspace in the Console.
+
+When more than one workspace is available, select one explicitly:
+
+```bash
+scope workspace list
+scope workspace use <id-or-name>
+scope status
+```
+
+## Run queries
+
+Pass a query inline or read it from a file. Results can be rendered as a table,
+JSON, JSON Lines, or CSV:
+
+```bash
+scope query 'FROM system.tables LIMIT 10'
+scope query --file report.txt --format json
+scope query 'FROM system.tables LIMIT 10' --format csv --output tables.csv
+```
+
+Run `scope --help` or `scope query --help` for all current options. For query
+syntax and examples, use the [query reference](/reference).
+
+## Use the CLI in automation
+
+For CI or another non-interactive environment, configure the data-plane API
+address and an API key instead of an interactive login. Follow
+[Connect an application](/guides/connect-to-scopedb) to obtain these values and
+store the key in your CI secret store:
+
+```bash
+export SCOPEDB_ENDPOINT="https://<endpoint>"
+export SCOPEDB_API_KEY="<api-key>"
+
+scope doctor
+scope query --format json 'SELECT 1 AS ready'
+```
+
+Both environment variables are required. Keep API keys out of source control
+and terminal logs.

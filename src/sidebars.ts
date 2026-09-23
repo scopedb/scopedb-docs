@@ -41,7 +41,7 @@ export const developerSidebar: SidebarItem[] = [
         ],
     },
     { label: "HTTP API", link: "/developer/http-api" },
-    { label: "ScopeQL CLI", link: "/developer/scopeql-cli" },
+    { label: "ScopeDB CLI", link: "/developer/scopedb-cli" },
 ];
 
 export const referenceSidebar: SidebarItem[] = [

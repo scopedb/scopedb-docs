@@ -1,13 +1,12 @@
 ---
 title: Developer
 seoTitle: "ScopeDB Developer Docs: SDKs and HTTP API"
-description: Build backend applications with ScopeDB Cloud using the Node.js, Go, or Rust SDK, the HTTP API, or the ScopeQL CLI.
+description: Build backend applications with ScopeDB Cloud using the Node.js, Go, or Rust SDK, the HTTP API, or the ScopeDB CLI.
 ---
 
-Build applications and tools on ScopeDB from your backend.
-
-Start by connecting to a workspace, then choose an SDK, the HTTP API, or the
-ScopeQL CLI.
+Build applications and tools on ScopeDB from your backend. For an SDK or HTTP
+client, connect with the workspace API address and an API key. For interactive
+terminal use, sign in with the ScopeDB CLI.
 
 ## Connect to ScopeDB
 
@@ -28,18 +27,19 @@ overview, then follow the task-based guide for your language.
 Call ScopeDB from another backend runtime or control requests and statement
 polling directly.
 
-### [ScopeQL CLI](/developer/scopeql-cli)
+### [ScopeDB CLI](/developer/scopedb-cli)
 
 Run ScopeDB from a terminal, script, or CI job.
 
 ## Common rules
 
-Whichever interface you choose:
+For SDKs, HTTP clients, and non-interactive CLI jobs:
 
 - keep the ScopeDB API key in server-side secret storage;
 - use the ScopeDB API address copied from **Connect** in Console;
 - bound application queries and validate any user-controlled inputs.
 
-For local exploration or scripts, use the [ScopeQL CLI](/developer/scopeql-cli).
+For local exploration, use the [ScopeDB CLI](/developer/scopedb-cli) with its
+interactive account login.
 
 For exact language syntax, use the [Reference](/reference).

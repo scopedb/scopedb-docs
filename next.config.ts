@@ -16,6 +16,7 @@ const nextConfig: NextConfig = {
       { source: '/guides/index', destination: '/guides', permanent: true },
       { source: '/developer/index', destination: '/developer', permanent: true },
       { source: '/reference/index', destination: '/reference', permanent: true },
+      { source: '/developer/scopeql-cli', destination: '/developer/scopedb-cli', permanent: true },
     ]
   },
 };

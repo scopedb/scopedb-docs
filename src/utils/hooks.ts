@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 
 /* See also https://tailwindcss.com/docs/responsive-design */
 
@@ -23,24 +23,13 @@ export function useIs2XlMedia(): boolean {
 }
 
 function useMedia(query: string): boolean {
-  const [matched, setMatched] = useState<boolean | null>(null);
-
-  useEffect(() => {
+  const subscribe = useCallback((onChange: () => void) => {
     const mediaQueryList = window.matchMedia(query);
-
-    const onChange = (event: MediaQueryListEvent) => {
-      setMatched(event.matches);
-    };
-
     mediaQueryList.addEventListener("change", onChange);
-
-    // Set initial value in case it changed before effect runs
-    setMatched(mediaQueryList.matches);
-
-    return () => {
-      mediaQueryList.removeEventListener("change", onChange);
-    };
+    return () => mediaQueryList.removeEventListener("change", onChange);
   }, [query]);
 
-  return matched ?? false;
+  const getSnapshot = useCallback(() => window.matchMedia(query).matches, [query]);
+
+  return useSyncExternalStore(subscribe, getSnapshot, () => false);
 }

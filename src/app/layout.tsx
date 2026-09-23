@@ -63,6 +63,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <link rel="describedby" href="/llms.txt" type="text/plain" />
         <script async defer data-domain="docs.scopedb.io" src="https://plausible.io/js/script.js" />
       </head>
 
