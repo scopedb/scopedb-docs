@@ -28,14 +28,16 @@ export SCOPEDB_API_KEY="<api-key>"
 ## Install
 
 ```bash
-pnpm add scopedb
+npm install scopedb
 ```
 
-The package is ESM-only. Import it with ES module syntax as shown below.
+If you use pnpm, run `pnpm add scopedb` instead. The package is ESM-only.
 
-## Create a client
+## Verify the connection
 
-```ts
+Save this complete example as `connect.mjs`. The `.mjs` extension enables native ES modules and top-level `await`, without a TypeScript runner:
+
+```js
 import { Client } from "scopedb";
 
 const endpoint = process.env.SCOPEDB_ENDPOINT;
@@ -46,12 +48,31 @@ if (!endpoint || !apiKey) {
 }
 
 const client = new Client(endpoint, { apiKey });
+
+const ready = await client.query("SELECT 1 AS ready");
+console.log(JSON.stringify(ready.toObjects({ integerMode: "string" })));
+```
+
+Run it from the same shell where you set the connection variables:
+
+```bash
+node connect.mjs
+```
+
+Expected output:
+
+```json
+[{"ready":"1"}]
 ```
 
 Keep the API key on the server. Do not create authenticated ScopeDB clients in
 browser code.
 
+The SDK does not read `scope login` credentials. If the CLI works but the SDK does not, check that the application process receives both connection variables. Reuse this client when trying the examples below.
+
 ## Execute a statement
+
+First create and populate the `events` table from the [ScopeQL quickstart](/guides/quickstart). The connection test above does not require an application table.
 
 ```ts
 const result = await client
@@ -76,6 +97,8 @@ For most application code, convert rows to objects keyed by column name:
 const rows = result.toObjects();
 console.log(rows[0]);
 ```
+
+An empty array means the query succeeded but no rows matched; `rows[0]` is then `undefined`.
 
 Use `first()` for a lookup or aggregate that returns at most one row, and
 `toValues()` when positional arrays are more convenient.
@@ -156,6 +179,12 @@ When records already match an existing table, use `table().appendStream()`.
 Create the destination table first; the following example uses a disposable
 `sdk_example_events` table with `id int` and `name string` columns:
 
+```bash
+scope query 'CREATE TABLE sdk_example_events (id int, name string)'
+```
+
+Use the [ScopeDB CLI](/developer/scopedb-cli) with the same endpoint and API key, and run this setup once. If the table already exists, verify its schema before continuing.
+
 ```ts
 const table = client.table("sdk_example_events", {
   database: "scopedb",
@@ -168,6 +197,15 @@ await stream.send({ id: 2, name: "second" });
 await stream.flush();
 await stream.shutdown();
 ```
+
+After shutdown, read the committed rows:
+
+```ts
+const written = await client.query("FROM sdk_example_events ORDER BY id");
+console.log(written.toObjects({ integerMode: "string" }));
+```
+
+On a new table, the result contains IDs `"1"` and `"2"` with names `"first"` and `"second"`. Running the write example again adds more rows; it does not deduplicate repeated runs.
 
 `send()` confirms local admission, not a remote commit. In the default stop
 mode, a successful `flush()` or `shutdown()` confirms that rows accepted before

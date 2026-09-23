@@ -30,6 +30,8 @@ You need:
 
 ## 1. Copy the ScopeDB API address
 
+For a terminal workflow, the [ScopeDB CLI](/developer/scopedb-cli#prepare-application-credentials) can sign in, show your workspace endpoint, and create an application key. Its login is stored separately from SDK credentials.
+
 In ScopeDB Console for the current workspace, open **Connect**.
 
 Under **ScopeDB API**, copy the address shown by the Console. It is an HTTPS base
@@ -69,7 +71,17 @@ environment can be rotated independently.
 
 ## 4. Send a test request
 
-Submit a small ScopeQL statement to confirm the endpoint and API key work:
+If you have the [ScopeDB CLI](/developer/scopedb-cli) installed, verify the same endpoint and key before connecting your SDK:
+
+```bash
+scope status
+scope doctor
+scope query --format json 'SELECT 1 AS ready'
+```
+
+Set both connection variables: together they override the CLI login; a partial pair fails. A successful test query confirms access without requiring an application table. Pass the same values explicitly to your SDK client.
+
+Alternatively, submit a small ScopeQL statement directly with the HTTP API:
 
 ```bash
 curl -X POST "$SCOPEDB_ENDPOINT/v1/statements" \
