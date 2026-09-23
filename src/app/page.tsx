@@ -49,7 +49,7 @@ function FeaturedItems() {
     {
       category: "Build",
       title: "Developer resources",
-      description: "Use the HTTP API, SDKs, or ScopeQL CLI from your application.",
+      description: "Use the HTTP API, SDKs, or ScopeDB CLI from your application.",
       link: "/developer",
     },
     {

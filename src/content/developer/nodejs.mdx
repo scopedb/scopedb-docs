@@ -15,8 +15,10 @@ Use the Node.js SDK from server-side TypeScript or JavaScript applications.
 
 ## Before you start
 
-Use Node.js 20 or later. Follow [Connect an application](/guides/connect-to-scopedb),
-then set the endpoint and API key used by the examples:
+The examples use Node.js 20 or later. The SDK also supports Bun and Cloudflare
+Workers from trusted server-side code. Follow
+[Connect an application](/guides/connect-to-scopedb), then set the endpoint and
+API key used by the examples:
 
 ```bash
 export SCOPEDB_ENDPOINT="https://<endpoint>"
@@ -43,7 +45,7 @@ if (!endpoint || !apiKey) {
   throw new Error("SCOPEDB_ENDPOINT and SCOPEDB_API_KEY are required");
 }
 
-const client = new Client(endpoint, { token: apiKey });
+const client = new Client(endpoint, { apiKey });
 ```
 
 Keep the API key on the server. Do not create authenticated ScopeDB clients in
@@ -71,16 +73,16 @@ internally.
 For most application code, convert rows to objects keyed by column name:
 
 ```ts
-const rows = result.intoObjects();
+const rows = result.toObjects();
 console.log(rows[0]);
 ```
 
 Use `first()` for a lookup or aggregate that returns at most one row, and
-`intoValues()` when positional arrays are more convenient.
+`toValues()` when positional arrays are more convenient.
 
 ### Result value mapping
 
-`intoValues()`, `intoObjects()`, and `first()` convert result cells according
+`toValues()`, `toObjects()`, and `first()` convert result cells according
 to their ScopeDB result type:
 
 | ScopeDB result type | JavaScript value | Notes |
@@ -108,7 +110,7 @@ them as `bigint` by default, which preserves precision but cannot be passed to
 boundary:
 
 ```ts
-const jsonSafeRows = result.intoObjects({ integerMode: "string" });
+const jsonSafeRows = result.toObjects({ integerMode: "string" });
 ```
 
 Use:
@@ -131,14 +133,16 @@ strings.
 ## Control statement execution
 
 Use `submit()` when you need a `StatementHandle` instead of waiting through
-`execute()`:
+`execute()`. The local snapshot does not make a network request; `status()`
+fetches the latest remote state while the statement is active:
 
 ```ts
 const handle = await client.statement("SELECT 1 AS ok").submit();
 
-console.log(handle.status());
-await handle.fetchOnce();
-const result = await handle.fetch();
+console.log(handle.lastStatus()?.status);
+const latest = await handle.status();
+console.log(latest.status);
+const result = await handle.wait();
 ```
 
 An `AbortSignal` stops client-side requests and polling; it does not cancel a
@@ -146,17 +150,38 @@ statement in ScopeDB. Call `handle.cancel()` to request server-side
 cancellation. See the [HTTP API](/developer/http-api) for the underlying state
 and cancellation contract.
 
-## Ingest data
+## Stream rows to a table
 
-The current SDK exposes `ingestStream()` for batching JSON rows that share one
-ScopeQL transformation. Follow [Ingest data](/guides/ingest-events) for the
-current write workflow. Reuse a stream for its transformation and always call
-`shutdown()` when finished; `shutdown()` flushes remaining rows, so a preceding
-`flush()` is optional.
+When records already match an existing table, use `table().appendStream()`.
+Create the destination table first; the following example uses a disposable
+`sdk_example_events` table with `id int` and `name string` columns:
 
-The helper retries transient failures. A lost response can cause a row to be
-sent again, so use the retry guidance in the
-[HTTP API](/developer/http-api#errors-and-retries).
+```ts
+const table = client.table("sdk_example_events", {
+  database: "scopedb",
+  schema: "public",
+});
+
+const stream = table.appendStream().build();
+await stream.send({ id: 1, name: "first" });
+await stream.send({ id: 2, name: "second" });
+await stream.flush();
+await stream.shutdown();
+```
+
+`send()` confirms local admission, not a remote commit. In the default stop
+mode, a successful `flush()` or `shutdown()` confirms that rows accepted before
+the barrier committed. Each uncompressed batch is limited to 8 MiB and 200,000
+rows; the stream splits larger inputs automatically. A transport failure or
+timeout can leave a batch's outcome unknown; do not replay it without
+reconciliation. The stream is in-memory, so use an application-owned outbox
+when writes must survive a process failure. See the
+[SDK repository](https://github.com/scopedb/scopedb-js)
+for delivery policies and runnable examples.
+
+Use `ingestStream()` when source JSON needs a server-side ScopeQL
+transformation before it matches the destination table. Follow
+[Ingest data](/guides/ingest-events) for that workflow.
 
 ## Next steps
 

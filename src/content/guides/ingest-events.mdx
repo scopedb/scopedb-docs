@@ -1,17 +1,27 @@
 ---
 title: Ingest data
 seoTitle: Ingest Event Data into ScopeDB
-description: Learn the current ingest API workflow for sending event rows to a ScopeDB table.
+description: Choose a ScopeDB write path and use the ingest API to transform JSON events before inserting them.
 relatedContents:
     - title: Connect an application
       url: /guides/connect-to-scopedb
     - title: HTTP API
       url: /developer/http-api
+    - title: SDKs
+      url: /developer/sdks
     - title: INSERT
       url: /reference/commands/statements/insert
 ---
 
-Send events to ScopeDB with an ingest request. Each request includes:
+## Choose a write path
+
+When application records already match a table, use an SDK table append stream.
+It handles bounded batching and backpressure; start with the
+[SDK overview](/developer/sdks) and the guide for your language.
+
+Use the ingest API when source JSON needs a server-side ScopeQL transformation
+before it matches the destination table. The rest of this guide follows that
+workflow. Each ingest request includes:
 
 - event rows;
 - a ScopeQL statement that reshapes those rows;

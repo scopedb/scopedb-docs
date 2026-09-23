@@ -10,8 +10,9 @@ relatedContents:
 ---
 
 Use the ScopeDB Cloud HTTP API from backend services, jobs, integrations, or
-languages without a dedicated SDK. The customer data API consists of the ingest
-endpoint and the statement endpoint family documented on this page.
+languages without a dedicated SDK. This page documents statement execution and
+transform-based ingestion. The [SDK guides](/developer/sdks) also cover catalog
+discovery and direct table appends.
 
 ## Base URL and authentication
 
@@ -40,6 +41,11 @@ clients.
 | `POST` | `/v1/statements` | Submit a ScopeQL statement. |
 | `GET` | `/v1/statements/{statement_id}` | Read statement status and, when ready, its result. |
 | `POST` | `/v1/statements/{statement_id}/cancel` | Request cancellation of a statement. |
+
+For rows that already match an existing table, the SDKs provide direct table
+append operations with bounded streaming. Use the [SDK overview](/developer/sdks)
+to choose an implementation. Use `/v1/ingest` when the input needs a ScopeQL
+transformation before insertion.
 
 ## Submit a statement
 

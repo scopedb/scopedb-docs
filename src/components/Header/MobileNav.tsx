@@ -6,8 +6,7 @@ import { usePathname } from "next/navigation"
 import { useState, useEffect } from "react"
 import { LuMenu, LuX } from "react-icons/lu"
 import Sidebar from "@/components/Sidebar"
-import Image from "next/image"
-import scopedbLogo from "@/assets/scopedb-logo.svg"
+import Logo from "@/components/Logo"
 import Link from "next/link"
 
 export default function MobileNav() {
@@ -166,7 +165,7 @@ export default function MobileNav() {
                     {/* Header */}
                     <div className="flex items-center justify-between px-[12px] py-[14px] border-b border-[rgba(0,0,0,0.06)] bg-[#fff]">
                         <div id="mobile-nav-logo" className="flex items-center gap-3">
-                            <Image src={scopedbLogo} alt="ScopeDB Logo" height={34} width={120} unoptimized />
+                            <Logo />
                         </div>
                         <button
                             onClick={() => setIsOpen(false)}

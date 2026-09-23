@@ -2,8 +2,7 @@ import Search from "@/components/Search";
 import Categories from "./Categories";
 import Link from "next/link";
 import MobileNav from "./MobileNav";
-import Image from "next/image";
-import scopedbLogo from "@/assets/scopedb-logo.svg";
+import Logo from "@/components/Logo";
 
 export default function Header() {
   return <>
@@ -11,8 +10,8 @@ export default function Header() {
       <div className="max-w-[1440px] mx-auto pt-[14px] px-[12px] md:px-[24px]">
         <div className="flex pb-[14px] items-center justify-between border-b border-[rgba(0,0,0,0.03)]">
           <div className="title-wrapper flex items-center gap-[24px]" >
-            <Link href="/" className="flex items-center gap-[12px]">
-              <Image src={scopedbLogo} alt="ScopeDB Logo" height={34} width={120} priority unoptimized />
+            <Link href="/" aria-label="ScopeDB documentation" className="flex items-center gap-[12px]">
+              <Logo />
               <span className="ml-[14px] text-[16px] font-bold tracking-[.72px] text-primary">
                 DOCUMENTATION
               </span>

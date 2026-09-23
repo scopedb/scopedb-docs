@@ -13,7 +13,7 @@ relatedContents:
 ---
 
 ScopeDB Cloud is the managed ScopeDB service. You work with data through the
-Console, SDKs, the ScopeQL CLI, and the HTTP data API.
+Console, SDKs, the ScopeDB CLI, and the HTTP data API.
 
 ## Core concepts
 
@@ -21,8 +21,8 @@ Console, SDKs, the ScopeQL CLI, and the HTTP data API.
 | --- | --- |
 | Workspace | The current Console context for a data catalog and its programmatic access. Connection values and API keys shown in the Console belong to this workspace. |
 | Console | The workspace-specific UI for exploring the catalog, running queries, connecting clients, and managing API keys. |
-| ScopeDB API address | The HTTPS base URL shown under its purpose label in **Connect**. SDKs, the CLI, and HTTP clients use this value as their endpoint. |
-| API key | A secret credential created for programmatic access to a workspace. Send it as a bearer token and keep it out of client-side applications. |
+| ScopeDB API address | The HTTPS base URL shown under its purpose label in **Connect**. SDKs, HTTP clients, and non-interactive CLI jobs use it as their endpoint. |
+| API key | A secret credential for SDKs, HTTP clients, and non-interactive CLI jobs. Send it as a bearer token and keep it out of client-side applications. |
 | Catalog | The databases, schemas, tables, and views available in the current workspace. ScopeQL operates on these objects. |
 
 ## Console and API responsibilities
@@ -38,7 +38,8 @@ workflow:
 Use an SDK, the CLI, or the HTTP API when an application, job, or script needs
 programmatic access. The documentation uses placeholders such as
 `https://<endpoint>` because the authoritative value comes from **Connect** in
-your workspace.
+your workspace. For interactive CLI use, sign in with your ScopeDB Cloud
+account instead of configuring an API key.
 
 ## Typical workflow
 
@@ -49,4 +50,5 @@ your workspace.
 5. Configure a server-side client and verify it with `SELECT 1`.
 
 Continue with [Connect an application](/guides/connect-to-scopedb) for the exact
-steps.
+SDK and HTTP steps, or use the [ScopeDB CLI](/developer/scopedb-cli) to sign in
+interactively.

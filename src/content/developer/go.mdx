@@ -8,9 +8,9 @@ relatedContents:
     - title: Query data
       url: /guides/query-events
     - title: Go package reference
-      url: https://pkg.go.dev/github.com/scopedb/scopedb-sdk/go
+      url: https://pkg.go.dev/github.com/scopedb/goscopedb
     - title: Go SDK repository
-      url: https://github.com/scopedb/scopedb-sdk/tree/main/go
+      url: https://github.com/scopedb/goscopedb
 ---
 
 Use the Go SDK from trusted server-side applications. For application writes,
@@ -32,10 +32,11 @@ mobile, or client-visible configuration.
 
 ## Install
 
-Install the current Go SDK release from your module:
+Install the maintained Go SDK module from your application module, then commit
+the selected version in `go.mod` and `go.sum`:
 
 ```bash
-go get github.com/scopedb/scopedb-sdk/go@v0.6.0
+go get github.com/scopedb/goscopedb@latest
 ```
 
 ## Create a client
@@ -275,8 +276,9 @@ if err != nil {
 fmt.Println("committed rows:", result.NumRowsInserted)
 ```
 
-One request is limited to 16 MiB and 200,000 rows. `AppendStream` is the simpler
-path when the SDK should own encoding and request boundaries.
+One request is limited to 8 MiB of uncompressed NDJSON and 200,000 rows.
+`AppendStream` is the simpler path when the SDK should own encoding and request
+boundaries.
 
 ## Handle structured errors
 
@@ -316,6 +318,6 @@ remote commit, so reconcile the failing batch before replaying it. See
 - Build application queries with [Query data](/guides/query-events).
 - Use the [ScopeQL reference](/reference) for exact language syntax.
 - Review statement states and HTTP errors in the [HTTP API](/developer/http-api).
-- Browse the [Go SDK examples](https://github.com/scopedb/scopedb-sdk/tree/main/go/examples)
+- Browse the [Go SDK examples](https://github.com/scopedb/goscopedb/tree/main/examples)
   for statement, catalog, direct append, streaming write, bulk, and telemetry
   workflows.
